@@ -43,3 +43,5 @@ This one should be relatively easy but there are a few caveats
 
 # Super Important:
 **Don't break main** - I have skill issues sometimes and break stuff, and you might too. That doesn't mean your a bad coder and that doesn't mean you don't save your changes. But that does mean you create a new branch and commit to that if you want to save changes in GIT. Otherwise our beautiful working codebase will then break for everyone and everyone will have to help debug yours before it works. Meaning they can't work on their changes because the codebase is el broko. I am extremely guilty of this at my last hackathon lol. So make sure to branch and save your changes and fix your branch and then do a pull request.
+
+**Additional Note** I just set up branch protection so this shouldn't happen. You have to create a pull request and it needs to be approved by someone. Now I think you can approve your own but still this at least protects main more. Feel free to test it out, I'm not super familiar with github protections.
