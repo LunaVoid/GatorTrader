@@ -44,4 +44,19 @@ This one should be relatively easy but there are a few caveats
 # Super Important:
 **Don't break main** - I have skill issues sometimes and break stuff, and you might too. That doesn't mean your a bad coder and that doesn't mean you don't save your changes. But that does mean you create a new branch and commit to that if you want to save changes in GIT. Otherwise our beautiful working codebase will then break for everyone and everyone will have to help debug yours before it works. Meaning they can't work on their changes because the codebase is el broko. I am extremely guilty of this at my last hackathon lol. So make sure to branch and save your changes and fix your branch and then do a pull request.
 
-**Additional Note** I just set up branch protection so this shouldn't happen. You have to create a pull request and it needs to be approved by someone. Now I think you can approve your own but still this at least protects main more. Feel free to test it out, I'm not super familiar with github protections.
+**Additional Note** - I just set up branch protection so this shouldn't happen. You have to create a pull request and it needs to be approved by someone. Now I think you can approve your own but still this at least protects main more. Feel free to test it out, I'm not super familiar with github protections.
+
+## How to create a branch:
+1. **git checkout -b feature-branch** - Creates a new branch 
+2. Make your changes then run **git add . & git commit -m "Fixed login bug"** 
+3. Then push your branch to github **git push origin feature-branch**
+4. Create a Pull Request on GitHub:
+    1. Go to the repo
+    2. You’ll see a banner: "Compare & pull request" → Click it.
+    3. Ensure the base branch is main and the compare branch is feature-branch
+    4. Add a title & description (explain what the PR does).
+    5. Click "Create pull request"
+5. A team member reviews and approves your PR, then click "Merge pull request"
+6. Then delete your branch **git branch -d feature-branch && git push origin --delete feature-branch**
+
+
