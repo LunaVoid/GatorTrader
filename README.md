@@ -33,7 +33,7 @@ This one should be relatively easy but there are a few caveats
 3. Then run python main.py and it should just work. I will update these instructions as things change of course. 
 
 
-#Important Reminders:
+# Important Reminders:
 - When editing the backend/adding new packages PLEASE use the requirements.txt. Python doesn't automatically add Dependencies so you need to manually write them in then they can be installed with **pip -r requirements.txt** 
 
 - Please use Flexbox or grid or even block display when using CSS please for the love of god don't use absolute or relative unless you really know what your doing and how to help use work around it. Conflicting CSS is such a nightmare and making mobile compatibility work with absolute positioning is just the worst. 
@@ -42,4 +42,4 @@ This one should be relatively easy but there are a few caveats
 
 
 # Super Important:
-**Don't break main** - I have skill issues sometimes and break stuff, and you might too. That doesn't mean your a bad coder and that doesn't mean you don't save your changes. But that does mean you create a new branch and commit to that if you want to save changes in GIT. Otherwise our beautiful working codebase will then break for everyone and everyone will have to help debug yours before it works. I am guilty of this at my last hackathon lol. So make sure to branch and save your changes and fix your branch and then do a pull request.
+**Don't break main** - I have skill issues sometimes and break stuff, and you might too. That doesn't mean your a bad coder and that doesn't mean you don't save your changes. But that does mean you create a new branch and commit to that if you want to save changes in GIT. Otherwise our beautiful working codebase will then break for everyone and everyone will have to help debug yours before it works. Meaning they can't work on their changes because the codebase is el broko. I am extremely guilty of this at my last hackathon lol. So make sure to branch and save your changes and fix your branch and then do a pull request.
