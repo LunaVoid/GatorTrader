@@ -42,7 +42,8 @@ https://www.freecodecamp.org/news/how-to-create-a-react-app-in-2024/
 This one should be relatively easy but there are a few caveats
 1. First install all Dependencies using **pip install -r requirements.txt** 
 2. Fill in the .env variables the reason for this is explained here: https://chatgpt.com/share/679db26a-8914-800f-91d5-13abc511414f I can also explain more if needed! - Josh
-3. Then run python main.py and it should just work. I will update these instructions as things change of course. 
+3. Then run python main.py and it should just work. I will update these instructions as things change of course.
+4. Once the backend is more developed you will also have to install postgres which is our database to make the entire app work. I can explain why and how in person as well! -Josh
 
 
 # Important Reminders:
