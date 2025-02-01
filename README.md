@@ -1,5 +1,17 @@
 # GatorTrader
 
+# Todo:
+[x] Github branch protection
+[x] invite everyone
+[x] Basic Readme
+[] Flask start
+[] React Router install
+[] Basic React Routing
+[] Connect Postgres Database to backend/Flask
+
+
+
+
 # Basic Guide!
 
 ## How to run the frontend 
