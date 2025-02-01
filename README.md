@@ -57,6 +57,7 @@ This one should be relatively easy but there are a few caveats
     4. Add a title & description (explain what the PR does).
     5. Click "Create pull request"
 5. A team member reviews and approves your PR, then click "Merge pull request"
-6. Then delete your branch **git branch -d feature-branch && git push origin --delete feature-branch**
+6. Switch back to main with **git checkout main** and update it with **git pull** to see your changes added to main
+7. Then delete your branch **git branch -d feature-branch && git push origin --delete feature-branch**
 
 
