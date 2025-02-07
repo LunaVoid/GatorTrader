@@ -1,5 +1,5 @@
 import { Routes, Route, BrowserRouter} from 'react-router-dom';
-import Login from "./Login"
+import Login from "./Login.jsx"
 function App() {
   return (
     <BrowserRouter>

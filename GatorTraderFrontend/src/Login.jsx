@@ -9,7 +9,9 @@ function Login() {
 
   return (
     <>
-            <p>Login</p>
+            <div>
+                <p>Login</p>
+            </div>
     </>
   )
 }
