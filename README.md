@@ -11,7 +11,7 @@
 
 
 # **FULL ARCHITECUTRAL DIAGRAM CHECK IT OUT:**
-https://excalidraw.com/#json=CFbgTARjTTczjOsNSqENZ,a7t2SsS7uaMf5UqRAGSsew
+https://excalidraw.com/#json=FbkIZiUCYUeXW1Y396FiH,WED1-TtaZoCgRwS_SnGb4g
 
 # Basic Guide!
 
@@ -92,3 +92,10 @@ Additionally these instructions are subject to change
 7. Then delete your branch **git branch -d feature-branch && git push origin --delete feature-branch**
 
 
+
+
+# Resources/Citations:
+https://blog.miguelgrinberg.com/post/how-to-deploy-a-react--flask-project
+https://www.redwood.com/article/job-scheduling-with-flask/
+https://stackoverflow.com/questions/10827160/undo-a-git-stash
+https://www.reddit.com/r/reactjs/comments/19dphuj/do_we_need_to_encrypt_the_password_before_sending/
