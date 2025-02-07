@@ -99,3 +99,7 @@ https://blog.miguelgrinberg.com/post/how-to-deploy-a-react--flask-project
 https://www.redwood.com/article/job-scheduling-with-flask/
 https://stackoverflow.com/questions/10827160/undo-a-git-stash
 https://www.reddit.com/r/reactjs/comments/19dphuj/do_we_need_to_encrypt_the_password_before_sending/
+https://www.alphavantage.co/documentation/
+
+
+
