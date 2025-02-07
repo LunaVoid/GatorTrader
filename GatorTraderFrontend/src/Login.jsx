@@ -10,7 +10,7 @@ function Login() {
   return (
     <>
             <div>
-                <p>Login</p>
+                <p>test</p>
             </div>
     </>
   )
