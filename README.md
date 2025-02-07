@@ -10,7 +10,7 @@
 - [ ] Connect Postgres Database to backend/Flask
 
 
-**FULL ARCHITECUTRAL DIAGRAM CHECK IT OUT:**
+# **FULL ARCHITECUTRAL DIAGRAM CHECK IT OUT:**
 https://excalidraw.com/#json=CFbgTARjTTczjOsNSqENZ,a7t2SsS7uaMf5UqRAGSsew
 
 # Basic Guide!
