@@ -4,13 +4,14 @@
 - [x] Github branch protection
 - [x] invite everyone
 - [x] Basic Readme
-- [ ] Flask start
+- [x] Flask start
 - [ ] React Router install
 - [ ] Basic React Routing
 - [ ] Connect Postgres Database to backend/Flask
 
 
-
+** FULL ARCHITECUTRAL DIAGRAM CHECK IT OUT: **
+https://excalidraw.com/#json=CFbgTARjTTczjOsNSqENZ,a7t2SsS7uaMf5UqRAGSsew
 
 # Basic Guide!
 
@@ -53,8 +54,12 @@ This one should be relatively easy but there are a few caveats
 This one should be relatively easy but there are a few caveats
 Additionally these instructions are subject to change
 1. First install all Dependencies using **pip install -r requirements.txt** 
-2. Make sure that you **Built the React APP* aka go into GatorTraderFrontend and run the command **npm run build** this compiles the JSX from React into normal Javascript
-3. 
+2. Make sure that you **Built the React APP** aka go into GatorTraderFrontend and run the command **npm run build** this compiles the JSX from React into normal Javascript. I love yapping about this if your curious how it works - Josh
+3. Alright all you should have to do is run **python main.py** or **python3 main.py** to start the server. Then it will print a link you can join to view the server and REACT app. 
+
+**Special Notes:** 
+- Your changes will **Not** be show unless you rerun the **npm run build** command. 
+- This is not for live editing. Please follow the running the frontend instructions to do that. This is for testing the server and for an example of how this will work in production.
 
 
 
