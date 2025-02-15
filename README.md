@@ -5,9 +5,12 @@
 - [x] invite everyone
 - [x] Basic Readme
 - [x] Flask start
-- [ ] React Router install
-- [ ] Basic React Routing
-- [ ] Connect Postgres Database to backend/Flask
+- [x] React Router install
+- [x] Basic React Routing
+- [x] Connect Postgres Database to backend/Flask
+- [ ] Register Features/Encryption
+- [ ] Login Features
+- [ ] 
 
 
 # **FULL ARCHITECUTRAL DIAGRAM CHECK IT OUT:**
