@@ -1,22 +1,19 @@
-
 //import { useState } from 'react';
 import{ Link } from 'react-router-dom';
-
 import './App.css';
 import './Login.css';
-import SignInForm from "./SignInForm";  
 
 
 
 
 
 
-function Login() {
+
+function About() {
   //const [count, setCount] = useState(0)
-  
 
   return (
-    <div>
+    <html>
       <head>
         <title>Login Portal</title>
         <link rel="preconnect" href="https://fonts.googleapis.com"></link>
@@ -45,13 +42,13 @@ function Login() {
         </nav>
       <div className = "logo-container">
                 <img className="logopic" src= "../img/gatortradertransparent.png"></img>
-                <p className = "logostuff"> GatorTrader</p>
+                <p className = "logostuff"> About Us...</p>
             </div>
             <div className="footer-bar"></div>     
-      <SignInForm />
-    </div>
+      
+    </html>
   );
 }
 
-export default Login 
+export default About
 

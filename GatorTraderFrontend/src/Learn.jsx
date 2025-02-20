@@ -1,19 +1,16 @@
-
 //import { useState } from 'react';
 import{ Link } from 'react-router-dom';
-
 import './App.css';
 import './Login.css';
-import SignInForm from "./SignInForm";  
 
 
 
 
 
 
-function Login() {
+
+function Learn() {
   //const [count, setCount] = useState(0)
-  
 
   return (
     <div>
@@ -44,14 +41,13 @@ function Login() {
             </div>
         </nav>
       <div className = "logo-container">
-                <img className="logopic" src= "../img/gatortradertransparent.png"></img>
-                <p className = "logostuff"> GatorTrader</p>
+                <p className = "logostuff"> Learn</p>
             </div>
             <div className="footer-bar"></div>     
-      <SignInForm />
+      
     </div>
   );
 }
 
-export default Login 
+export default Learn
 
