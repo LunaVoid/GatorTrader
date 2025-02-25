@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useEffect } from 'react'
+import{ Link } from 'react-router-dom';
 import './App.css';
 import './Login.css';
 import './TrackedStocks.css';
-import './components/Navbar.jsx';
+import Navbar from './components/Navbar';
 
 
 function TrackedStocks() {
@@ -74,21 +75,17 @@ function TrackedStocks() {
     
     return (
       <div>
-        <head>
-          <title>Stock Dashboard</title>
-          <link rel="preconnect" href="https://fonts.googleapis.com"></link>
-            <link rel="preconnect" href="https://fonts.gstatic.com"></link>
-            <link href="https://fonts.googleapis.com/css2?family=K2D:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet"></link>
-              
-        </head>
+        
+        
         <Navbar/>
           {/* Sidebar */}
-          <div className="sidebar">
-    <div className="sidebar-header">
-        <h2>Stock</h2>
-        <h2>Trend</h2>
-    </div>
-    {stockTickers.map((ticker) => (
+    <div className = "centering">
+    <div className="sidebar">
+      <div className="sidebar-header">
+          <h2>Stock</h2>
+          <h2>Trend</h2>
+      </div>
+      {stockTickers.map((ticker) => (
         <button 
             key={ticker} 
             className="sidebar-row"
@@ -100,9 +97,11 @@ function TrackedStocks() {
             </span>
         </button>
     ))}
-</div>
+    </div>
+  
           <div>
             <img className="stockimage" src= "../img/stocktrend.png"></img>
+          </div>
         </div>
         <div>
           <h3>Selected Stock: {selectedTicker}</h3>
