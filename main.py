@@ -5,6 +5,7 @@ from flask import Flask
 import os
 import psycopg2
 import json
+import stockCall
 
 def get_db_connection():
     conn = psycopg2.connect(host='localhost',
