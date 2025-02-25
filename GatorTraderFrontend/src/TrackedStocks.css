@@ -1,0 +1,75 @@
+.stockimage{
+  max-width: 100%; /* Makes it responsive */
+  width: 680px; /* Default width */
+  height: auto;
+  display: block;
+  margin: 70px auto; /* Centers the image */
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.sidebar {
+    position: fixed;
+    top: 10;
+    left: 10;
+    height: 100%; /* Full height of the screen */
+    width: 220px; /* Adjust the width of the sidebar */
+    background-color: #D9D9D9; /* Grey background color */
+    padding-top: 10px; /* Optional, adds some space from the top */
+    display: flex;
+    flex-direction: column; /* Stack the items vertically */
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 30px;
+    font-family: "K2D";
+  }
+  
+  .sidebar button {
+    color: black;
+    background-color: transparent;
+    border: none;
+    text-align: left;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-family: "K2D"; 
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .sidebar button:hover {
+    background-color: #6a6a6a; /* Darker grey when hovering */
+  }
+  
+  .sidebar h2 {
+    color: black;
+    margin-bottom: 25px;
+    font-size: 24px;
+  }
+
+  .sidebar-header {
+    display: flex;
+    justify-content: space-between; /* Spread out Stock & Trend headers */
+    padding-right: 20px;
+}
+
+.sidebar-row {
+  display: flex;
+  justify-content: space-between; /* Ensure ticker and value align */
+  align-items: center;
+  width: 100%;
+  padding-right: 20px; /* Ensures text stays inside */
+}
+
+.trend-value {
+  font-size: 16px;
+  font-weight: bold;
+  margin-left: auto; /* Pushes trend values to the right */
+}
+
+.positive {
+  color: green;
+}
+
+.negative {
+  color: red;
+}
