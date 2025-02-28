@@ -3,9 +3,9 @@ version: '3.8'
 services:
   postgres:
     image: postgres:latest
-    container_name: gatortrader_db
+    container_name: PostgresContainer 
     environment:
-      POSTGRES_DB: GatorTrader
+      POSTGRES_DB: GatorTrader 
       POSTGRES_USER: sammy
       POSTGRES_PASSWORD: password
     ports:
