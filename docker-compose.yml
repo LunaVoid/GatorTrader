@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: gatortrader_db
+    environment:
+      POSTGRES_DB: GatorTrader
+      POSTGRES_USER: sammy
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db-scripts/init.sql:/docker-entrypoint-initdb.d/init.sql  # Updated path to init.sql
+    restart: always
+
+volumes:
+  postgres_data:
+

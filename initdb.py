@@ -3,7 +3,7 @@ import psycopg2
 
 conn = psycopg2.connect(
         host="localhost",
-        database="gatortrader",
+        database="GatorTrader",
         #user=os.environ['sammy'],
         user="sammy",
         password="password")
@@ -63,7 +63,15 @@ cur.execute('INSERT INTO users (username, password, profile_pic, email)'
              None,
              'hiralshukla@ufl.edu')
             )
+# Execute SELECT query
+cur.execute("SELECT * FROM users")
 
+# Fetch all rows from the query result
+rows = cur.fetchall()
+
+# Print each row
+for row in rows:
+    print(row)
 
 conn.commit()
 
