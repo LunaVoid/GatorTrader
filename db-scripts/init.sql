@@ -1,7 +1,5 @@
-CREATE DATABASE GatorTrader;
-
-\c GatorTrader
-
+\c gatortrader
+\l
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -13,3 +11,4 @@ CREATE TABLE IF NOT EXISTS users (
 
 GRANT ALL PRIVILEGES ON TABLE users TO sammy;
 
+\l

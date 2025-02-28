@@ -5,7 +5,7 @@ services:
     image: postgres:latest
     container_name: PostgresContainer 
     environment:
-      POSTGRES_DB: GatorTrader 
+      POSTGRES_DB: gatortrader
       POSTGRES_USER: sammy
       POSTGRES_PASSWORD: password
     ports:

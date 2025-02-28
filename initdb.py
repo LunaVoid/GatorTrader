@@ -3,7 +3,7 @@ import psycopg2
 
 conn = psycopg2.connect(
         host="localhost",
-        database="GatorTrader",
+        database="gatortrader",
         #user=os.environ['sammy'],
         user="sammy",
         password="password")
