@@ -5,7 +5,7 @@
 - [x] invite everyone
 - [x] Basic Readme
 - [x] Flask start
-- [ ] React Router install
+- [x] React Router install
 - [ ] Basic React Routing
 - [ ] Connect Postgres Database to backend/Flask
 
@@ -41,21 +41,16 @@ https://www.freecodecamp.org/news/how-to-create-a-react-app-in-2024/
 
 ## How to run the backend:
 
+### Most Up to Date Instructions Feb 28th
+1. First get to the most recent version of the repo and make sure it has all the docker stuff.
+2. Now make sure you have docker installed, download it from :
+https://www.docker.com/get-started/
+3. Run through this install, this is the GUI that will show you the running containers.
+4. Run **docker compose up -d** in the root directory 
+5. This should start the container and now you should be able to run the backend.
+6. Run initdb.py to test with python initdb.py
+7. In order to have the backend serve the latest frontend you also need to run npm build
 
-### General Instructions from Feb 1st
-
-This one should be relatively easy but there are a few caveats
-1. First install all Dependencies using **pip install -r requirements.txt** 
-2. Fill in the .env variables the reason for this is explained here: https://chatgpt.com/share/679db26a-8914-800f-91d5-13abc511414f I can also explain more if needed! - Josh
-3. Then run python main.py and it should just work. I will update these instructions as things change of course.
-4. Once the backend is more developed you will also have to install postgres which is our database to make the entire app work. I can explain why and how in person as well! -Josh
-
-### Specific Instructions from Feb 7th:
-This one should be relatively easy but there are a few caveats
-Additionally these instructions are subject to change
-1. First install all Dependencies using **pip install -r requirements.txt** 
-2. Make sure that you **Built the React APP** aka go into GatorTraderFrontend and run the command **npm run build** this compiles the JSX from React into normal Javascript. I love yapping about this if your curious how it works - Josh
-3. Alright all you should have to do is run **python main.py** or **python3 main.py** to start the server. Then it will print a link you can join to view the server and REACT app. 
 
 **Special Notes:** 
 - Your changes will **Not** be show unless you rerun the **npm run build** command. 
