@@ -145,6 +145,7 @@ button:hover {
 .form-links { /*positioning of forgot password and sign up here links*/
     margin-bottom: 6px;
     text-align: left;
+    flex-direction: row;
 }
   
 .forgot-password, /*margin top changes space betweeen forgot password and sign up here*/
