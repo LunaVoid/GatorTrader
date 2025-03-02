@@ -1,11 +1,14 @@
 .logostuff{
     margin-top: -10px;
+    display: flex;
     color: #000;
     font-family: "K2D";
     font-size: 36px;
     font-weight: 400;
     text-align: center; /* Centers text horizontally */
-    
+    font-size: clamp(24px, 4vw, 36px); /* Scales with screen size */
+    font-weight: 500;
+    text-align: center;
 }
 
 .logo-container {
@@ -13,15 +16,35 @@
     flex-direction: column; /* Stack the image and text vertically */
     justify-content: flex-start; /* Align items to the top */
     align-items: center; /* Center items horizontally */
-    height: 100vh; /* Full height of the viewport */
-    padding-top: 40px; /* Adds some space from the top */
+    gap: 0.5rem;
+    padding: 1rem 0rem; /* Adds some space from the top */
+    margin-bottom: -30px;
 }
 
 .logopic{
-    width: 175px;
+    width: 20vh;
     height: auto;
-    max-width: 100%;
+    max-width: 200px;
      
+}
+
+@media (max-width: 600px) {
+    .logo-container {
+        height: auto; /* Adjust height */
+        padding-top: 20px;
+    }
+
+    .logopic {
+        width: 40vw; /* Adjust image size */
+    }
+
+    .logostuff {
+        font-size: 24px;
+    }
+    .sign-in-form {
+        width: 90%; /* Adjust width on smaller screens */
+        font-size: 0.9rem;
+    }
 }
 
 .navbar{
@@ -90,17 +113,16 @@
 }
   
 .sign-in-form { /*what makes the whole form show up*/
-    width: 300px;
-    margin: -680px auto;
+    width: min(90%, 280px); /* Makes it responsive */
+    margin: 20px auto; /* Center it below the logo */
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     background-color: #f9f9f9;
-    padding-bottom: 40px;
-    font-size: 20px;
-    font-family: "K2D"
-
+    font-size: 1rem;
+    font-family: "K2D";
+    text-align: center; /* Centers the form content */
 
 }
 
@@ -114,7 +136,7 @@
 }
 
 .form-group label {
-    display: block;
+    display: flex;
     font-size: 1rem;
     margin-bottom: 5px;
 }
@@ -145,7 +167,6 @@ button:hover {
 .form-links { /*positioning of forgot password and sign up here links*/
     margin-bottom: 6px;
     text-align: left;
-    flex-direction: row;
 }
   
 .forgot-password, /*margin top changes space betweeen forgot password and sign up here*/
