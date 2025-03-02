@@ -4,7 +4,7 @@
 import './components/Navbar.jsx';
 import './App.css';
 import './Login.css';
-import SignInForm from "./SignInForm";  
+import SignInForm from "./components/SignInForm.jsx";  
 import Navbar from './components/Navbar.jsx';
 
 
@@ -27,12 +27,13 @@ function Login() {
       </head>
       {(true) &&<Navbar/>}
       <div className = "logo-container">
-                <img className="logopic" src= "../img/gatortradertransparent.png"></img>
-                <p className = "logostuff"> GatorTrader</p>
-            </div>
-            <div className="footer-bar"></div>     
+        <img className="logopic" src= "../img/gatortradertransparent.png"></img>
+        <p className = "logostuff"> GatorTrader</p>
+      </div>
       <SignInForm />
-    </div>
+      <div className="footer-bar"></div>     
+      
+      </div>
   );
 }
 
