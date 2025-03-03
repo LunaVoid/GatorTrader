@@ -5,7 +5,8 @@ import './App.css';
 import './Login.css';
 import './TrackedStocks.css';
 import Navbar from './components/Navbar';
-
+import AreaChart from './components/Chart';
+import { getLocalStockData } from "./utils/dataUtil"; 
 
 function TrackedStocks() {
     //const [count, setCount] = useState(0)
@@ -16,7 +17,7 @@ function TrackedStocks() {
     const [loading, setLoading] = useState(false);  // To handle loading state
 
   // Example list of stock tickers (this can be fetched from an API)
-    const stockTickers = ["AAPL", "GOOGL", "AMZN", "MSFT", "TSLA", "DOW", "NASDAQ", "RUA", "UKX"];
+    const stockTickers = ["NVDA", "GOOGL", "AMZN", "MSFT", "TSLA", "AAPL", "NASDAQ", "RUA", "UKX"];
 
   // Function to handle selecting a ticker
     const handleTickerClick = (ticker) => {
@@ -100,7 +101,15 @@ function TrackedStocks() {
     </div>
   
           <div>
-            <img className="stockimage" src= "../img/stocktrend.png"></img>
+          <div className="stock-chart-container">
+              {loading ? (
+                  <p>Loading stock data...</p>
+              ) : stockData ? (
+                  <AreaChart data={getLocalStockData()} width={800} ratio={3} type="svg" />
+              ) : (
+                  <img className="stockimage" src= "../img/stocktrend.png"></img>
+              )}
+          </div>
           </div>
         </div>
         <div>
