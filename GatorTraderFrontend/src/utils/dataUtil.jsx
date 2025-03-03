@@ -9,11 +9,7 @@ export function transformStockData(jsonData) {
     
     return Object.keys(timeSeries).map((date) => ({
         date: parseDate(date), // Convert string to Date
-        open: parseFloat(timeSeries[date]["1. open"]),
-        high: parseFloat(timeSeries[date]["2. high"]),
-        low: parseFloat(timeSeries[date]["3. low"]),
         close: parseFloat(timeSeries[date]["4. close"]),
-        volume: parseInt(timeSeries[date]["5. volume"], 10),
     })).reverse(); // Reverse to show oldest data first
 }
 
