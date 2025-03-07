@@ -1,0 +1,125 @@
+body {
+    font-family: "K2D", sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+  
+.learn-container {
+    padding: 50px;
+}
+
+.title{
+  position: flex;
+  text-align: left;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px; /* Adds space before the circles */
+}
+  
+.circle-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+}
+  
+.circle {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.circle-text{
+  position: absolute;
+  background: rgba(0, 0, 0, 0.7); /* Black background with transparency */
+  color: white;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 5px;
+
+}
+  
+.circle:hover {
+    background-color: #144526;
+    transform: scale(1.1);
+}
+
+.circle:nth-child(odd) {
+  margin-top: 20px;
+}
+
+.circle:nth-child(even) {
+  margin-top: 50px;
+}
+  
+  /* Information Box */
+  .info-box {
+    position: relative; 
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80vw; /* Adjusts width based on screen size */
+    max-width: 1000px; /* Ensures it doesn’t get too large on big screens */
+    height: auto; /* Allows content to adjust height */
+    max-height: calc(100vh - 120px); /* Prevents it from getting too tall */
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    overflow-y: auto; /* Adds scroll if content is too large */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: center;
+  }
+  
+  @media (max-width: 600px) {
+    .info-box {
+      width: 90vw; /* Smaller screens use more width */
+      max-width: 90vw;
+      padding: 15px;
+    }
+  }
+  
+  
+.info-box h3 {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #1F6336;
+}
+  
+.info-box p {
+    font-size: 14px;
+    line-height: 1.5;
+}
+  
+.close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 25px;
+    color: black;
+}
+
+.close-btn:hover {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 27px;
+    color: black;
+}
+

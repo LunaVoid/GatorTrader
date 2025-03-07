@@ -1,0 +1,45 @@
+.profile-container {
+    display: flex;
+    justify-content: flex-end; /* Aligns box to the right */
+    align-items: center;
+    height: 100vh;
+    padding-right: 5%;
+}
+
+.profile-box {
+    width: 25vw;
+    min-width: 250px;
+    max-width: 400px;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: "K2D"
+}
+
+.profile-box h2 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.profile-info p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.edit-profile-btn {
+    border: none;
+    background-color: #1F6336;
+    color: black; /* Green color to match theme */
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 5px 0;
+    
+}
+
+.edit-profile-btn:hover {
+    background-color: #174729; /* Darker green for hover effect */
+    outline: none;
+}
