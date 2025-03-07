@@ -10,7 +10,7 @@
   max-width: 100%; /* Makes it responsive */
   width: 680px; /* Default width */
   height: auto;
-  display: block;
+  display: flex;
   margin: 70px auto; /* Centers the image */
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   margin:20px;
@@ -18,29 +18,30 @@
 
 .sidebar {
     height: 100%; /* Full height of the screen */
-    width: 220px; /* Adjust the width of the sidebar */
+    width: 300px; /* Adjust the width of the sidebar */
     background-color: #D9D9D9; /* Grey background color */
     padding-top: 10px; /* Optional, adds some space from the top */
     display: flex;
     flex-direction: column; /* Stack the items vertically */
-    padding-left: 20px;
-    padding-right: 20px;
     margin-top: 20px;
-    border-radius: 30px;
+    border-radius: 15px;
     font-family: "K2D";
+    align-items: stretch;
+    padding-bottom: 40px;
   }
   
   .sidebar button {
     color: black;
-    background-color: transparent;
+    background-color: white;
     border: none;
     text-align: left;
     padding: 10px;
-    margin-bottom: 10px;
     font-size: 18px;
     font-family: "K2D"; 
     cursor: pointer;
     width: 100%;
+    border-radius: 0;
+
   }
   
   .sidebar button:hover {
@@ -49,14 +50,16 @@
   
   .sidebar h2 {
     color: black;
-    margin-bottom: 25px;
-    font-size: 24px;
+    margin-bottom: 20px;
+    font-size: 22px;
+    text-decoration: underline;
   }
 
   .sidebar-header {
     display: flex;
     justify-content: space-between; /* Spread out Stock & Trend headers */
     padding-right: 20px;
+    padding-left: 15px;
 }
 
 .sidebar-row {
@@ -79,4 +82,52 @@
 
 .negative {
   color: red;
+}
+
+
+.stock-display {
+  display: flex;
+  align-items: flex-start; /* Align items to the top */
+  flex-direction: column; /* Stack elements vertically */
+  width: 100%;
+  position: relative;
+  
+}
+
+.selected-stock-container {
+  display: flex;
+  align-items: flex-start; /* Align the text to the top */
+  width: 100%;
+  margin-bottom: 20px; /* Adds some space below the stock text */
+}
+
+.selected-stock {
+  font-size: 20px;
+  font-weight: bold;
+  align-items: right;
+  
+}
+
+
+.custom-scrollable {
+  height: 475px;
+  overflow-y: scroll;
+}
+
+.custom-scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollable::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.custom-scrollable::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.custom-scrollable {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.05);
 }
