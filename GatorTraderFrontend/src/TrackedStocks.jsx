@@ -85,18 +85,18 @@ function TrackedStocks() {
     ))}
     </div>
   
-          <div>
-              <div className="stock-chart-container">
-                    {loading ? (
-                        <p>Loading stock data...</p>
-                    ) : stockData && stockData.length > 0 ? (
-                        <AreaChart data={stockData} width={800} ratio={3} type="svg" />
-                    ) : (
-                        <img className="stockimage" src={stockImage} alt="Stock Trend" />
-                    )}
-              </div>
-          </div>
+        <div>
+            <div className="stock-chart-container">
+                {loading ? (
+                    <p>Loading stock data...</p>
+                ) : stockData && stockData.length > 0 ? (
+                    <AreaChart data={stockData} width={800} ratio={3} type="svg" />
+                ) : (
+                    <img className="stockimage" src={stockImage} alt="Stock Trend" />
+                )}
+            </div>
         </div>
+    </div>
         <div>
           <h3>Selected Stock: {selectedTicker}</h3>
           {/* Show loading state */}
@@ -117,11 +117,11 @@ function TrackedStocks() {
                   ):(
                     <p>No data available</p>
                     )}
-              </div>
+            </div>
                     )}
-              <div className="footer-bar"></div>
-          </div>
-      </div>
+            <div className="footer-bar"></div>
+        </div>
+    </div>
   );
 }
 
