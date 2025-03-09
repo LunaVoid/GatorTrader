@@ -3,15 +3,14 @@ import { getLocalStockData } from "../utils/dataUtil";
 import {ChartCanvas, Chart} from "react-financial-charts";
 import { AreaSeries } from "react-financial-charts";
 import { XAxis, YAxis } from "react-financial-charts";
-import { scaleTime, scaleLinear } from "d3-scale";
+import { scaleTime } from "d3-scale";
 import { curveMonotoneX } from "d3-shape";
 
 
 const AreaChart = ({ ratio, type }) => {
     const [data, setData] = useState([]);
-    const [chartWidth, setCharWidth] = useState(Math.min(window.innerWidth * 0.8));
+    const [chartWidth, setCharWidth] = useState(Math.min(window.innerWidth * 0.8, 800));
     const canvasRef = useRef(null);
-    const graidentRef = useRef(null);
 
     useEffect(() => {
         setData(getLocalStockData());
