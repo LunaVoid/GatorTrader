@@ -65,63 +65,45 @@ function TrackedStocks() {
         
         <Navbar/>
           {/* Sidebar */}
-    <div className = "centering">
-    <div className="sidebar">
-      <div className="sidebar-header">
-          <h2>Stock</h2>
-          <h2>Trend</h2>
-      </div>
-      {stockTickers.map((ticker) => (
-        <button 
-            key={ticker} 
-            className="sidebar-row"
-            onClick={() => handleTickerClick(ticker)}
-        >
+        <div className = "centering">
+          <div className="sidebar">
+            <div className="sidebar-header">
+              <h2>Stock</h2>
+              <h2>Trend</h2>
+            </div>
+            <div className="custom-scrollable">
+              {stockTickers.map((ticker) => (
+                <button 
+                  key={ticker} 
+                  className="sidebar-row"
+                  onClick={() => handleTickerClick(ticker)}
+                >
             <span className="ticker-name">{ticker}</span>
             <span className={`trend-value ${stockChanges[ticker] < 0 ? "negative" : "positive"}`}>
                 {stockChanges[ticker] ? `${stockChanges[ticker]}%` : "Loading..."}
             </span>
-        </button>
+                </button>
     ))}
-    </div>
-  
-          <div>
-              <div className="stock-chart-container">
-                    {loading ? (
-                        <p>Loading stock data...</p>
-                    ) : stockData && stockData.length > 0 ? (
-                        <AreaChart data={stockData} width={800} ratio={3} type="svg" />
-                    ) : (
-                        <img className="stockimage" src={stockImage} alt="Stock Trend" />
-                    )}
-              </div>
-          </div>
-        </div>
-        <div>
-          <h3>Selected Stock: {selectedTicker}</h3>
-          {/* Show loading state */}
-          {loading ? (
-            <p>Loading stock data...</p>
-          ) : (
-            <div>
-              {/* Placeholder for the stock graph */}
-              {stockData ? (
-                <div>
-                  {/* Assuming the API returns a graph URL or some other data */}
-                  <img 
-                    className="stockimage" 
-                    src={stockData.graphUrl || `../img/${selectedTicker}.png`} 
-                    alt={`${selectedTicker} Graph`} 
-                  />
-                </div>
-                  ):(
-                    <p>No data available</p>
-                    )}
-              </div>
-                    )}
-              <div className="footer-bar"></div>
-          </div>
       </div>
+    </div>
+      
+  
+    <div className="stock-container">
+    <div className="stock-display">
+    <h3 className= "selected-stock"> Selected Stock: {selectedTicker}</h3>
+    {selectedTicker === "NVDA" && (
+          <AreaChart ratio={3} type="svg" />
+        
+    )}
+    </div>
+    </div>
+    </div>
+    
+            
+                   
+    <div className="footer-bar"></div>
+    </div>
+    
   );
 }
 

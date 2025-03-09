@@ -6,15 +6,15 @@
 }
 
 
-.stockimage{
-  max-width: 100%; /* Makes it responsive */
-  width: 680px; /* Default width */
-  height: auto;
+.stockimage {
   display: flex;
-  margin: 70px auto; /* Centers the image */
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  margin:20px;
+  justify-content: flex-start;
+  align-items: left;
+  width: 100%;
 }
+
+
+
 
 .sidebar {
     height: 100%; /* Full height of the screen */
@@ -87,25 +87,43 @@
 
 .stock-display {
   display: flex;
-  align-items: flex-start; /* Align items to the top */
+  align-items: center; /* Align items to the top */
   flex-direction: column; /* Stack elements vertically */
   width: 100%;
-  position: relative;
+  text-align: center;
+  
   
 }
 
-.selected-stock-container {
-  display: flex;
-  align-items: flex-start; /* Align the text to the top */
-  width: 100%;
-  margin-bottom: 20px; /* Adds some space below the stock text */
-}
+
 
 .selected-stock {
   font-size: 20px;
   font-weight: bold;
-  align-items: right;
+  text-align: center;
+  width: 100%
   
+}
+
+.stock-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  overflow: hidden; /* Prevents the chart from overflowing */
+}
+
+.chart-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  padding-left: 20px;
+}
+
+.chart-wrapper canvas, 
+.chart-wrapper svg {
+    transform: translateX(-400px); /* Move left */
 }
 
 
