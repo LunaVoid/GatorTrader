@@ -2,8 +2,10 @@
 the main folder because it makes it easier to serve the react app'''
 
 from flask import Flask, request, jsonify
-from userQueries import signUp, validateEmail, validatePassword,validateUsername, isDuplicate
-
+from userQueries import (signUp, validateEmail, validatePassword,
+                         validateUsername, isDuplicate, isDuplicateUsername, passwordHashedSalted)
+from exceptions import (DatabaseConnectionError, DuplicateError, ValidationError, AppError
+                        , InvalidEmailError, DuplicateUsernameError, InvalidPassword)
 
 app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_path='/')
 
@@ -26,31 +28,54 @@ def signupFunction():
     username = str(data["username"])
     password = str(data["password"])
 
-    if email is None or not validateEmail(email):
-        print("invalid")
-        response_data = {"message": "Invalid Email"}
+    try:
+
+        if email is None or not validateEmail(email):
+            print("invalid")
+            response_data = {"message": "Invalid Email"}
+            raise InvalidEmailError("Email is a duplicate")
+
+        if password is None or not validatePassword(password):
+            print("invalid")
+            response_data = {"message": "Invalid Password"}
+            raise InvalidPassword("Password Invalid")
+
+        if isDuplicate(email):
+            print("duplicate Email")
+            response_data = {"message": "Cannot use this email, account exists"}
+            raise DuplicateError("Email not valid")
+
+
+        if (username is None or not validateUsername(username) or isDuplicateUsername(username)):
+            print("invalid")
+            response_data = {"message": "Invalid Username"}
+            raise DuplicateUsernameError("Username not valid")
+
+        password = passwordHashedSalted(password)
+
+        signUp(username, password, data["profile_pic"],
+               email)
+
+        response_data = {"message": "Signup successful"}
+
+        # Return a response with status code 200
+        return jsonify(response_data), 200
+
+    except InvalidEmailError as e:
+        response_data = {"message": f"{str(e)}"}
         return jsonify(response_data), 400
-
-    if not isDuplicate(email):
-        print("duplicate Email")
-        response_data = {"message": "Cannot use this email, account exists"}
+    except DuplicateError as e:
+        response_data = {"message": f"{str(e)}"}
         return jsonify(response_data), 400
-
-
-    if username is None or not validateUsername(username) or  :
-        print("invalid")
-        response_data = {"message": "Invalid Username"}
+    except DuplicateUsernameError as e:
+        response_data = {"message": f"{str(e)}"}
         return jsonify(response_data), 400
-
-
-
-    signUp(data["username"], data["password"], data["profile_pic"],
-        data["email"])
-
-    response_data = {"message": "Signup successful"}
-
-    # Return a response with status code 200
-    return jsonify(response_data), 200
+    except DatabaseConnectionError as e:
+        response_data = {"message": f" Database Error:{str(e)}"}
+        return jsonify(response_data), 500
+    except AppError as e:
+        response_data = {"message": f"{str(e)}"}
+        return jsonify(response_data), 400
 
 
 if __name__ == "__main__":

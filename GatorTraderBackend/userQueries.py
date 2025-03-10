@@ -1,9 +1,10 @@
 import psycopg2
 import json
 import re
+import bcrypt
 from initdb import get_db_connection
 from psycopg2 import OperationalError
-from exceptions import DatabaseConnectionError, DuplicateError, ValidationError, AppError
+from exceptions import DatabaseConnectionError, DuplicateError, AppError
 
 
 BAD_WORDS = ["admin", "root", "fuck", "shit", "asshole"]
@@ -69,7 +70,22 @@ def validatePassword(password):
     if not re.match(r'^[A-Za-z0-9]{6,32}$', password):
         print("Password Invalid")
         return False
-    return True 
+    return True
+
+
+def passwordHashedSalted(password):
+    try:
+        salt = bcrypt.gensalt()
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+        return hashed_password
+
+    except TypeError as e:
+        # Handle case where password is not a string
+        raise TypeError("Password must be a string") from e
+    except Exception as e:
+        # Handle other unexpected errors
+        raise RuntimeError(f"Password hashing failed: {str(e)}") from e
+
 
 
 def signUp(username, password, profile_pic, email):
@@ -91,8 +107,6 @@ def signUp(username, password, profile_pic, email):
 
                 conn.commit()
 
-                cur.close()
-                conn.close()
     except OperationalError:
         print("Database Connection Error")
         raise DatabaseConnectionError("Connection to Database Failed")

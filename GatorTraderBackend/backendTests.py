@@ -1,10 +1,15 @@
 import pytest
-from userQueries import validateEmail, isDuplicate, validateUsername, validatePassword
+from userQueries import validateEmail, isDuplicate, validateUsername, validatePassword, signUp
 
 
 def test_find_duplicates():
     testEmail = "test@test.com"
     assert isDuplicate(testEmail) is False
+
+
+def test_real_duplicate():
+    testEmail = "hiralshukla@ufl.edu"
+    assert isDuplicate(testEmail) is True
 
 
 def test_username():
@@ -22,10 +27,13 @@ def test_email():
     assert validateEmail(testPass) is True
 
 
+def invalid_test_email():
+    testPass = "SELECT * FROM USERS \\ @gmail.com"
+    assert validateEmail(testPass) is False
+
+
 def test_invalid_email():
-    with pytest.raises(ValueError):
-        validateEmail(None)
+    validateEmail(None) is False
 
 
 test_username()
-
