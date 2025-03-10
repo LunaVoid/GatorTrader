@@ -1,0 +1,7 @@
+{
+    "editor.suggest.showSnippets": true,
+    "emmet.useInlineCompletions": true,
+    "python.autoComplete.extraPaths": [
+        
+    ]
+}
