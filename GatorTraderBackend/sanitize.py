@@ -1,10 +1,8 @@
-import psycopg2
 import json
 import re
-import bcrypt
-from initdb import get_db_connection
+from creds import get_db_connection
 from psycopg2 import OperationalError
-from exceptions import DatabaseConnectionError, DuplicateError, AppError
+from exceptions import DatabaseConnectionError,  AppError
 
 
 BAD_WORDS = ["admin", "root", "fuck", "shit", "asshole"]
@@ -14,7 +12,7 @@ def validateEmail(email):  # Validates the email
     if not isinstance(email, str):
         return False
     print(email, "begin validation")
-    if not re.match(r'^[A-Za-z0-9@._%+-]{6,254}$', email):
+    if not re.match(r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$', email):
         print("Here")
         return False
 
@@ -73,46 +71,6 @@ def validatePassword(password):
     return True
 
 
-def passwordHashedSalted(password):
-    try:
-        salt = bcrypt.gensalt()
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
-        return hashed_password
-
-    except TypeError as e:
-        # Handle case where password is not a string
-        raise TypeError("Password must be a string") from e
-    except Exception as e:
-        # Handle other unexpected errors
-        raise RuntimeError(f"Password hashing failed: {str(e)}") from e
-
-
-
-def signUp(username, password, profile_pic, email):
-    try:
-        with get_db_connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute('INSERT INTO users (username, password, profile_pic, email)'
-                            'VALUES (%s, %s, %s, %s)', (username, password,
-                                                        profile_pic, email))
-
-                cur.execute("SELECT * FROM users")
-
-                # Fetch all rows from the query result
-                rows = cur.fetchall()
-
-                # Print each row
-                for row in rows:
-                    print(row)
-
-                conn.commit()
-
-    except OperationalError:
-        print("Database Connection Error")
-        raise DatabaseConnectionError("Connection to Database Failed")
-    except Exception as e:
-        raise AppError(f"Unexpected Error: {e}")
-        return "unknown_error"
 
 
 def sendBooks():

@@ -2,8 +2,9 @@
 the main folder because it makes it easier to serve the react app'''
 
 from flask import Flask, request, jsonify
-from userQueries import (signUp, validateEmail, validatePassword,
-                         validateUsername, isDuplicate, isDuplicateUsername, passwordHashedSalted)
+from sanitize import (validateEmail, validatePassword,
+                          validateUsername, isDuplicate, isDuplicateUsername)
+from encryption import passwordHashedSalted, signUp, generateJWT,isPasswordHashValid
 from exceptions import (DatabaseConnectionError, DuplicateError, ValidationError, AppError
                         , InvalidEmailError, DuplicateUsernameError, InvalidPassword)
 
@@ -19,6 +20,7 @@ def serveReact():
 @app.route("/signup", methods=["POST"])
 def signupFunction():
     data = request.get_json()
+    # TODO! Add Environment Variable STUFF
     # Print the data for debugging (you can log or store it as needed)
     print("Received data:", data["username"], data["password"],
         data["profile_pic"], data["email"], data["email"])
@@ -43,7 +45,7 @@ def signupFunction():
         if isDuplicate(email):
             print("duplicate Email")
             response_data = {"message": "Cannot use this email, account exists"}
-            raise DuplicateError("Email not valid")
+            raise DuplicateError("Email Already in Use")
 
 
         if (username is None or not validateUsername(username) or isDuplicateUsername(username)):
@@ -54,7 +56,7 @@ def signupFunction():
         password = passwordHashedSalted(password)
 
         signUp(username, password, data["profile_pic"],
-               email)
+                email)
 
         response_data = {"message": "Signup successful"}
 
@@ -76,6 +78,36 @@ def signupFunction():
     except AppError as e:
         response_data = {"message": f"{str(e)}"}
         return jsonify(response_data), 400
+
+
+@app.route("/login", methods=["POST"])
+def loginFunction():
+    data = request.get_json()
+    response_data = {"message": "test"}
+    print("Received data:", data["username"], data["password"])
+    username = data["username"]
+    password = data['password']
+    if (username is None or not validateUsername(username) or not isDuplicateUsername(username)):
+        print("username cooked")
+        raise DuplicateUsernameError("Username not valid or is not an account")
+    if password is None or not validatePassword(password) or not isPasswordHashValid(username,password):
+        print("password entrycooked")
+        response_data = {"message": "Invalid Password"}
+        raise InvalidPassword("Password Invalid")
+    
+    # We have check if the user has a password, if it meets basic password requirements 
+    # and if it is in the database and matches the username. Now to create token 
+    generateJWT
+    
+    
+    
+
+
+
+
+    return jsonify(response_data), 200
+
+
 
 
 if __name__ == "__main__":

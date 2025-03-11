@@ -31,3 +31,7 @@ class DuplicateUsernameError(AppError):
 class ValidationError(AppError):
     """Raised because Bad Email"""
     pass
+
+class jwtExpired(AppError):
+    """Raised because JWT Failed"""
+    pass

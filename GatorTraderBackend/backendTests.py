@@ -1,6 +1,8 @@
 import pytest
-from userQueries import validateEmail, isDuplicate, validateUsername, validatePassword, signUp
-
+from sanitize import validateEmail, isDuplicate, validateUsername, validatePassword 
+from encryption import  generateJWT, signUp, verifyJWT, isPasswordHashValid
+from exceptions import jwtExpired, AppError
+import jwt
 
 def test_find_duplicates():
     testEmail = "test@test.com"
@@ -36,4 +38,34 @@ def test_invalid_email():
     validateEmail(None) is False
 
 
-test_username()
+def jwt_gen():
+    test = generateJWT(123,"skibidi")
+    return test
+
+def jwt_decode(token):
+    test = verifyJWT(token)
+    return test
+#test_username()
+tokengen = jwt_gen()
+tokendecode = jwt_decode(tokengen)
+#print(tokendecode)
+
+def test_encode_and_decode():
+    tokengen = jwt_gen()
+    tokendecode = jwt_decode(tokengen)
+    print(tokendecode)
+    assert tokendecode['username'] == 'skibidi'
+    assert tokendecode['userid'] == 123
+
+
+def test_encode_and_decode_expired():
+    test = generateJWT(123,"skibidi",True)
+    print("here")
+    with pytest.raises(jwt.ExpiredSignatureError):
+        final = verifyJWT(test)
+        print(tokendecode)
+
+def test_check_pass_hash(username,password):
+    return isPasswordHashValid(username,password)
+
+print(test_check_pass_hash("hiral","password1"))
