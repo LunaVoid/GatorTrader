@@ -56,7 +56,7 @@ def isDuplicateUsername(username):
 def validateUsername(username):  # Validates the username
     if not isinstance(username, str):
         return False
-    if not re.match(r'^[A-Za-z0-9]{6,32}$', username):
+    if not re.match(r'^[A-Za-z0-9]{4,32}$', username):
         print("Username Invalid")
         return False
     return True

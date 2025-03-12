@@ -6,7 +6,7 @@ from sanitize import (validateEmail, validatePassword,
                           validateUsername, isDuplicate, isDuplicateUsername)
 from encryption import passwordHashedSalted, signUp, generateJWT,isPasswordHashValid
 from exceptions import (DatabaseConnectionError, DuplicateError, ValidationError, AppError
-                        , InvalidEmailError, DuplicateUsernameError, InvalidPassword)
+                        , InvalidEmailError, DuplicateUsernameError, InvalidPassword, BadUsernameError)
 
 app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_path='/')
 
@@ -82,30 +82,50 @@ def signupFunction():
 
 @app.route("/login", methods=["POST"])
 def loginFunction():
-    data = request.get_json()
-    response_data = {"message": "test"}
-    print("Received data:", data["username"], data["password"])
-    username = data["username"]
-    password = data['password']
-    if (username is None or not validateUsername(username) or not isDuplicateUsername(username)):
-        print("username cooked")
-        raise DuplicateUsernameError("Username not valid or is not an account")
-    if password is None or not validatePassword(password) or not isPasswordHashValid(username,password):
-        print("password entrycooked")
-        response_data = {"message": "Invalid Password"}
-        raise InvalidPassword("Password Invalid")
-    
-    # We have check if the user has a password, if it meets basic password requirements 
-    # and if it is in the database and matches the username. Now to create token 
-    generateJWT
-    
-    
-    
+    try:
+        data = request.get_json()
+        response_data = {"message": "test"}
+        print("Received data:", data["username"], data["password"])
+        username = data["username"]
+        password = data['password']
+        if (username is None or not validateUsername(username) or not isDuplicateUsername(username)):
+            print("username cooked")
+            raise DuplicateUsernameError("Username not valid or is not an account")
+        
+        # We have check if the user has a password, if it meets basic password requirements 
+        # and if it is in the database and matches the username. Now to create token 
 
+        if password is None or not validatePassword(password):
+            print("password entrycooked")
+            response_data = {"message": "Invalid Password"}
+            raise InvalidPassword("Password Invalid")
+            
 
-
-
-    return jsonify(response_data), 200
+        result = isPasswordHashValid(username,password)
+        resulter = result[0]
+        if resulter == False:
+            print("password incorrect")
+            raise InvalidPassword("Password Invalid") 
+        elif resulter == True:
+            userid = result[1][0]
+            username = result[1][1]
+            token = generateJWT(userid,username)
+            response_data = {"message": f"Alr bro here is your token",
+            "token":token}
+            return jsonify(response_data), 200 
+    
+    except BadUsernameError as e:
+        response_data = {"message": f"{str(e)}"}
+        return jsonify(response_data), 400
+    except InvalidPassword as e:
+        response_data = {"message": f" Bad Password:{str(e)}"}
+        return jsonify(response_data), 400
+    except AppError as e:
+        response_data = {"message": f"{str(e)}"}
+        return jsonify(response_data), 400 
+    except Exception as e:
+        # For any other exception
+        raise AppError("Internal Server Error Contact Admin or Navigate Back to Main Page")
 
 
 

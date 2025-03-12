@@ -100,7 +100,7 @@ def isPasswordHashValid(username,password):
                 print(f"Hash type: {type(theHash)}")
                 print(f"Hash length: {len(theHash)}")
                 password = password.encode('utf-8')
-                return bcrypt.checkpw(password,theHash)
+                return (bcrypt.checkpw(password,theHash),user)
     except OperationalError:
         print("Database Connection Error")
         raise DatabaseConnectionError("Connection to Database Failed")

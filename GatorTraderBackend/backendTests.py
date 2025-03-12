@@ -65,7 +65,7 @@ def test_encode_and_decode_expired():
         final = verifyJWT(test)
         print(tokendecode)
 
-def test_check_pass_hash(username,password):
-    return isPasswordHashValid(username,password)
+def test_check_pass_hash(username = "hiral",password = "password1"):
+    return isPasswordHashValid(username, password)[0]
 
-print(test_check_pass_hash("hiral","password1"))
+print(test_check_pass_hash())

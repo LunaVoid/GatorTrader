@@ -28,6 +28,11 @@ class DuplicateUsernameError(AppError):
     pass
 
 
+class BadUsernameError(AppError):
+    """Raised because Bad Email"""
+    pass
+
+
 class ValidationError(AppError):
     """Raised because Bad Email"""
     pass
