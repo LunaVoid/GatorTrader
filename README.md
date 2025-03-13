@@ -45,11 +45,14 @@ https://www.freecodecamp.org/news/how-to-create-a-react-app-in-2024/
 1. First get to the most recent version of the repo and make sure it has all the docker stuff.
 2. Now make sure you have docker installed, download it from :
 https://www.docker.com/get-started/
-3. Run through this install, this is the GUI that will show you the running containers.
-4. Run **docker compose up -d** in the root directory 
+2. Continued: MAKE SURE YOU DONT HAVE POSTGRES ALREADY INSTALLED AND RUNNING THIS WILL INTERFERE WITH THE CONTAINER. THIS ISSUE SUCKS TO DEBUG
+3. Run through docker install, make sure that it is fully installed, if you don't have WSL on windows it will ask you to install this. You will need it for docker to work. Once it is fully installed open up docker and you should see the GUI. Run **docker** in the command line to verify install
+4. Run **docker compose up -d** in the root directory of the project to run our containers
 5. This should start the container and now you should be able to run the backend.
-6. Run initdb.py to test with python initdb.py
-7. In order to have the backend serve the latest frontend you also need to run npm build
+6. Run initdb.py by running **python initdb.py** in the GatorTraderBackend folder
+7. Now you can run the full thing. run **python main.py**
+8. Remember, in order to have the backend serve the latest frontend you also need to run npm build
+9. Use Bruno or Postman to test out the api endpoints or just explore the app
 
 
 **Special Notes:** 
