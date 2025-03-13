@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { Link } from "react-router-dom"
+import { logIn } from "../utils/auth";
 
 function SignInForm() {
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        console.log("Email:", email);
+        console.log("Username:", username);
         console.log("Password:", password);
-        // Add authentication logic here
+        let userData = {"username":username, "password":password}
+        const data = await logIn(userData);
+        console.log(data)
+        //Store Token in context and then redirect once recieved.
     };
 
     return (
@@ -17,13 +21,13 @@ function SignInForm() {
             <h2>Sign In</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="email">Email</label>
+                    <label htmlFor="username">Username</label>
                     <input
-                        type="email"
-                        id="email"
-                        placeholder="johndoe@ufl.edu"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        type=""
+                        id="username"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                         required
                     />
                 </div>

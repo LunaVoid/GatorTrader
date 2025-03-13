@@ -19,6 +19,13 @@ function App() {
         <Route path="/About" element={<About/>} />
         <Route path="/Learn" element={<Learn/>} />
         <Route path="/TrackedStocks" element={<TrackedStocks/>} />
+        {/* This catch-all route should be last, test route 404 -Josh */}
+        <Route path="*" element={
+          <div>
+            <h1>404 - Page Not Found</h1>
+            <p>The page you're looking for doesn't exist.</p>
+          </div>
+        } />
       </Routes>
   );
 }

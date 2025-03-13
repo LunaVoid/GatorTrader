@@ -1,16 +1,19 @@
 import { useState } from "react";
-
+import { signUp } from "../utils/auth";
 /*rfce*/
 function SignUpForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
         console.log("Email:", email);
         console.log("Username:", username);
         console.log("Password:", password);
+        let userData = {"username":username, "password":password, "profile_pic":"", "email":email}
+        const data = await signUp(userData);
+        console.log(data)
         // Add authentication logic here
     };
 
@@ -60,7 +63,8 @@ function SignUpForm() {
 
 
                 
-                <button type="submit">Create Account</button>
+                <button type="submit" onClick={handleSubmit}>Create Account</button>
+
             </form>
         </div>
     );
