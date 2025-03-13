@@ -1,4 +1,5 @@
 import bcrypt
+from functools import wraps
 from exceptions import DatabaseConnectionError, DuplicateError, AppError
 from psycopg2 import OperationalError
 from creds import get_db_connection
@@ -6,6 +7,7 @@ import jwt
 from datetime import datetime, timezone, timedelta
 import os
 from exceptions import jwtExpired,  AppError
+from flask import request, jsonify
 
 # CHANGE THIS FOR PROD
 os.environ['TOPSECRET'] = 'ultrasecuresecretjwtsecretysecret'
@@ -62,6 +64,27 @@ def verifyJWT(token):
     except jwt.InvalidTokenError:
             raise jwt.InvalidTokenError
         
+
+def isPasswordHashValid(username,password):
+    print(username)
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT * FROM users WHERE username = %s",(username,))
+                user = cur.fetchone() 
+                theHash = user[2]
+                theHash = theHash.encode('utf-8')
+                print(f"Hash type: {type(theHash)}")
+                print(f"Hash length: {len(theHash)}")
+                password = password.encode('utf-8')
+                return (bcrypt.checkpw(password,theHash),user)
+    except OperationalError:
+        print("Database Connection Error")
+        raise DatabaseConnectionError("Connection to Database Failed")
+    except Exception as e:
+        raise AppError(f"Unexpected Error: {e}")
+
+
 def signUp(username, password, profile_pic, email):
     try:
         with get_db_connection() as conn:
@@ -88,24 +111,26 @@ def signUp(username, password, profile_pic, email):
         raise AppError(f"Unexpected Error: {e}")
         return "unknown_error"
 
-def isPasswordHashValid(username,password):
-    print(username)
-    try:
-        with get_db_connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute("SELECT * FROM users WHERE username = %s",(username,))
-                user = cur.fetchone() 
-                theHash = user[2]
-                theHash = theHash.encode('utf-8')
-                print(f"Hash type: {type(theHash)}")
-                print(f"Hash length: {len(theHash)}")
-                password = password.encode('utf-8')
-                return (bcrypt.checkpw(password,theHash),user)
-    except OperationalError:
-        print("Database Connection Error")
-        raise DatabaseConnectionError("Connection to Database Failed")
-    except Exception as e:
-        raise AppError(f"Unexpected Error: {e}")
-#def login(username,password):
-    #try
+
+def checkLoggedInToken(f):
+    @wraps(f) #We wrap this function around our other one basically
+    def protectedRoute(*args, **kwargs):
+        token = None
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization']
+            print("Authorization Token Provided: ",token)
+        if token == None:
+            return jsonify({'message': 'Token is missing'}), 401
+        
+        try:
+            data = verifyJWT(token)
+
+        except jwt.ExpiredSignatureError:
+            return jsonify({'message': 'Token has expired'}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({'message': 'Invalid token'}), 401
+
+        return f(data, *args, **kwargs)
+    
+    return protectedRoute
 

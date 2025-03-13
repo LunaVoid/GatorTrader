@@ -1,6 +1,6 @@
 import os
 import psycopg2
-from encryption import passwordHashedSalted
+from auth import passwordHashedSalted
 os.environ['pguser'] = 'sammy'
 os.environ['pgpassword'] = 'password'
 

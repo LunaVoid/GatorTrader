@@ -1,6 +1,6 @@
 import pytest
 from sanitize import validateEmail, isDuplicate, validateUsername, validatePassword 
-from encryption import  generateJWT, signUp, verifyJWT, isPasswordHashValid
+from auth import  generateJWT, signUp, verifyJWT, isPasswordHashValid
 from exceptions import jwtExpired, AppError
 import jwt
 
@@ -60,6 +60,7 @@ def test_encode_and_decode():
 
 def test_encode_and_decode_expired():
     test = generateJWT(123,"skibidi",True)
+    print(test)
     print("here")
     with pytest.raises(jwt.ExpiredSignatureError):
         final = verifyJWT(test)
@@ -68,4 +69,5 @@ def test_encode_and_decode_expired():
 def test_check_pass_hash(username = "hiral",password = "password1"):
     return isPasswordHashValid(username, password)[0]
 
-print(test_check_pass_hash())
+#print(test_check_pass_hash())
+test_encode_and_decode_expired()

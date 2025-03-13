@@ -4,9 +4,10 @@ the main folder because it makes it easier to serve the react app'''
 from flask import Flask, request, jsonify
 from sanitize import (validateEmail, validatePassword,
                           validateUsername, isDuplicate, isDuplicateUsername)
-from encryption import passwordHashedSalted, signUp, generateJWT,isPasswordHashValid
+from auth import passwordHashedSalted, signUp, generateJWT,isPasswordHashValid, checkLoggedInToken
 from exceptions import (DatabaseConnectionError, DuplicateError, ValidationError, AppError
                         , InvalidEmailError, DuplicateUsernameError, InvalidPassword, BadUsernameError)
+
 
 app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_path='/')
 
@@ -127,7 +128,17 @@ def loginFunction():
         # For any other exception
         raise AppError("Internal Server Error Contact Admin or Navigate Back to Main Page")
 
+@app.route("/test", methods=["GET"])
+@checkLoggedInToken
+def test(data):
+    print(data)
+    return data['username'],200
 
+@app.route("/private", methods=["GET"])
+@checkLoggedInToken
+def tester(data):
+    print(data)
+    return "Private Data",200
 
 
 if __name__ == "__main__":
