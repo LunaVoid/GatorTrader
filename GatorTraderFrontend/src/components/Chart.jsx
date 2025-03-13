@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { getLocalStockData } from "../utils/dataUtil";
 import {ChartCanvas, Chart} from "react-financial-charts";
 import { AreaSeries } from "react-financial-charts";
 import { XAxis, YAxis } from "react-financial-charts";
-import { scaleTime, scaleLinear } from "d3-scale";
+import { scaleTime } from "d3-scale";
 import { curveMonotoneX } from "d3-shape";
+
 
 const AreaChart = ({ ratio, type }) => {
     const [data, setData] = useState([]);
     const [chartWidth, setCharWidth] = useState(Math.min(window.innerWidth * 0.8, 800));
+    const canvasRef = useRef(null);
 
     useEffect(() => {
         setData(getLocalStockData());
@@ -21,9 +23,19 @@ const AreaChart = ({ ratio, type }) => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
+
+    const createGradient = (ctx, height) => {
+        const gradient = ctx.createLinearGradient(0, height, 0, 0);
+        gradient.addColorStop(0.05, "rgba(0, 200, 83, 0.2)");  // 5% offset
+        gradient.addColorStop(0.5, "rgba(0, 176, 64, 0.4)");  // 70% offset
+        gradient.addColorStop(1, "rgba(0, 128, 0, 0.8)");    // 100% offset)
+        return gradient;
+    }
+
     return data.length > 0 ? (
         <div className = "chart-wrapper">
             <ChartCanvas
+            ref={canvasRef}
             ratio={ratio}
             width={chartWidth}
             height={400}
@@ -36,19 +48,12 @@ const AreaChart = ({ ratio, type }) => {
             xExtents={[data[0]?.date, data[data.length - 1]?.date]}
         >
             <Chart id={0} yExtents={[(d) => d.close]}>
-                <defs>
-                    <linearGradient id="myGradient" x1="0" y1="100%" x2="0" y2="0%">
-                        <stop offset="5%" stopColor="#00c853" stopOpacity={0.2} />
-                        <stop offset="70%" stopColor="#00b040" stopOpacity={0.4} />
-                        <stop offset="100%" stopColor="#008000" stopOpacity={0.8} />
-                    </linearGradient>
-                </defs>
                 <XAxis axisAt="bottom" orient="bottom" ticks={6} />
                 <YAxis axisAt="left" orient="left" />
                 <AreaSeries
                     yAccessor={(d) => d.close}
-                    fill="url(#myGradient)"
-                    stroke="#00b040"
+                    strokeStyle="#00b040"
+                    fillStyle= {(ctx, { height }) => createGradient(ctx, height)}
                     strokeWidth={2}
                     interpolation={curveMonotoneX}
                 />
