@@ -1,0 +1,4 @@
+remove cors cross origin approval
+better security passwords for encryption
+sammy needs a better password
+USE ENVIRONMENT VARS EVERYWHERE

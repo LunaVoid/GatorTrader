@@ -1,24 +1,25 @@
 '''this is where our backend will be written it is in
 the main folder because it makes it easier to serve the react app'''
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory, Response
 from sanitize import (validateEmail, validatePassword,
                           validateUsername, isDuplicate, isDuplicateUsername)
 from auth import passwordHashedSalted, signUp, generateJWT,isPasswordHashValid, checkLoggedInToken
 from exceptions import (DatabaseConnectionError, DuplicateError, ValidationError, AppError
                         , InvalidEmailError, DuplicateUsernameError, InvalidPassword, BadUsernameError)
-
+from flask_cors import CORS
+####DEV REMOVE THIS IN PROD
 
 app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_path='/')
+CORS(app, origins=['http://localhost:5173','http://127.0.0.1:5000'])
+#CORS(app)
 
+#@app.before_request
+#def basic_authentication():
+#    if request.method.lower() == 'options':
+#        return Response()
 
-@app.route("/")
-def serveReact():
-    print("Sending home page")
-    return app.send_static_file('index.html')
-
-
-@app.route("/signup", methods=["POST"])
+@app.route("/api/signup", methods=["POST", "OPTIONS"])
 def signupFunction():
     data = request.get_json()
     # TODO! Add Environment Variable STUFF
@@ -81,7 +82,7 @@ def signupFunction():
         return jsonify(response_data), 400
 
 
-@app.route("/login", methods=["POST"])
+@app.route("/api/login", methods=["POST"])
 def loginFunction():
     try:
         data = request.get_json()
@@ -128,17 +129,24 @@ def loginFunction():
         # For any other exception
         raise AppError("Internal Server Error Contact Admin or Navigate Back to Main Page")
 
-@app.route("/test", methods=["GET"])
+@app.route("/api/test", methods=["GET"])
 @checkLoggedInToken
 def test(data):
     print(data)
     return data['username'],200
 
-@app.route("/private", methods=["GET"])
+@app.route("/api/private", methods=["GET"])
 @checkLoggedInToken
 def tester(data):
     print(data)
     return "Private Data",200
+
+@app.route('/', defaults={'path': ''})
+@app.route("/<string:path>")
+@app.route('/<path:path>')
+def catch_all(path):
+        #return "Your endpoint is /"+path
+        return send_from_directory(app.static_folder, 'index.html')
 
 
 if __name__ == "__main__":
