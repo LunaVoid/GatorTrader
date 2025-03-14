@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { signUp } from "../utils/auth";
+import { UserProvider } from "../utils/userContext";
+import { useUser } from "../utils/userContext";
 /*rfce*/
 function SignUpForm() {
     const [email, setEmail] = useState("");
@@ -14,7 +15,9 @@ function SignUpForm() {
         let userData = {"username":username, "password":password, "profile_pic":"", "email":email}
         const data = await signUp(userData);
         console.log(data)
-        // Add authentication logic here
+
+       
+
     };
 
     //username, password, profile pic, email, stocks

@@ -6,11 +6,13 @@ import Learn from './Learn';
 import MyProfile from './MyProfile';
 import TrackedStocks from './TrackedStocks';  
 import SignUp from "./SignUp.jsx";
+import { UserProvider } from './utils/userContext';
 
 function App() {
   
 
   return (
+    <UserProvider>
       <Routes>
         <Route path="/" element={<Navigate to="/Login" />} />  {/* Redirect to Login */}
         <Route path="/SignUp" element={<SignUp/>}/>
@@ -27,6 +29,7 @@ function App() {
           </div>
         } />
       </Routes>
+    </UserProvider>
   );
 }
 

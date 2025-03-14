@@ -113,7 +113,7 @@ def loginFunction():
             username = result[1][1]
             token = generateJWT(userid,username)
             response_data = {"message": f"Alr bro here is your token",
-            "token":token}
+            "token":token,"username":username}
             return jsonify(response_data), 200 
     
     except BadUsernameError as e:

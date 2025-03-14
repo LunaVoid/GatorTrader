@@ -9,7 +9,6 @@ export const signUp = async function (userData) {
             body: JSON.stringify(userData)
         })
         return await response.json();
-
     }
     catch (error) {
         console.error('Signup error:', error);
@@ -19,6 +18,7 @@ export const signUp = async function (userData) {
 
 export const logIn = async function (userData) {
     try{
+        console.log("LOG IN FUNC")
         const response = await fetch("http://localhost:5000/api/login",{
             method: "POST",
             headers: {
@@ -27,7 +27,13 @@ export const logIn = async function (userData) {
             },
             body: JSON.stringify(userData)
         })
-        return await response.json();
+        if (!response.ok) {
+            throw new Error('Login failed');
+        }
+        console.log("here in auth")
+        const returner = await response.json();
+        return returner;
+
 
     }
     catch (error) {
