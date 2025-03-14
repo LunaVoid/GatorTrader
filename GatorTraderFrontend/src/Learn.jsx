@@ -5,6 +5,13 @@ import './Login.css';
 import './components/Navbar.jsx';
 import Navbar from './components/Navbar.jsx';
 import './Learn.css';
+import creditDebit from '../public/creditdebit.jpg';
+import checking from '../public/checking.jpg';
+import risk from '../public/risk.jpg';
+import learnstocks from '../public/learnstocks.jpg';
+import investing from '../public/investing.jpg';
+import budgeting from '../public/budgeting.jpg';
+import retirement from '../public/retirement.jpg';
 
 const topics = [
   { id: "credit-debit", label: "Credit & Debit", description: (
@@ -22,7 +29,7 @@ const topics = [
       <p>A higher credit score means you're more likely to be approved for things like: student loans, apartment rentals, mortgages on homes, car loans, and insurance for auto, home, etc. It can also mean lower interest rates on those loans.</p>
     </>
   ),
-    image: "../img/creditdebit.jpg",
+    image: creditDebit,
    },
   { id: "checkings-savings", label: "Checkings & Savings", description:(
     <>
@@ -39,7 +46,7 @@ const topics = [
       <p>Savings accounts are important for accumulating interest over time, helping money keep up with inflation. In 2025, the best savings accounts offer around 3-4% interest, much higher than checking accounts (~0.01%). However, investing is necessary to truly keep up with inflation.</p>
     </>
   ),
-  image: "../img/checking.jpg",
+  image: checking,
     
    },
   { id: "risk-management", label: "Risk Management", description: (
@@ -72,7 +79,7 @@ checking no return (0.01% annually NO LOSS and if there are any losses there is 
 </>
     
   ),
-  image: "../img/risk.jpg",  },
+  image: risk,  },
   { id: "stock-market", label: "Stock Market", description:(
     <>
       <h3>What is the Stock Market?</h3>
@@ -91,7 +98,7 @@ checking no return (0.01% annually NO LOSS and if there are any losses there is 
       <p>Diversifying means to spread your investment across a variety of assets with different attributes, which mean the positive performance can offset the negative performance of other sectors, so overall your portfolio matches the upward trend of the market. Diversification can be in type of asset, sector/industry, geographic, company type (large, mid or small cap where large is huge market capital over 10B, mid is between 2B and 10B, and small is 300M to 2B), etc.</p>
     </>
   ) ,
-  image: "../img/learnstocks.jpg", },
+  image: learnstocks, },
   { id: "investing-trading", label: "Investing and Trading", description:(
   <>
   <h3>What is Investing?</h3>
@@ -107,7 +114,7 @@ checking no return (0.01% annually NO LOSS and if there are any losses there is 
   <p>You can start investing now! It is crucial to take the advantage of the power of compounding, which is the fact that investments grow exponentially over time. The earlier you start, the more time your money has to grow, and the easier it will be to grow from there! Stocks don't even need to be bought in whole amounts, and you have the option to automatically invest small amounts monthly! </p>
   </>
   ),
-  image: "../img/investing.jpg",},
+  image: investing,},
   { id: "budgeting", label: "Budgeting", description:(
 <>
 <h3>What is Budgeting?</h3>
@@ -120,7 +127,7 @@ checking no return (0.01% annually NO LOSS and if there are any losses there is 
 <p>You can use something as simple as Microsoft Excel spreadsheets, Google sheets, etc. or you can use the many apps available to sort through your financial data yourself. All bank account, debit card, and credit card information is downloadable to analyze from their respective websites. When analyzing, find where improvements can be made and devise a plan of action!</p>
 </>
   ),
-  image: "../img/budgeting.jpg",
+  image: budgeting,
  },
   { id: "retirement", label: "Retirement", description:(
   <>
@@ -137,7 +144,7 @@ checking no return (0.01% annually NO LOSS and if there are any losses there is 
     <p>A 401K is an employer-sponsored retirement savings plan that allows employees to contribute a portion of their salary to a tax-advantaged retirement account. Contributions are pre-tax again, and employers match your contribution to a certain percent, and you should withdraw later to get larger amounts. </p>
     </>
   ),
-  image: "../img/retirement.jpg", },
+  image: retirement, },
 ];
 
 const Learn = () => {

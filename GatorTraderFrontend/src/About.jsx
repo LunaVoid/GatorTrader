@@ -2,7 +2,7 @@
 import './App.css';
 import './Login.css';
 import Navbar from './components/Navbar';
-
+import logo from '../public/gatortradertransparent.png';
 
 
 
@@ -23,7 +23,7 @@ function About() {
       </head>
       <Navbar/>
       <div className = "logo-container">
-                <img className="logopic" src= "../img/gatortradertransparent.png"></img>
+                <img className="logopic" src= {logo}></img>
                 <p className = "logostuff"> About Us...</p>
             </div>
             <div className="footer-bar"></div>     

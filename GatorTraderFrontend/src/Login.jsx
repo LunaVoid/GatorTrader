@@ -6,7 +6,7 @@ import './App.css';
 import './Login.css';
 import SignInForm from "./components/SignInForm.jsx";  
 import Navbar from './components/Navbar.jsx';
-
+import logo from '../public/gatortradertransparent.png';
 
 
 
@@ -27,7 +27,7 @@ function Login() {
       </head>
       {(true) &&<Navbar/>}
       <div className = "logo-container">
-        <img className="logopic" src= "../img/gatortradertransparent.png"></img>
+        <img className="logopic" src={logo} alt="Logo"></img>
         <p className = "logostuff"> GatorTrader</p>
       </div>
       <SignInForm />
