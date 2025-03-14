@@ -13,6 +13,7 @@ import investing from '../public/investing.jpg';
 import budgeting from '../public/budgeting.jpg';
 import retirement from '../public/retirement.jpg';
 
+
 const topics = [
   { id: "credit-debit", label: "Credit & Debit", description: (
     <>

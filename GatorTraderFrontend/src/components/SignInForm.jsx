@@ -1,20 +1,33 @@
 import { useState } from "react";
 import { Link } from "react-router-dom"
-import { logIn } from "../utils/auth";
+import { UserProvider } from "../utils/userContext";
+import { useUser } from "../utils/userContext";
+import { useEffect } from "react";
 
 function SignInForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-
+    const { user, loginUser, logoutUser } = useUser();
     const handleSubmit = async(e) => {
         e.preventDefault();
         console.log("Username:", username);
         console.log("Password:", password);
         let userData = {"username":username, "password":password}
-        const data = await logIn(userData);
-        console.log(data)
+        let data;
         //Store Token in context and then redirect once recieved.
+        try{
+            data = await loginUser(userData)
+            console.log("here in signin")
+        }
+
+        catch(error){
+
+        }
     };
+
+    useEffect(() => {
+        console.log("Current user context:", user);
+    }, [user]);
 
     return (
         <div className="sign-in-form">
