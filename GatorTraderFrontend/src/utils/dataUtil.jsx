@@ -1,19 +1,34 @@
 import { timeParse } from "d3-time-format";
-import stockData from "../../../data.json";
 
-const parseDate = timeParse("%Y-%m-%d"); // Parse date strings to Date objects
+const parseDate = timeParse("%Y-%m-%d");
 
-// Transform JSON stock data into the correct format
-export function transformStockData(jsonData) {
-    const timeSeries = jsonData["Time Series (Daily)"];
-    
-    return Object.keys(timeSeries).map((date) => ({
-        date: parseDate(date), // Convert string to Date
-        close: parseFloat(timeSeries[date]["4. close"]),
-    })).reverse(); // Reverse to show oldest data first
+export async function getLocalStockData(ticker) {
+    try {
+        const filePath = `../../public/data/data${ticker}.json`; 
+        const response = await fetch(filePath);
+
+        if (!response.ok) {
+            throw new Error(`Failed to load stock data for ${ticker}`);
+        }
+
+        const jsonData = await response.json();
+        return transformStockData(jsonData);
+    } catch (error) {
+        console.error(`Error fetching stock data: ${error}`);
+        return [];
+    }
 }
 
-// Function to get stock data locally
-export function getLocalStockData() {
-    return transformStockData(stockData);
+export function transformStockData(jsonData) {
+    if (!jsonData || !jsonData["Time Series (Daily)"]) {
+        console.error("Invalid JSON data format");
+        return [];
+    }
+
+    const timeSeries = jsonData["Time Series (Daily)"];
+
+    return Object.keys(timeSeries).map((date) => ({
+        date: parseDate(date), 
+        close: parseFloat(timeSeries[date]["4. close"]),
+    })).reverse(); 
 }
