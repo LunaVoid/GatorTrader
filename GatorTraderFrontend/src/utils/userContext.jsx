@@ -1,12 +1,26 @@
 import { createContext, useContext, useState } from 'react';
 import { logIn, signUp } from './auth';
+
 const UserContext = createContext(null);
 
 
 export function UserProvider({ children }) {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
+    const [exp,setEXP] = useState(null);
     
+    const loadUser = () =>{
+        userName = sessionStorage.getItem("gtUsername");
+        theToken = sessionStorage.getItem("gtToken");
+        theExpiration = sessionStorage.getItem("gtEXP"); 
+        if(userName && theToken && theExpiration != null){
+            
+            
+        }
+        else{
+            console.log("n")
+        }
+    }
 
     const loginUser = async (userData) => {
         try {
@@ -15,6 +29,10 @@ export function UserProvider({ children }) {
             console.log(loginData)
             setUser(loginData.username);
             setToken(loginData.token);
+            setEXP(loginData.exp)
+            sessionStorage.setItem("gtUsername", user);
+            sessionStorage.setItem("gtToken", token); 
+            sessionStorage.setItem("gtEXP", exp); 
             console.log("State updated - User:", userData.username, "Token:", loginData.token);
 
         } catch (error) {
