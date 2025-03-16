@@ -3,11 +3,15 @@ import { Link } from "react-router-dom"
 import { UserProvider } from "../utils/userContext";
 import { useUser } from "../utils/userContext";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function SignInForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const { user, loginUser, logoutUser } = useUser();
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+
     const handleSubmit = async(e) => {
         e.preventDefault();
         console.log("Username:", username);
@@ -18,10 +22,13 @@ function SignInForm() {
         try{
             data = await loginUser(userData)
             console.log("here in signin")
+            setError("");
+            navigate("/TrackedStocks")
         }
 
         catch(error){
-
+            setError(error.message || 'An unexpected error occurred.');  // Set the error message
+            console.log('Error during signup:', error.message);
         }
     };
 
@@ -31,6 +38,7 @@ function SignInForm() {
 
     return (
         <div className="sign-in-form">
+            <label style={{ color: 'red' }}>{error}</label>
             <h2>Sign In</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
