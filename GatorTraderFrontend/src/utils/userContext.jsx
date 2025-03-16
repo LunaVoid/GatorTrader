@@ -42,6 +42,7 @@ export function UserProvider({ children }) {
             setUser(loginData.username);
             setToken(loginData.token);
             setEXP(loginData.exp)
+            //interesting race condition, doesn't effect anything though
             console.log(user,token,exp)
             sessionStorage.setItem("gtUsername", loginData.username);
             sessionStorage.setItem("gtToken", loginData.token); 
