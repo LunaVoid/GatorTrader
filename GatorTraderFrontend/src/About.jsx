@@ -2,6 +2,7 @@
 import './App.css';
 import './Login.css';
 import './About.css';
+import paige from "../public/AboutUS/paigevanoverheadshot.jpg"
 import Navbar from './components/Navbar';
 
 function About() {
@@ -50,7 +51,7 @@ function About() {
             </div>
             <div className="developer-card">
               <img
-                src="\img\AboutUsPictures\paigevanoverheadshot.jpg"
+                src={paige}
                 alt="Developer 2"
                 className="developer-image"
               />
