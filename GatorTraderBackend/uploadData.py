@@ -3,44 +3,53 @@ import psycopg2
 os.environ['pguser'] = 'sammy'
 os.environ['pgpassword'] = 'password'
 
+def connecting():
+    conn = psycopg2.connect(
+            host="localhost",
+            database="gatortrader",
+            user= os.environ['pguser'],
+            password=os.environ['pgpassword'])
+    return conn
 
-conn = psycopg2.connect(
-        host="localhost",
-        database="gatortrader",
-        user= os.environ['pguser'],
-        password=os.environ['pgpassword'])
+
+def createTable ():
+    conn = connecting()
+    cur = conn.cursor()
+    cur.execute('DROP TABLE IF EXISTS stocks;')
+    cur.execute('CREATE TABLE stocks (id serial PRIMARY KEY,'
+                                    'name varchar (20) NOT NULL,'
+                                    'date date NOT NULL,'
+                                    'open decimal (10, 4) NOT NULL,'
+                                    'high decimal (10, 4) NOT NULL,'
+                                    'low decimal (10, 4) NOT NULL,'
+                                    'close decimal (10, 4) NOT NULL,'
+                                    'volume bigint NOT NULL,'
+                                    'date_added date DEFAULT CURRENT_TIMESTAMP);'
+                                    )
+    conn.commit()
+    cur.close()
+    conn.close()
+    print("Table 'stocks' created successfully.")
+    
 
 
-cur = conn.cursor();
-cur.execute('DROP TABLE IF EXISTS users;')
-#optimize later to not recreate every time 
-cur.execute('CREATE TABLE users (id serial PRIMARY KEY,'
-                                 'username varchar (20) NOT NULL,'
-                                 'password varchar (255) NOT NULL,'
-                                 'profile_pic bytea,'
-                                 'email varchar (255) NOT NULL,'
-                                 'date_added date DEFAULT CURRENT_TIMESTAMP);'
-                                 )
-# Insert data into the table
+def addToDatabase(name, date, open, high, low, close, volume):
+    conn = connecting()
+    curr = conn.cursor()
+    curr.execute('INSERT INTO stocks (name, date, open, high, low, close, volume)'
+                'VALUES (%s, %s, %s, %s, %s, %s, %s)',
+                (name,
+                date,
+                open,
+                high,
+                low,
+                close,
+                volume)
+                )
 
-cur.execute('INSERT INTO users (username, password, profile_pic, email)'
-            'VALUES (%s, %s, %s, %s)',
-            ('hiral',
-             password,
-             None,
-             'hiralshukla@ufl.edu')
-            )
-# Execute SELECT query
-cur.execute("SELECT * FROM users")
+    conn.commit()
 
-# Fetch all rows from the query result
-rows = cur.fetchall()
+    print(f"Inserted {name} - {date} | Open: {open}, High: {high}, Low: {low}, Close: {close}, Volume: {volume}")
 
-# Print each row
-for row in rows:
-    print(row)
-
-conn.commit()
-
-cur.close()
-conn.close()
+    curr.close()
+    conn.close()
