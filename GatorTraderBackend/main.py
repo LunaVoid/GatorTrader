@@ -8,6 +8,9 @@ from auth import passwordHashedSalted, signUp, generateJWT,isPasswordHashValid, 
 from exceptions import (DatabaseConnectionError, DuplicateError, ValidationError, AppError
                         , InvalidEmailError, DuplicateUsernameError, InvalidPassword, BadUsernameError)
 from flask_cors import CORS
+from dotenv import load_dotenv
+
+load_dotenv()
 ####DEV REMOVE THIS IN PROD
 
 app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_path='/')
@@ -19,7 +22,7 @@ CORS(app, origins=['http://localhost:5173','http://127.0.0.1:5000'])
 #    if request.method.lower() == 'options':
 #        return Response()
 
-@app.route("/api/signup", methods=["POST", "OPTIONS"])
+@app.route("/api/signup", methods=["POST"])
 def signupFunction():
     data = request.get_json()
     # TODO! Add Environment Variable STUFF
@@ -37,12 +40,12 @@ def signupFunction():
         if email is None or not validateEmail(email):
             print("invalid")
             response_data = {"message": "Invalid Email"}
-            raise InvalidEmailError("Email is a duplicate")
+            raise InvalidEmailError("Email is a invalid")
 
         if password is None or not validatePassword(password):
             print("invalid")
             response_data = {"message": "Invalid Password"}
-            raise InvalidPassword("Password Invalid")
+            raise InvalidPassword("Password Invalid, minimum of 6 characters")
 
         if isDuplicate(email):
             print("duplicate Email")

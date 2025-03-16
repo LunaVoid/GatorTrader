@@ -31,11 +31,12 @@
 .edit-profile-btn {
     border: none;
     background-color: #1F6336;
-    color: black; /* Green color to match theme */
+    color: white; /* Green color to match theme */
     font-size: 16px;
     cursor: pointer;
     text-decoration: underline;
     padding: 5px 0;
+    margin-top: 5px;
     
 }
 

@@ -1,11 +1,17 @@
 import { useState } from "react";
 import { UserProvider } from "../utils/userContext";
 import { useUser } from "../utils/userContext";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom"
+
 /*rfce*/
 function SignUpForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
+    const { user, loginUser, logoutUser, signupUser} = useUser();
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async(e) => {
         e.preventDefault();
@@ -13,10 +19,19 @@ function SignUpForm() {
         console.log("Username:", username);
         console.log("Password:", password);
         let userData = {"username":username, "password":password, "profile_pic":"", "email":email}
-        const data = await signUp(userData);
-        console.log(data)
 
-       
+        try{
+            const data = await signupUser(userData);
+            console.log(data)
+            setError("");
+            navigate("/Login")
+            
+        }
+
+        catch(error){
+            setError(error.message || 'An unexpected error occurred.');  // Set the error message
+            console.log('Error during signup:', error.message);
+        }
 
     };
 
@@ -30,6 +45,7 @@ function SignUpForm() {
             <form onSubmit={handleSubmit}>
 
                 <div className="form-group">
+                    <label style={{ color: 'red' }}>{error}</label>
                     <label htmlFor="email">Email:</label>
                     <input
                         type="email"
@@ -63,6 +79,7 @@ function SignUpForm() {
                         required
                     />
                 </div>
+                <Link to="/Login" className="signup">Log In Here</Link>
 
 
                 

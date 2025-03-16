@@ -16,7 +16,9 @@ function TrackedStocks() {
   const [stockData, setStockData] = useState(null);  
   const [loading, setLoading] = useState(true);  
 
+
   const stockTickers = ["NVDA", "GOOGL", "AMZN", "MSFT", "TSLA", "AAPL", "JPM", "BAC", "NFLX", "META"];
+
 
   const handleTickerClick = (ticker) => {
       setSelectedTicker(ticker);
