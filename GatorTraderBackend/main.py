@@ -8,6 +8,9 @@ from auth import passwordHashedSalted, signUp, generateJWT,isPasswordHashValid, 
 from exceptions import (DatabaseConnectionError, DuplicateError, ValidationError, AppError
                         , InvalidEmailError, DuplicateUsernameError, InvalidPassword, BadUsernameError)
 from flask_cors import CORS
+from dotenv import load_dotenv
+
+load_dotenv()
 ####DEV REMOVE THIS IN PROD
 
 app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_path='/')
