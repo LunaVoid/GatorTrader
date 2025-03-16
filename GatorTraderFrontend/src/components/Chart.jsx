@@ -7,22 +7,12 @@ import { scaleTime } from "d3-scale";
 import { curveMonotoneX } from "d3-shape";
 
 
-const AreaChart = ({ ratio, type }) => {
-    const [data, setData] = useState([]);
-    const [chartWidth, setCharWidth] = useState(Math.min(window.innerWidth * 0.8, 800));
+const AreaChart = ({ ticker, data, ratio, type }) => {
+    if(!data || data.length === 0){
+        return <p>No data available for this stock.</p>
+    }
+
     const canvasRef = useRef(null);
-
-    useEffect(() => {
-        setData(getLocalStockData());
-
-        const handleResize = () => {
-            setCharWidth(Math.min(window.innerWidth * 0.8, 800));
-        };
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
 
     const createGradient = (ctx, height) => {
         const gradient = ctx.createLinearGradient(0, height, 0, 0);
@@ -37,10 +27,10 @@ const AreaChart = ({ ratio, type }) => {
             <ChartCanvas
             ref={canvasRef}
             ratio={ratio}
-            width={chartWidth}
+            width={800}
             height={400}
             margin={{ left: 100, right: 20, top: 10, bottom: 30 }}
-            seriesName="NVDA"
+            seriesName={ticker}
             data={data}
             type={type}
             xAccessor={(d) => d.date}
