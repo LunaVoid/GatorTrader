@@ -11,53 +11,64 @@ import AreaChart from './components/Chart';
 import { getLocalStockData } from "./utils/dataUtil"; 
 
 function TrackedStocks() {
-  const [stockChanges, setStockChanges] = useState({});
+  const [latestPrices, setLatestPrices] = useState({});
   const [selectedTicker, setSelectedTicker] = useState(null);
   const [stockData, setStockData] = useState(null);  
   const [loading, setLoading] = useState(true);  
 
-  const stockTickers = ["NVDA", "GOOGL", "AMZN", "MSFT", "TSLA", "AAPL", "NASDAQ", "RUA", "UKX", "ETC", "ETC"];
+
+  const stockTickers = ["NVDA", "GOOGL", "AMZN", "MSFT", "TSLA", "AAPL", "JPM", "BAC", "NFLX", "META"];
+
 
   const handleTickerClick = (ticker) => {
       setSelectedTicker(ticker);
   };
 
-  // Example list of stock tickers (this can be fetched from an API)
-
   useEffect(() => {
-    // const fetchStockChanges = async () => {
-    //     try {
-    //         const updatedChanges = {};
+    async function fetchLatestPrices() {
+      const updatedPrices = {};
+      
+      for (const ticker of stockTickers) {
+        try {
+          const data = await getLocalStockData(ticker);
+          
+          if (data.length > 0) {
+            const latestClose = data[data.length - 1].close; 
+            updatedPrices[ticker] = latestClose;
+          } else {
+            updatedPrices[ticker] = "N/A"; 
+          }
+        } catch (error) {
+          console.error(`Error fetching latest price for ${ticker}:`, error);
+          updatedPrices[ticker] = "N/A";
+        }
+      }
 
-    //         for (const ticker of stockTickers) {
-    //             const response = await fetch(`https://api.example.com/stocks/${ticker}`);
-    //             const data = await response.json();
+      setLatestPrices(updatedPrices); 
+    }
 
-    //             // Extract stock percentage change (modify according to API structure)
-    //             const open = parseFloat(data.open);
-    //             const close = parseFloat(data.close);
-    //             const percentChange = (((close - open) / open) * 100).toFixed(2);
+    fetchLatestPrices();
+  }, []);
+  
+  useEffect(() => {
+    if(!selectedTicker) return;
 
-    //             updatedChanges[ticker] = percentChange;
-    //         }
+    async function loadStockData() {
+      setLoading(true);
+      try {
+        const data = await getLocalStockData(selectedTicker);
+        console.log("Loaded stock data:", data);
+        setStockData(data);
+      } catch (error) {
+        console.error("Error loading stock data:", error);
+        setStockData(null);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-    //         setStockChanges(updatedChanges);
-    //     } catch (error) {
-    //         console.error("Error fetching stock changes:", error);
-    //     }
-    // };
-
-    setTimeout(() => {
-      const data = getLocalStockData();
-      console.log("Loaded stock data:", data);
-      setStockData(data);
-      setLoading(false);
-    }, 500);
-
-    // fetchStockChanges();
-    // const interval = setInterval(fetchStockChanges, 60000); // Refresh every minute
-    // return () => clearInterval(interval);
-    }, [selectedTicker]);
+    loadStockData();
+  }, [selectedTicker]);
     
     return (
       <div>
@@ -79,8 +90,8 @@ function TrackedStocks() {
                   onClick={() => handleTickerClick(ticker)}
                 >
             <span className="ticker-name">{ticker}</span>
-            <span className={`trend-value ${stockChanges[ticker] < 0 ? "negative" : "positive"}`}>
-                {stockChanges[ticker] ? `${stockChanges[ticker]}%` : "Loading..."}
+            <span className={'trend-value'}>
+                {latestPrices[ticker] !== undefined ? `$${latestPrices[ticker]}` : "Loading..."}
             </span>
                 </button>
     ))}
@@ -91,10 +102,11 @@ function TrackedStocks() {
     <div className="stock-container">
     <div className="stock-display">
     <h3 className= "selected-stock"> Selected Stock: {selectedTicker}</h3>
-    {selectedTicker === "NVDA" && (
-          <AreaChart ratio={3} type="svg" />
-        
-    )}
+    {loading && <p>Loading stock data for {selectedTicker}...</p>}
+            {!loading && !stockData && <p>No data available for {selectedTicker}.</p>}
+            {!loading && stockData && (
+              <AreaChart ticker={selectedTicker} data={stockData} ratio={3} type="svg"  />
+            )}
     </div>
     </div>
     </div>

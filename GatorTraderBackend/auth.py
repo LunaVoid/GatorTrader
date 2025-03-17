@@ -8,10 +8,11 @@ from datetime import datetime, timezone, timedelta
 import os
 from exceptions import jwtExpired,  AppError
 from flask import request, jsonify
+from dotenv import load_dotenv
+load_dotenv()
 
 # CHANGE THIS FOR PROD
 os.environ['TOPSECRET'] = 'ultrasecuresecretjwtsecretysecret'
-
 
 def passwordHashedSalted(password):
     try:

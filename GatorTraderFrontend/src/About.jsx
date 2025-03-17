@@ -8,6 +8,7 @@ import Navbar from './components/Navbar';
 function About() {
   return (
     <html>
+
       <head>
         <title>About Us - Gator Trader</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -66,6 +67,7 @@ function About() {
               />
               <h3>Josh</h3>
               <p>placeholder</p>
+
             </div>
             <div className="developer-card">
               <img

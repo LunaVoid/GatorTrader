@@ -7,6 +7,7 @@ import MyProfile from './MyProfile';
 import TrackedStocks from './TrackedStocks';  
 import SignUp from "./SignUp.jsx";
 import { UserProvider } from './utils/userContext';
+import PrivateRoute from './utils/PrivateRoutes.jsx';
 
 function App() {
   
@@ -14,13 +15,9 @@ function App() {
   return (
     <UserProvider>
       <Routes>
-        <Route path="/" element={<Navigate to="/Login" />} />  {/* Redirect to Login */}
+        {/* Public routes */}
         <Route path="/SignUp" element={<SignUp/>}/>
-        <Route path="/MyProfile" element={<MyProfile/>}/>
         <Route path="/Login" element={<Login/>} />
-        <Route path="/About" element={<About/>} />
-        <Route path="/Learn" element={<Learn/>} />
-        <Route path="/TrackedStocks" element={<TrackedStocks/>} />
         {/* This catch-all route should be last, test route 404 -Josh */}
         <Route path="*" element={
           <div>
@@ -28,6 +25,34 @@ function App() {
             <p>The page you're looking for doesn't exist.</p>
           </div>
         } />
+
+        {/* Private routes */}
+        <Route path="/" element={
+          <PrivateRoute>
+            <TrackedStocks/>
+          </PrivateRoute>
+        } /> 
+
+        <Route path="/MyProfile" element={
+          <PrivateRoute>
+            <MyProfile/>
+          </PrivateRoute>
+        }/>
+        <Route path="/About" element={
+          <PrivateRoute>
+            <About/>
+          </PrivateRoute> 
+          } />
+        <Route path="/Learn" element={
+          <PrivateRoute>
+            <Learn/>
+          </PrivateRoute>
+        } />
+        <Route path="/TrackedStocks" element={
+        <PrivateRoute>
+          <TrackedStocks/>
+        </PrivateRoute>} />
+        
       </Routes>
     </UserProvider>
   );

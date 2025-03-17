@@ -1,4 +1,5 @@
 export const signUp = async function (userData) {
+    console.log(userData);
     try{
         const response = await fetch("http://localhost:5000/api/signup",{
             method: "POST",
@@ -8,6 +9,13 @@ export const signUp = async function (userData) {
             },
             body: JSON.stringify(userData)
         })
+
+        if (!response.ok) {
+            const errorBody = await response.text();
+            // Throw an error if the response is not OK (status outside 200-299)
+            throw new Error(`Signup failed with status: ${response.status}, ${errorBody}`);
+        }
+
         return await response.json();
     }
     catch (error) {
@@ -27,8 +35,10 @@ export const logIn = async function (userData) {
             },
             body: JSON.stringify(userData)
         })
+
         if (!response.ok) {
-            throw new Error('Login failed');
+            const errorBody = await response.text();
+            throw new Error(`Signup failed with status: ${response.status}, ${errorBody}`);;
         }
         console.log("here in auth")
         const returner = await response.json();
