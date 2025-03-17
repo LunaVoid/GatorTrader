@@ -24,8 +24,8 @@ export function UserProvider({ children }) {
                 console.log("existing token is valid")
                 setUser(userName);
                 setToken(theToken);
-                setEXP(theExpiration)
-                navigate("/")
+                setEXP(theExpiration);
+                navigate("/");
             }
             
         }

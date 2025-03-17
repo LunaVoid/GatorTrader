@@ -1,10 +1,12 @@
 import os
 import uploadData
 import json
-
-data_dir = "../GatorTraderFrontend/public/data"
+data_dir = "./GatorTraderFrontend/public/data"
 
 def loopData():
+    
+    print(os.getcwd())
+
     for file_name in os.listdir(data_dir):
         if file_name.endswith(".json"):  
             file_path = os.path.join(data_dir, file_name)
