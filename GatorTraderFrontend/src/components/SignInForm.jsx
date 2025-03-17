@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 function SignInForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const { user, loginUser, logoutUser } = useUser();
+    const { user, loginUser, logoutUser, loadUser } = useUser();
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
@@ -35,6 +35,11 @@ function SignInForm() {
     useEffect(() => {
         console.log("Current user context:", user);
     }, [user]);
+
+    useEffect(() => {
+        console.log("running on reload")
+        loadUser()
+    }, []);
 
     return (
         <div className="sign-in-form">

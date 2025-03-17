@@ -8,6 +8,7 @@ from auth import passwordHashedSalted, signUp, generateJWT,isPasswordHashValid, 
 from exceptions import (DatabaseConnectionError, DuplicateError, ValidationError, AppError
                         , InvalidEmailError, DuplicateUsernameError, InvalidPassword, BadUsernameError)
 from flask_cors import CORS
+from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 import os
 
@@ -116,9 +117,11 @@ def loginFunction():
         elif resulter == True:
             userid = result[1][0]
             username = result[1][1]
+            now = datetime.utcnow()
+            expireDate = int((now + timedelta(hours=24)).replace(tzinfo=timezone.utc).timestamp())
             token = generateJWT(userid,username)
             response_data = {"message": f"Alr bro here is your token",
-            "token":token,"username":username}
+            "token":token,"username":username,"exp":expireDate}
             return jsonify(response_data), 200 
     
     except BadUsernameError as e:
