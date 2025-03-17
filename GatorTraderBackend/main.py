@@ -9,6 +9,7 @@ from exceptions import (DatabaseConnectionError, DuplicateError, ValidationError
                         , InvalidEmailError, DuplicateUsernameError, InvalidPassword, BadUsernameError)
 from flask_cors import CORS
 from dotenv import load_dotenv
+import os
 
 load_dotenv()
 print(os.environ['DB_HOST'])
