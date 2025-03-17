@@ -11,7 +11,8 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 
 load_dotenv()
-####DEV REMOVE THIS IN PROD
+print(os.environ['DB_HOST'])
+
 
 app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_path='/')
 CORS(app, origins=['http://localhost:5173','http://127.0.0.1:5000'])
