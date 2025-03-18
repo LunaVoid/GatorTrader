@@ -1,6 +1,5 @@
 import { createContext, useContext, useState } from 'react';
 import { logIn, sendPhoto, signUp } from './auth';
-import { logIn, signUp } from './auth';
 import { useNavigate } from "react-router-dom";
 const UserContext = createContext(null);
 
@@ -93,13 +92,9 @@ export function UserProvider({ children }) {
         }
 
     }
-
-
-
     
     return (
-        <UserContext.Provider value={{ user, token, profilePic, loginUser, logoutUser, signupUser, imageSender }}>
-        <UserContext.Provider value={{ user, token, loginUser, logoutUser, signupUser, loadUser }}>
+        <UserContext.Provider value={{ user, token, profilePic, loginUser, logoutUser, signupUser,loadUser, imageSender }}>
             {children}
         </UserContext.Provider>
     );
