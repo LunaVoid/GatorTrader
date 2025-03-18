@@ -20,7 +20,7 @@ load_dotenv()
 
 app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_path='/')
 #CORS(app, origins=['http://localhost:5173','http://127.0.0.1:5000'])
-CORS(app)
+#CORS(app)
 #CORS(app, origin = "*")
 #CORS(app, resources={r"/api/*": {"origins": "*"}})
 '''
@@ -32,6 +32,12 @@ CORS(app, resources={
     }
 })
 '''
+
+CORS(app, add_default_headers={
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+})
 
 #@app.before_request
 #def basic_authentication():
