@@ -1,9 +1,9 @@
 .profile-container {
     display: flex;
-    justify-content: flex-end; /* Aligns box to the right */
+    justify-content: center; 
     align-items: center;
-    height: 100vh;
-    padding-right: 5%;
+    height: 50vh;
+    margin-top: 30px;
 }
 
 .profile-box {
@@ -43,4 +43,33 @@
 .edit-profile-btn:hover {
     background-color: #174729; /* Darker green for hover effect */
     outline: none;
+}
+
+.disclaimer-box{
+    margin-top: 10px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    line-height: 1.6;
+    font-size: 14px;
+    color: #555;
+    font-family: "K2D";
+    width: 90%; /* Keeps it responsive */
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+}
+
+.disclaimer-box h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+.disclaimer-box p {
+    margin-bottom: 12px;
+    text-align: justify;
 }

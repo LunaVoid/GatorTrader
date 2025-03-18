@@ -14,12 +14,19 @@ import logo from '../public/gatortradertransparent.png';
 
 function Login() {
   //const [count, setCount] = useState(0)
-  const w = false;
+  
 
   return (
     <div>
     
-      {(w) &&<Navbar/>}
+      <nav className="navbar">
+                  <div className="navbar__container">
+                      <h1 className="navbar__logo">GatorTrader</h1>
+                      <ul className="navbar__menu">
+                          
+                      </ul>
+                  </div>
+      </nav>
       <div className = "logo-container">
         <img className="logopic" src={logo} alt="Logo"></img>
         <p className = "logostuff"> GatorTrader</p>
