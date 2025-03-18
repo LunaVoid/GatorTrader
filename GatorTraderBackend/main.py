@@ -3,21 +3,35 @@ the main folder because it makes it easier to serve the react app'''
 
 from flask import Flask, request, jsonify, send_from_directory, Response
 from sanitize import (validateEmail, validatePassword,
-                          validateUsername, isDuplicate, isDuplicateUsername)
+                          validateUsername, isDuplicate, isDuplicateUsername, allowed_file)
 from auth import passwordHashedSalted, signUp, generateJWT,isPasswordHashValid, checkLoggedInToken
 from exceptions import (DatabaseConnectionError, DuplicateError, ValidationError, AppError
                         , InvalidEmailError, DuplicateUsernameError, InvalidPassword, BadUsernameError)
 from flask_cors import CORS
+from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
+from werkzeug.utils import secure_filename
+from operations import setProfileImage
+import base64
 import os
 
 load_dotenv()
-print(os.environ['DB_HOST'])
-
+####DEV REMOVE THIS IN PROD
 
 app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_path='/')
-CORS(app, origins=['http://localhost:5173','http://127.0.0.1:5000'])
-#CORS(app)
+#CORS(app, origins=['http://localhost:5173','http://127.0.0.1:5000'])
+CORS(app)
+#CORS(app, origin = "*")
+#CORS(app, resources={r"/api/*": {"origins": "*"}})
+'''
+CORS(app, resources={
+    r"/api/*": {
+        "origins": ["http://localhost:5173", "http://localhost:5000", "http://127.0.0.1:5000"],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
+'''
 
 #@app.before_request
 #def basic_authentication():
@@ -115,10 +129,15 @@ def loginFunction():
             raise InvalidPassword("Password Invalid") 
         elif resulter == True:
             userid = result[1][0]
-            username = result[1][1]
+            profilePic = result[1][1]
+            print(profilePic)
+            profilePic = base64.b64encode(profilePic).decode('utf-8')
+            username = result[1][2]
+            now = datetime.utcnow()
+            expireDate = int((now + timedelta(hours=24)).replace(tzinfo=timezone.utc).timestamp())
             token = generateJWT(userid,username)
             response_data = {"message": f"Alr bro here is your token",
-            "token":token,"username":username}
+            "token":token,"username":username,"profile":profilePic,"exp":expireDate}
             return jsonify(response_data), 200 
     
     except BadUsernameError as e:
@@ -132,7 +151,42 @@ def loginFunction():
         return jsonify(response_data), 400 
     except Exception as e:
         # For any other exception
-        raise AppError("Internal Server Error Contact Admin or Navigate Back to Main Page")
+        raise AppError(f"Internal Server Error Contact Admin {str(e)}")
+
+@app.route("/api/profileupdate", methods=["POST"])
+@checkLoggedInToken
+def updateImage(data):
+    try:
+        print(data)
+        print(data['userid'])
+        if 'image' not in request.files:
+            return jsonify({"error": "No image file provided"}), 400
+            
+        file = request.files['image']
+        if file.filename == '':
+            return jsonify({"error": "No selected file"}), 400
+        
+        if file and allowed_file(file.filename):
+            success,photoBytes = setProfileImage(file,data['userid'])
+            if(success):
+                return jsonify({"message": "File uploaded successfully","profile":photoBytes}), 200
+            else:
+                raise AppError("Upload Failed")
+                return jsonify({"error": "Invalid file type"}), 400 
+        return jsonify({"error": "Invalid file type"}), 400
+
+    except DatabaseConnectionError as e:
+        response_data = {"message": f" Database Error:{str(e)}"}
+        print(response_data)
+        return jsonify(response_data), 500
+    except AppError as e:
+        response_data = {"message": f"{str(e)}"}
+        print(response_data)
+        return jsonify(response_data), 400 
+    except Exception as e:
+        # For any other exception
+        print(e)
+        raise AppError(f"Internal Server Error Contact Admin {str(e)}")
 
 @app.route("/api/test", methods=["GET"])
 @checkLoggedInToken

@@ -73,7 +73,7 @@ def isPasswordHashValid(username,password):
             with conn.cursor() as cur:
                 cur.execute("SELECT * FROM users WHERE username = %s",(username,))
                 user = cur.fetchone() 
-                theHash = user[2]
+                theHash = user[4]
                 theHash = theHash.encode('utf-8')
                 print(f"Hash type: {type(theHash)}")
                 print(f"Hash length: {len(theHash)}")

@@ -51,3 +51,24 @@ export const logIn = async function (userData) {
         throw error;
     }
 }
+
+export const sendPhoto = async function (image, token) {
+    try{
+        const formData = new FormData();
+        formData.append('image', image); 
+        const response = await fetch("http://localhost:5000/api/profileupdate", {
+            method: "POST",
+            headers: {
+                'Authorization':token, // JWT token can go in headers
+                // Don't set Content-Type header - FormData will set it automatically
+            },
+            body: formData
+        });
+        const returner = await response.json();
+        return returner;
+    }
+    catch (error) {
+        console.error('Profile Photo error:', error);
+        throw error;
+    }
+}
