@@ -176,6 +176,8 @@ def updateImage(data):
         if file and allowed_file(file.filename):
             success,photoBytes = setProfileImage(file,data['userid'])
             if(success):
+                print("success time")
+                print(photoBytes)
                 return jsonify({"message": "File uploaded successfully","profile":photoBytes}), 200
             else:
                 raise AppError("Upload Failed")
