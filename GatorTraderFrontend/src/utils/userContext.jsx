@@ -25,12 +25,15 @@ export function UserProvider({ children }) {
                 setUser(userName);
                 setToken(theToken);
                 setEXP(theExpiration);
-                navigate("/");
+                return true;
             }
-            
+            console.log("existing token not valid")
+            return false; 
         }
         else{
             console.log("existing token doesn't work, user must login")
+            navigate("/login");
+            return false;
         }
     }
 
