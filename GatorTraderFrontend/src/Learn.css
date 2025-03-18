@@ -8,6 +8,7 @@ body {
   
 .learn-container {
     padding: 50px;
+    height: 110vh - 140px;
 }
 
 .title{
@@ -73,9 +74,10 @@ body {
     width: 80vw; /* Adjusts width based on screen size */
     max-width: 1000px; /* Ensures it doesn’t get too large on big screens */
     height: auto; /* Allows content to adjust height */
-    max-height: calc(100vh - 120px); /* Prevents it from getting too tall */
+    max-height: calc(100vh - 140px); /* Prevents it from getting too tall */
     background: white;
     padding: 20px;
+    margin-bottom: -10px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     overflow-y: auto; /* Adds scroll if content is too large */
