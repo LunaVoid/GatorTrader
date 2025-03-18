@@ -154,6 +154,7 @@ const Learn = () => {
   return (
     <div>
       <Navbar/>
+    
     <div className="learn-container" >
       <h2 className="title"> Select a circle to start learning:</h2>
       <div className="circle-container">
@@ -178,12 +179,10 @@ const Learn = () => {
         
       </div>
       )}
+    <div className = "footer-bar"></div>
     </div>
-    <div>
-
-      
-    </div>
-      
+    
+    
     </div>
   );
 };

@@ -23,11 +23,12 @@
     padding-top: 10px; /* Optional, adds some space from the top */
     display: flex;
     flex-direction: column; /* Stack the items vertically */
-    margin-top: 20px;
+    margin-top: 5px;
     border-radius: 15px;
     font-family: "K2D";
     align-items: stretch;
     padding-bottom: 40px;
+    margin-left: 50px;
   }
   
   .sidebar button {
@@ -110,15 +111,17 @@
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  overflow: hidden; /* Prevents the chart from overflowing */
+  overflow: visible; /* Prevents the chart from overflowing */
+  position: relative;
 }
 
 .chart-wrapper {
   display: flex;
-  justify-content: flex-start;
   align-items: center;
+  flex-direction: column;
   width: 100%;
-  padding-left: 20px;
+  margin-left: -70px;
+  
 }
 
 .chart-wrapper canvas, 
@@ -149,3 +152,29 @@
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.05);
 }
+
+
+.description-box {
+  position: relative;
+  margin-top: 12px;
+  padding: 15px;
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  max-width: 680px;
+  z-index: 10;
+}
+
+.description-box h4 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.description-box p {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.4;
+}
+

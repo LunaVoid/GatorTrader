@@ -19,7 +19,7 @@ function Login() {
   return (
     <div>
     
-      {(true) &&<Navbar/>}
+      {(w) &&<Navbar/>}
       <div className = "logo-container">
         <img className="logopic" src={logo} alt="Logo"></img>
         <p className = "logostuff"> GatorTrader</p>
