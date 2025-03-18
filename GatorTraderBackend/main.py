@@ -137,6 +137,7 @@ def loginFunction():
             expireDate = int((now + timedelta(hours=24)).replace(tzinfo=timezone.utc).timestamp())
             token = generateJWT(userid,username)
             response_data = {"message": f"Alr bro here is your token",
+
             "token":token,"username":username,"profile":profilePic,"exp":expireDate}
             return jsonify(response_data), 200 
     
