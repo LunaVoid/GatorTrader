@@ -176,11 +176,11 @@ function TrackedStocks() {
                 
                 { /*Stock Descriptions */}
                 <div className = "description-box">
-                <h4>About {selectedTicker}</h4>
-  <p><strong>Founded:</strong> {stockDescriptions[selectedTicker]?.founded}</p>
-  <p><strong>Industry:</strong> {stockDescriptions[selectedTicker]?.industry}</p>
-  <p><strong>Overview:</strong> {stockDescriptions[selectedTicker]?.overview}</p>
-  <p><strong>Popularity:</strong> {stockDescriptions[selectedTicker]?.popularity}</p>
+                  <h4>About {selectedTicker}</h4>
+                  <p><strong>Founded:</strong> {stockDescriptions[selectedTicker]?.founded}</p>
+                  <p><strong>Industry:</strong> {stockDescriptions[selectedTicker]?.industry}</p>
+                  <p><strong>Overview:</strong> {stockDescriptions[selectedTicker]?.overview}</p>
+                  <p><strong>Popularity:</strong> {stockDescriptions[selectedTicker]?.popularity}</p>
                 </div>
               </div>
               
@@ -188,10 +188,10 @@ function TrackedStocks() {
             )}
           </div>
         </div>
-      </div>   
+        </div>   
                    
-    <div className="footer-bar"></div>
-    </div>
+        <div className="footer-bar tracked-stocks-footer"></div>
+      </div>
     
   );
 }
