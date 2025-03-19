@@ -9,7 +9,7 @@ import gatorTraderLogo from '../public/gatortradertransparent.png';
 import hiralImage from '../public/AboutUS/Hiral_Shuklas_Headshot.png';
 import paigeImage from '../public/AboutUS/paigevanoverheadshot.png';
 import shunmukaImage from '../public/AboutUS/ShunmukaValsaHeadshot.png';
-import joshImage from '../public/AboutUS/Hiral_Shuklas_Headshot.png'
+import joshImage from '../public/AboutUS/joshheadshot.png';
 
 function About() {
   return (
