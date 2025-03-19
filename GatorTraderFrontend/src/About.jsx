@@ -5,10 +5,11 @@ import './About.css';
 import Navbar from './components/Navbar';
 
 // Import your images:
-import gatorTraderLogo from '/img/gatortradertransparent.png';
-import hiralImage from '/img/AboutUsPictures/Hiral_Shuklas_Headshot (1).jpg';
-import paigeImage from '/img/AboutUS/paigevanoverheadshot.jpg';
-import shunmukaImage from '/img/AboutUsPictures/ShunmukaValsaHeadshot.jpg';
+import gatorTraderLogo from '../public/gatortradertransparent.png';
+import hiralImage from '../public/AboutUS/Hiral_Shuklas_Headshot.png';
+import paigeImage from '../public/AboutUS/paigevanoverheadshot.png';
+import shunmukaImage from '../public/AboutUS/ShunmukaValsaHeadshot.png';
+import joshImage from '../public/AboutUS/Hiral_Shuklas_Headshot.png'
 
 function About() {
   return (
