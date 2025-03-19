@@ -1,16 +1,24 @@
+import React from 'react';
 import './App.css';
 import './Login.css';
 import './About.css';
 import Navbar from './components/Navbar';
+
+// Import your images:
+import gatorTraderLogo from '/img/gatortradertransparent.png';
+import hiralImage from '/img/AboutUsPictures/Hiral_Shuklas_Headshot (1).jpg';
+import paigeImage from '/img/AboutUS/paigevanoverheadshot.jpg';
+import shunmukaImage from '/img/AboutUsPictures/ShunmukaValsaHeadshot.jpg';
 
 function About() {
   return (
     <>
       <Navbar />
       <div className="logo-container">
+        {/* Use gatorTraderLogo as the src */}
         <img
           className="logopic"
-          src="/img/gatortradertransparent.png"
+          src={gatorTraderLogo}
           alt="Gator Trader Logo"
         />
         <p className="logostuff">About Us...</p>
@@ -21,7 +29,10 @@ function About() {
         <h2>Our Story</h2>
         <div className="story-section">
           <p>
-            Gator Trader was created to empower investors with real-time market insights and cutting-edge analytics. Our mission is to bridge the gap between data and decision-making, offering an intuitive platform that helps both novices and professionals navigate the complexities of the stock market.
+            Gator Trader was created to empower investors with real-time market insights and 
+            cutting-edge analytics. Our mission is to bridge the gap between data and 
+            decision-making, offering an intuitive platform that helps both novices and 
+            professionals navigate the complexities of the stock market.
           </p>
         </div>
 
@@ -30,7 +41,7 @@ function About() {
         <div className="developer-section">
           <div className="developer-card">
             <img
-              src="/img/AboutUsPictures/Hiral_Shuklas_Headshot (1).jpg"
+              src={hiralImage}
               alt="Hiral Shukla"
               className="developer-image"
             />
@@ -39,7 +50,7 @@ function About() {
           </div>
           <div className="developer-card">
             <img
-              src="/img/AboutUS/paigevanoverheadshot.jpg"
+              src={paigeImage}
               alt="Paige Vanover"
               className="developer-image"
             />
@@ -48,7 +59,7 @@ function About() {
           </div>
           <div className="developer-card">
             <img
-              src="/img/AboutUsPictures/placeholder_image3.jpg"
+              src={joshImage}
               alt="Josh"
               className="developer-image"
             />
@@ -57,7 +68,7 @@ function About() {
           </div>
           <div className="developer-card">
             <img
-              src="/img/AboutUsPictures/ShunmukaValsaHeadshot.jpg"
+              src={shunmukaImage}
               alt="Shunmuka Valsa"
               className="developer-image"
             />

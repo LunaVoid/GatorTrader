@@ -19,6 +19,7 @@
     gap: 0.5rem;
     padding: 1rem 0rem; /* Adds some space from the top */
     margin-bottom: -30px;
+    margin-top: 40px;
 }
 
 .logopic{
@@ -191,5 +192,5 @@ button:hover {
     bottom: 0;
     left: 0;
     background: linear-gradient(90deg, #1F6336 0%, #9ECFAE 100%); /* Gradient colors */
-    z-index: 1000;
+    z-index: 1;
 }
