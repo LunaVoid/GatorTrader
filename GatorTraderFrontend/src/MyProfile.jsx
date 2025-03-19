@@ -40,7 +40,7 @@ function MyProfile() {
             
           </div>
           <p>Choose a new Profile Photo!</p>
-          <input onChange={chooseSendImage} id = "inputter" type = "file" accept="image/*"></input>
+          <input onChange={chooseSendImage} id="inputter" type="file" accept=".png, .jpg, .jpeg, .gif,.webp,image/webp, image/png, image/jpeg, image/gif"></input>
           <button className="edit-profile-btn" onClick={logoutUser}>Log Out</button>
         </div>
       </div>

@@ -11,9 +11,10 @@ from flask_cors import CORS
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
-from operations import setProfileImage
+from operations import setProfileImage, getProfileImage
 import base64
 import os
+import imghdr
 
 load_dotenv()
 ####DEV REMOVE THIS IN PROD
@@ -203,11 +204,30 @@ def test(data):
     print(data)
     return data['username'],200
 
-@app.route("/api/private", methods=["GET"])
+@app.route("/api/getProfile", methods=["GET"])
 @checkLoggedInToken
-def tester(data):
-    print(data)
-    return "Private Data",200
+def getProfile(data):
+    successful, image, mimetype = getProfileImage(data['userid'])
+    try:
+        if successful:
+            image_bytes = bytes(image)
+            return image_bytes, 200, {'Content-Type': mimetype}  # Adjust content type as needed
+        else:
+            # Handle the case when image retrieval was unsuccessful
+            return {"error": "Profile image not found"}, 404
+    except DatabaseConnectionError as e:
+        response_data = {"message": f" Database Error:{str(e)}"}
+        print(response_data)
+        return jsonify(response_data), 500
+    except AppError as e:
+        response_data = {"message": f"{str(e)}"}
+        print(response_data)
+        return jsonify(response_data), 400 
+    except Exception as e:
+        # For any other exception
+        print(e)
+        raise AppError(f"Internal Server Error Contact Admin {str(e)}")
+
 
 @app.route('/', defaults={'path': ''})
 @app.route("/<string:path>")
