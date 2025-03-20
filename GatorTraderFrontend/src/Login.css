@@ -169,6 +169,11 @@ button:hover {
     margin-bottom: 6px;
     text-align: left;
 }
+
+.login-link{
+    margin-bottom: 6px;
+    text-align: center;
+}
   
 .forgot-password, /*margin top changes space betweeen forgot password and sign up here*/
 .signup {

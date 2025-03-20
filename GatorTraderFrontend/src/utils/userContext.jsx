@@ -62,6 +62,7 @@ export function UserProvider({ children }) {
         setUser(null);
         setToken(null);
         sessionStorage.clear();
+        navigate("/login");
     };
 
     const signupUser = async (userData) => {
