@@ -15,14 +15,14 @@ function About() {
   return (
     <>
       <Navbar />
-      <div className="logo-container">
+      <div className="logo-contain">
         {/* Use gatorTraderLogo as the src */}
         <img
-          className="logopic"
+          className="logopng"
           src={gatorTraderLogo}
           alt="Gator Trader Logo"
         />
-        <p className="logostuff">About Us...</p>
+        <p className="logocontents">About Us...</p>
       </div>
 
       <div className="about-container">
@@ -74,7 +74,7 @@ function About() {
               className="developer-image"
             />
           </a>
-            <h3>Josh</h3>
+            <h3>Joshua Brunk</h3>
             <a href="https://github.com/LunaVoid" target="_blank" rel="noopener noreferrer">
             <p>@LunaVoid</p>
             </a>
