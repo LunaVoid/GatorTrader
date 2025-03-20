@@ -1,0 +1,128 @@
+/* about.css */
+
+/* Global Styles */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'K2D', sans-serif;
+  background: #f4f7f9;
+  color: #333;
+}
+
+/* Logo Container */
+.logo-container {
+  text-align: center;
+  padding: 2rem 0;
+  color: #fff;
+  padding: 1rem; 
+  margin: 0;
+}
+
+.logo-container .logopic {
+  width: 150px;
+  margin-bottom: 1rem;
+}
+
+.logo-container .logostuff {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* About Container */
+.about-container {
+  max-width: 1200px;
+  margin: 1rem auto;
+  padding: 0;
+}
+
+.about-container h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  margin-top: 0;
+  font-size: 2rem;
+  color: #fff;
+  background: linear-gradient(90deg, #1F6336 0%, #9ECFAE 100%);
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+/* Developer Section */
+.developer-section {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+/* Developer Card */
+.developer-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  flex: 1;
+  max-width: 250px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.developer-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Developer Name */
+.developer-card h3 {
+  margin-top: 1rem;
+  color: #1F6336;
+}
+
+/* Developer Description */
+.developer-card p {
+  line-height: 1.6;
+}
+
+/* Developer Image */
+.developer-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;
+  max-width: 150px;
+  object-fit: cover;
+}
+
+/* Footer Bar */
+.footer-bar {
+  background: linear-gradient(90deg, #1F6336 0%, #9ECFAE 100%);
+  height: 60px;
+  margin-top: 3rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .developer-section {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .developer-card {
+    max-width: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .developer-section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .developer-card {
+    width: 80%;
+    max-width: 300px;
+  }
+}
