@@ -79,8 +79,9 @@ function SignUpForm() {
                         required
                     />
                 </div>
+                <div className="login-link">
                 <Link to="/Login" className="signup">Log In Here</Link>
-
+                </div>
 
                 
                 <button type="submit" onClick={handleSubmit}>Create Account</button>
