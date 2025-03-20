@@ -5,28 +5,50 @@ import './App.css';
 import './Login.css'
 import './MyProfile.css'
 import defaultPhoto from '/defaultPhoto.jpg'
-
+import loading from '/loading.gif'
+import loading2 from '/loading2.gif'
+import loading3 from '/loading3.gif'
 function MyProfile() {
-  const { user, logoutUser, profilePic, imageSender,token} = useUser();
+  const { user, logoutUser, profilePic, imageSender,token, imageGetter} = useUser();
   const [username, setUsername] = useState(user); // Example username
   const [profileImage, setprofileImage] = useState(profilePic)
   //Removed Password, frontend should never store it!
 
   async function chooseSendImage(e){
     const file = e.target.files[0];
+    setprofileImage(loading3)
     if (file) {
       const returner = await imageSender(file,token);
+      console.log(returner)
       console.log(returner.message);
-      setprofileImage(returner.profile);
+      console.log("now here")
     }
+    console.log("update Profile")
+    const profileLocation = await imageGetter(token)
+    setprofileImage(profileLocation)
+  }
+
+  async function fetchImage(){
+    const profileLocation = await imageGetter(token)
+    return profileLocation
   }
 
 
   useEffect(() => {
+    
     if(profilePic == ""){
       setprofileImage(defaultPhoto)
     }
-  })
+    else{
+      setprofileImage(loading3)
+      const imageStuffer = async () => {
+        const imageData = await fetchImage(); // assuming fetchImage is a function that returns a promise
+        console.log(imageData);
+        setprofileImage(imageData);
+      };
+      imageStuffer();
+    }
+  },[])
   return (
     <div>
       <Navbar />

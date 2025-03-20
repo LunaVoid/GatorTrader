@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react';
-import { logIn, sendPhoto, signUp } from './auth';
+import { getPhoto, logIn, sendPhoto, signUp } from './auth';
 import { useNavigate } from "react-router-dom";
 const UserContext = createContext(null);
 
@@ -41,8 +41,6 @@ export function UserProvider({ children }) {
             console.log(loginData)
             setUser(loginData.username);
             setToken(loginData.token);
-            console.log(atob(loginData.profile));
-            setProfilePic(atob(loginData.profile))
             setEXP(loginData.exp)
             //interesting race condition, doesn't effect anything though
             console.log(user,token,exp)
@@ -92,9 +90,29 @@ export function UserProvider({ children }) {
         }
 
     }
+
+    const imageGetter = async (token) => {
+        try {
+            console.log("Here");
+            if(token){
+                const data = await getPhoto( token);
+                console.log(data)
+                const imageObjectUrl = URL.createObjectURL(data);
+                return imageObjectUrl;
+            }
+            else{
+                console.error("Token Error")
+            }
+              // Success, data will be returned
+        } catch (error) {
+            console.error('Error during image change', error);
+            throw error;  // Propagate the error to the component
+        }
+
+    }
     
     return (
-        <UserContext.Provider value={{ user, token, profilePic, loginUser, logoutUser, signupUser,loadUser, imageSender }}>
+        <UserContext.Provider value={{ user, token, profilePic, loginUser, logoutUser, signupUser,loadUser, imageSender, imageGetter }}>
             {children}
         </UserContext.Provider>
     );
