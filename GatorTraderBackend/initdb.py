@@ -32,7 +32,8 @@ cur.execute('''CREATE TABLE IF NOT EXISTS users (
 )
 # Insert data into the table
 file_bytes = ""
-file_path = './test/pikachu.png'
+file_path = os.path.abspath('GatorTraderBackend/test/pikachu.png')
+print(file_path)
 with open(file_path, 'rb') as file:
     file_bytes = file.read()
     print(file_bytes)
