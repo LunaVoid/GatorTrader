@@ -24,7 +24,7 @@ app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_pa
 #CORS(app)
 #CORS(app, origin = "*")
 #CORS(app, resources={r"/api/*": {"origins": "*"}})
-'''
+
 CORS(app, resources={
     r"/api/*": {
         "origins": ["http://localhost:5173", "http://localhost:5000", "http://127.0.0.1:5000"],
@@ -32,20 +32,21 @@ CORS(app, resources={
         "allow_headers": ["Content-Type", "Authorization"]
     }
 })
-'''
 
+
+'''
 CORS(app, add_default_headers={
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization'
 })
-
+'''
 #@app.before_request
 #def basic_authentication():
 #    if request.method.lower() == 'options':
 #        return Response()
 
-@app.route("/api/signup", methods=["POST"])
+@app.route("/api/signup", methods=["POST", 'OPTIONS'])
 def signupFunction():
     data = request.get_json()
     # TODO! Add Environment Variable STUFF
@@ -108,8 +109,10 @@ def signupFunction():
         return jsonify(response_data), 400
 
 
-@app.route("/api/login", methods=["POST"])
+@app.route("/api/login", methods=["POST", 'OPTIONS'])
 def loginFunction():
+    if request.method == 'OPTIONS':
+        return '', 204
     try:
         data = request.get_json()
         response_data = {"message": "test"}
@@ -137,15 +140,13 @@ def loginFunction():
         elif resulter == True:
             userid = result[1][0]
             profilePic = result[1][1]
-            print(profilePic)
-            profilePic = base64.b64encode(profilePic).decode('utf-8')
             username = result[1][2]
             now = datetime.utcnow()
             expireDate = int((now + timedelta(hours=24)).replace(tzinfo=timezone.utc).timestamp())
             token = generateJWT(userid,username)
             response_data = {"message": f"Alr bro here is your token",
 
-            "token":token,"username":username,"profile":profilePic,"exp":expireDate}
+            "token":token,"username":username,"exp":expireDate}
             return jsonify(response_data), 200 
     
     except BadUsernameError as e:
@@ -179,7 +180,7 @@ def updateImage(data):
             if(success):
                 print("success time")
                 print(photoBytes)
-                return jsonify({"message": "File uploaded successfully","profile":photoBytes}), 200
+                return jsonify({"message": "File uploaded successfully"}), 200
             else:
                 raise AppError("Upload Failed")
                 return jsonify({"error": "Invalid file type"}), 400 
@@ -207,8 +208,8 @@ def test(data):
 @app.route("/api/getProfile", methods=["GET"])
 @checkLoggedInToken
 def getProfile(data):
-    successful, image, mimetype = getProfileImage(data['userid'])
     try:
+        successful, image, mimetype = getProfileImage(data['userid'])
         if successful:
             image_bytes = bytes(image)
             return image_bytes, 200, {'Content-Type': mimetype}  # Adjust content type as needed
