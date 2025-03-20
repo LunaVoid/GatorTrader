@@ -49,7 +49,9 @@ function About() {
             />
           </a>
             <h3>Hiral Shukla</h3>
-            <p>placeholder</p>
+            <a href="https://github.com/hiralshukla/" target="_blank" rel="noopener noreferrer">
+            <p>@hiralshukla</p>
+            </a>
           </div>
           <div className="developer-card">
           <a href="https://www.linkedin.com/in/paige-vanover/" target="_blank" rel="noopener noreferrer">
@@ -60,7 +62,9 @@ function About() {
             />
           </a>
             <h3>Paige Vanover</h3>
-            <p>placeholder</p>
+            <a href="https://github.com/pvanover/" target="_blank" rel="noopener noreferrer">
+            <p>@pvanover</p>
+            </a>
           </div>
           <div className="developer-card">
           <a href="https://www.linkedin.com/in/joshuabrunk/" target="_blank" rel="noopener noreferrer">
@@ -71,7 +75,9 @@ function About() {
             />
           </a>
             <h3>Josh</h3>
-            <p>placeholder</p>
+            <a href="https://github.com/LunaVoid" target="_blank" rel="noopener noreferrer">
+            <p>@LunaVoid</p>
+            </a>
           </div>
           <div className="developer-card">
           <a href="https://www.linkedin.com/in/shunmukavalsa/" target="_blank" rel="noopener noreferrer">
@@ -82,7 +88,9 @@ function About() {
             />
           </a>
             <h3>Shunmuka Valsa</h3>
-            <p>placeholder</p>
+            <a href="https://github.com/Shunmuka" target="_blank" rel="noopener noreferrer">
+            <p>@Shunmuka</p>
+            </a>
           </div>
         </div>
       </div>
