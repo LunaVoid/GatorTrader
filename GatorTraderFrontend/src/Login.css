@@ -4,8 +4,6 @@
     color: #000;
     font-family: "K2D";
     font-size: 36px;
-    font-weight: 400;
-    text-align: center; /* Centers text horizontally */
     font-size: clamp(24px, 4vw, 36px); /* Scales with screen size */
     font-weight: 500;
     text-align: center;
