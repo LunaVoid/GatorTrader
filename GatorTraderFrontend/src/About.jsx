@@ -41,38 +41,46 @@ function About() {
         <h2>Our Team</h2>
         <div className="developer-section">
           <div className="developer-card">
+          <a href="https://www.linkedin.com/in/hiral-shukla/" target="_blank" rel="noopener noreferrer">
             <img
               src={hiralImage}
               alt="Hiral Shukla"
               className="developer-image"
             />
+          </a>
             <h3>Hiral Shukla</h3>
             <p>placeholder</p>
           </div>
           <div className="developer-card">
+          <a href="https://www.linkedin.com/in/paige-vanover/" target="_blank" rel="noopener noreferrer">
             <img
               src={paigeImage}
               alt="Paige Vanover"
               className="developer-image"
             />
+          </a>
             <h3>Paige Vanover</h3>
             <p>placeholder</p>
           </div>
           <div className="developer-card">
+          <a href="https://www.linkedin.com/in/joshuabrunk/" target="_blank" rel="noopener noreferrer">
             <img
               src={joshImage}
               alt="Josh"
               className="developer-image"
             />
+          </a>
             <h3>Josh</h3>
             <p>placeholder</p>
           </div>
           <div className="developer-card">
+          <a href="https://www.linkedin.com/in/shunmukavalsa/" target="_blank" rel="noopener noreferrer">
             <img
               src={shunmukaImage}
               alt="Shunmuka Valsa"
               className="developer-image"
             />
+          </a>
             <h3>Shunmuka Valsa</h3>
             <p>placeholder</p>
           </div>
