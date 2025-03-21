@@ -4,10 +4,11 @@ import { useUser } from "./utils/userContext";
 import './App.css';
 import './Login.css'
 import './MyProfile.css'
-import defaultPhoto from '/defaultPhoto.jpg'
 import loading from '../public/loading.gif'
 import loading2 from '../public/loading2.gif'
 import loading3 from '../public/loading3.gif'
+import defaultPhoto from '../public/defaultPhoto.jpg'
+
 function MyProfile() {
   const { user, logoutUser, profilePic, imageSender,token, imageGetter} = useUser();
   const [username, setUsername] = useState(user); // Example username
@@ -36,8 +37,9 @@ function MyProfile() {
 
   useEffect(() => {
     
-    if(profilePic == ""){
+    if(profilePic == "" || profilePic == null){
       setprofileImage(defaultPhoto)
+      console.log("default image")
     }
     else{
       setprofileImage(loading3)
