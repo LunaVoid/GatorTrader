@@ -56,7 +56,7 @@ function MyProfile() {
         <div className="profile-box">
           <h2>Profile Information</h2>
           <div className="profile-info">
-            <p>Profile Pic goes Here</p>
+            <p>Supported formats: WEBP, JPG, GIF, PNG. <br></br> Maximum file size: 1MB</p>
             <img width="150px" src = {profileImage}></img>
             <p><strong>Username:</strong> {user}</p>
             
