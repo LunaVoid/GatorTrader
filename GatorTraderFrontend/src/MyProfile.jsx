@@ -5,9 +5,9 @@ import './App.css';
 import './Login.css'
 import './MyProfile.css'
 import defaultPhoto from '/defaultPhoto.jpg'
-import loading from '/loading.gif'
-import loading2 from '/loading2.gif'
-import loading3 from '/loading3.gif'
+import loading from '../public/loading.gif'
+import loading2 from '../public/loading2.gif'
+import loading3 from '../public/loading3.gif'
 function MyProfile() {
   const { user, logoutUser, profilePic, imageSender,token, imageGetter} = useUser();
   const [username, setUsername] = useState(user); // Example username
