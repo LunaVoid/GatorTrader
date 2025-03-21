@@ -65,7 +65,7 @@ function MyProfile() {
           <div className="profile-info">
             <p>Supported formats: WEBP, JPG, GIF, PNG. <br></br> Maximum file size: 1MB</p>
             <img width="150px" src = {profileImage}></img>
-            <p><strong>Username:</strong> {user}</p>
+            <p style={{ marginTop: '10px' }}><strong>Username:</strong> {user}</p>
             
           </div>
           <p>Choose a new Profile Photo!</p>
