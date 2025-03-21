@@ -5,7 +5,14 @@ from psycopg2 import OperationalError
 from exceptions import DatabaseConnectionError,  AppError
 
 
+
 BAD_WORDS = ["admin", "root", "fuck", "shit", "asshole"]
+
+
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp', 'gif'}
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 def validateEmail(email):  # Validates the email

@@ -3,30 +3,54 @@ the main folder because it makes it easier to serve the react app'''
 
 from flask import Flask, request, jsonify, send_from_directory, Response
 from sanitize import (validateEmail, validatePassword,
-                          validateUsername, isDuplicate, isDuplicateUsername)
+                          validateUsername, isDuplicate, isDuplicateUsername, allowed_file)
 from auth import passwordHashedSalted, signUp, generateJWT,isPasswordHashValid, checkLoggedInToken
 from exceptions import (DatabaseConnectionError, DuplicateError, ValidationError, AppError
                         , InvalidEmailError, DuplicateUsernameError, InvalidPassword, BadUsernameError)
 from flask_cors import CORS
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
+from werkzeug.utils import secure_filename
+from operations import setProfileImage, getProfileImage
+import base64
 import os
+import imghdr
 
 load_dotenv()
-print(os.environ['DB_HOST'])
-
+####DEV REMOVE THIS IN PROD
 
 app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_path='/')
-CORS(app, origins=['http://localhost:5173','http://127.0.0.1:5000'])
+#CORS(app, origins=['http://localhost:5173','http://127.0.0.1:5000'])
 #CORS(app)
+#CORS(app, origin = "*")
+#CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+'''
+CORS(app, resources={
+    r"/api/*": {
+        "origins": ["http://localhost:5173", "http://localhost:5000", "http://127.0.0.1:5000"],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
+'''
+
+
+CORS(app, add_default_headers={
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+})
 
 #@app.before_request
 #def basic_authentication():
 #    if request.method.lower() == 'options':
 #        return Response()
 
-@app.route("/api/signup", methods=["POST"])
+@app.route("/api/signup", methods=["POST", 'OPTIONS'])
 def signupFunction():
+    if request.method == 'OPTIONS':
+        return '', 204
     data = request.get_json()
     # TODO! Add Environment Variable STUFF
     # Print the data for debugging (you can log or store it as needed)
@@ -88,8 +112,10 @@ def signupFunction():
         return jsonify(response_data), 400
 
 
-@app.route("/api/login", methods=["POST"])
+@app.route("/api/login", methods=["POST", 'OPTIONS'])
 def loginFunction():
+    if request.method == 'OPTIONS':
+        return '', 204
     try:
         data = request.get_json()
         response_data = {"message": "test"}
@@ -116,11 +142,13 @@ def loginFunction():
             raise InvalidPassword("Password Invalid") 
         elif resulter == True:
             userid = result[1][0]
-            username = result[1][1]
+            profilePic = result[1][1]
+            username = result[1][2]
             now = datetime.utcnow()
             expireDate = int((now + timedelta(hours=24)).replace(tzinfo=timezone.utc).timestamp())
             token = generateJWT(userid,username)
             response_data = {"message": f"Alr bro here is your token",
+
             "token":token,"username":username,"exp":expireDate}
             return jsonify(response_data), 200 
     
@@ -135,7 +163,44 @@ def loginFunction():
         return jsonify(response_data), 400 
     except Exception as e:
         # For any other exception
-        raise AppError("Internal Server Error Contact Admin or Navigate Back to Main Page")
+        raise AppError(f"Internal Server Error Contact Admin {str(e)}")
+
+@app.route("/api/profileupdate", methods=["POST"])
+@checkLoggedInToken
+def updateImage(data):
+    try:
+        print(data)
+        print(data['userid'])
+        if 'image' not in request.files:
+            return jsonify({"error": "No image file provided"}), 400
+            
+        file = request.files['image']
+        if file.filename == '':
+            return jsonify({"error": "No selected file"}), 400
+        
+        if file and allowed_file(file.filename):
+            success,photoBytes = setProfileImage(file,data['userid'])
+            if(success):
+                print("success time")
+                print(photoBytes)
+                return jsonify({"message": "File uploaded successfully"}), 200
+            else:
+                raise AppError("Upload Failed")
+                return jsonify({"error": "Invalid file type"}), 400 
+        return jsonify({"error": "Invalid file type"}), 400
+
+    except DatabaseConnectionError as e:
+        response_data = {"message": f" Database Error:{str(e)}"}
+        print(response_data)
+        return jsonify(response_data), 500
+    except AppError as e:
+        response_data = {"message": f"{str(e)}"}
+        print(response_data)
+        return jsonify(response_data), 400 
+    except Exception as e:
+        # For any other exception
+        print(e)
+        raise AppError(f"Internal Server Error Contact Admin {str(e)}")
 
 @app.route("/api/test", methods=["GET"])
 @checkLoggedInToken
@@ -143,11 +208,30 @@ def test(data):
     print(data)
     return data['username'],200
 
-@app.route("/api/private", methods=["GET"])
+@app.route("/api/getProfile", methods=["GET"])
 @checkLoggedInToken
-def tester(data):
-    print(data)
-    return "Private Data",200
+def getProfile(data):
+    try:
+        successful, image, mimetype = getProfileImage(data['userid'])
+        if successful:
+            image_bytes = bytes(image)
+            return image_bytes, 200, {'Content-Type': mimetype}  # Adjust content type as needed
+        else:
+            # Handle the case when image retrieval was unsuccessful
+            return {"error": "Profile image not found"}, 404
+    except DatabaseConnectionError as e:
+        response_data = {"message": f" Database Error:{str(e)}"}
+        print(response_data)
+        return jsonify(response_data), 500
+    except AppError as e:
+        response_data = {"message": f"{str(e)}"}
+        print(response_data)
+        return jsonify(response_data), 400 
+    except Exception as e:
+        # For any other exception
+        print(e)
+        raise AppError(f"Internal Server Error Contact Admin {str(e)}")
+
 
 @app.route('/', defaults={'path': ''})
 @app.route("/<string:path>")

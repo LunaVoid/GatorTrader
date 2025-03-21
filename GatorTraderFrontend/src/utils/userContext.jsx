@@ -1,7 +1,6 @@
 import { createContext, useContext, useState } from 'react';
-import { logIn, signUp } from './auth';
+import { getPhoto, logIn, sendPhoto, signUp } from './auth';
 import { useNavigate } from "react-router-dom";
-
 const UserContext = createContext(null);
 
 
@@ -10,6 +9,7 @@ export function UserProvider({ children }) {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
+    const [profilePic, setProfilePic] = useState(null)
     const [exp,setEXP] = useState(null);
     
     const loadUser = () =>{
@@ -76,12 +76,47 @@ export function UserProvider({ children }) {
         }
     };
 
+    const imageSender = async (image,token) => {
+        try {
+            console.log("Here");
+            if(token){
+                const data = await sendPhoto(image, token);
+                console.log(data)
+                return data;
+            }
+            else{
+                console.error("Token Error")
+            }
+              // Success, data will be returned
+        } catch (error) {
+            console.error('Error during image change', error);
+            throw error;  // Propagate the error to the component
+        }
 
+    }
 
+    const imageGetter = async (token) => {
+        try {
+            console.log("Here");
+            if(token){
+                const data = await getPhoto( token);
+                console.log(data)
+                const imageObjectUrl = URL.createObjectURL(data);
+                return imageObjectUrl;
+            }
+            else{
+                console.error("Token Error")
+            }
+              // Success, data will be returned
+        } catch (error) {
+            console.error('Error during image change', error);
+            throw error;  // Propagate the error to the component
+        }
 
+    }
     
     return (
-        <UserContext.Provider value={{ user, token, loginUser, logoutUser, signupUser, loadUser }}>
+        <UserContext.Provider value={{ user, token, profilePic, setProfilePic, loginUser, logoutUser, signupUser,loadUser, imageSender, imageGetter }}>
             {children}
         </UserContext.Provider>
     );

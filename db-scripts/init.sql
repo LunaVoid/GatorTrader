@@ -1,7 +1,8 @@
 \c gatortrader
 \l
 CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
+    userid SERIAL PRIMARY KEY,
+    profile_pic BYTEA,
     username VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -9,7 +10,8 @@ CREATE TABLE IF NOT EXISTS users (
     email_verified BOOLEAN DEFAULT FALSE,
     token_expires TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    image_content_type VARCHAR(255)
 );
 
 GRANT ALL PRIVILEGES ON TABLE users TO sammy;

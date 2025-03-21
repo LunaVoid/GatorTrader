@@ -3,6 +3,7 @@ from sanitize import validateEmail, isDuplicate, validateUsername, validatePassw
 from auth import  generateJWT, signUp, verifyJWT, isPasswordHashValid
 from exceptions import jwtExpired, AppError
 import jwt
+from operations import setProfileImage
 
 def test_find_duplicates():
     testEmail = "test@test.com"

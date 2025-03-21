@@ -9,6 +9,7 @@ function SignUpForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
+    const [picture, setPicture] = useState()
     const { user, loginUser, logoutUser, signupUser} = useUser();
     const [error, setError] = useState('');
     const navigate = useNavigate();
