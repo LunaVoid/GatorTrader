@@ -10,7 +10,7 @@ import loading3 from '../public/loading3.gif'
 import defaultPhoto from '../public/defaultPhoto.jpg'
 
 function MyProfile() {
-  const { user, logoutUser, profilePic, imageSender,token, imageGetter} = useUser();
+  const { user, logoutUser, profilePic, setProfilePic, imageSender,token, imageGetter} = useUser();
   const [username, setUsername] = useState(user); // Example username
   const [profileImage, setprofileImage] = useState(profilePic)
   //Removed Password, frontend should never store it!
@@ -34,23 +34,28 @@ function MyProfile() {
     return profileLocation
   }
 
+  useEffect(()=>{
+    const imageStuffer = async () => {
+      const imageData = await fetchImage(); // assuming fetchImage is a function that returns a promise
+      console.log(imageData);
+      setProfilePic(imageData);
+    };
+    imageStuffer();
+
+  },[])
+
 
   useEffect(() => {
-    
     if(profilePic == "" || profilePic == null){
       setprofileImage(defaultPhoto)
       console.log("default image")
     }
     else{
-      setprofileImage(loading3)
-      const imageStuffer = async () => {
-        const imageData = await fetchImage(); // assuming fetchImage is a function that returns a promise
-        console.log(imageData);
-        setprofileImage(imageData);
-      };
-      imageStuffer();
+      setprofileImage(profilePic)
+      console.log("here")
+      
     }
-  },[])
+  },[profilePic])
   return (
     <div>
       <Navbar />

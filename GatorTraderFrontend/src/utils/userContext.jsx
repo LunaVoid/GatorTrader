@@ -112,7 +112,7 @@ export function UserProvider({ children }) {
     }
     
     return (
-        <UserContext.Provider value={{ user, token, profilePic, loginUser, logoutUser, signupUser,loadUser, imageSender, imageGetter }}>
+        <UserContext.Provider value={{ user, token, profilePic, setProfilePic, loginUser, logoutUser, signupUser,loadUser, imageSender, imageGetter }}>
             {children}
         </UserContext.Provider>
     );

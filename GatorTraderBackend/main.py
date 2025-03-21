@@ -25,6 +25,7 @@ app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_pa
 #CORS(app, origin = "*")
 #CORS(app, resources={r"/api/*": {"origins": "*"}})
 
+'''
 CORS(app, resources={
     r"/api/*": {
         "origins": ["http://localhost:5173", "http://localhost:5000", "http://127.0.0.1:5000"],
@@ -32,15 +33,15 @@ CORS(app, resources={
         "allow_headers": ["Content-Type", "Authorization"]
     }
 })
-
-
 '''
+
+
 CORS(app, add_default_headers={
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization'
 })
-'''
+
 #@app.before_request
 #def basic_authentication():
 #    if request.method.lower() == 'options':
