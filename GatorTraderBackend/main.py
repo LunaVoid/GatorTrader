@@ -48,6 +48,8 @@ CORS(app, add_default_headers={
 
 @app.route("/api/signup", methods=["POST", 'OPTIONS'])
 def signupFunction():
+    if request.method == 'OPTIONS':
+        return '', 204
     data = request.get_json()
     # TODO! Add Environment Variable STUFF
     # Print the data for debugging (you can log or store it as needed)
