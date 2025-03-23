@@ -17,45 +17,75 @@ function MyProfile() {
 
   async function chooseSendImage(e){
     const file = e.target.files[0];
-    setprofileImage(loading3)
-    if (file) {
-      const returner = await imageSender(file,token);
-      console.log(returner)
-      console.log(returner.message);
-      console.log("now here")
+  setprofileImage(loading3);
+
+  if (file) {
+    const returner = await imageSender(file, token);
+    console.log("Upload return:", returner);
+
+    // Fetch the newly uploaded image from the backend
+    const profileLocation = await imageGetter(token);
+    console.log("Updated profile image location:", profileLocation);
+
+    if (profileLocation) {
+      setprofileImage(profileLocation);
+      setProfilePic(profileLocation); // update global context
+    } else {
+      setprofileImage(defaultPhoto);
+      setProfilePic(null);
     }
-    console.log("update Profile")
-    const profileLocation = await imageGetter(token)
-    setprofileImage(profileLocation)
   }
+}
 
   async function fetchImage(){
     const profileLocation = await imageGetter(token)
     return profileLocation
   }
 
+  async function isBlobEmpty(blobUrl) {
+    try {
+      const res = await fetch(blobUrl);
+      const blob = await res.blob();
+      return blob.size === 0 || !blob.type;
+    } catch (err) {
+      console.error("Blob fetch failed:", err);
+      return true; // If there's any error, treat as invalid
+    }
+  }
+
   useEffect(()=>{
     const imageStuffer = async () => {
-      const imageData = await fetchImage(); // assuming fetchImage is a function that returns a promise
-      console.log(imageData);
-      setProfilePic(imageData);
+      const imageData = await fetchImage(); // This returns a blob URL
+      console.log("Fetched image data:", imageData);
+  
+      // Check if it's a blob URL AND if it's actually empty
+      if (
+        !imageData ||
+        imageData === "null" ||
+        imageData === "undefined" ||
+        imageData.trim() === "" ||
+        (imageData.startsWith("blob:") && (await isBlobEmpty(imageData)))
+      ) {
+        console.log("No valid profile image found, using default.");
+        setprofileImage(defaultPhoto);
+        setProfilePic(null);
+      } else {
+        console.log("Valid profile image found.");
+        setprofileImage(imageData);
+        setProfilePic(imageData);
+      }
     };
+  
+    setprofileImage(defaultPhoto);
     imageStuffer();
-
-  },[])
-
-
+  }, []);
+  
   useEffect(() => {
-    if(profilePic == "" || profilePic == null){
-      setprofileImage(defaultPhoto)
-      console.log("default image")
+    if (profilePic) {
+      setprofileImage(profilePic);
+      console.log("here");
     }
-    else{
-      setprofileImage(profilePic)
-      console.log("here")
-      
-    }
-  },[profilePic])
+  }, [profilePic]);
   return (
     <div>
       <Navbar />
