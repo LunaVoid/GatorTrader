@@ -18,8 +18,12 @@ function Navbar() {
                         <Link to="/Learn" className="navbar__links">Learn</Link>
                     </li>
                     <li className="navbar_item">
+                        <Link to="/Intro" className="navbar__links">Intro</Link>
+                    </li>
+                    <li className="navbar_item">
                         <Link to="/MyProfile" className="navbar__links">My Profile</Link>
                     </li>
+                    
                 </ul>
             </div>
         </nav>

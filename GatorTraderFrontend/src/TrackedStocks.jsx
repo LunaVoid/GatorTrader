@@ -167,11 +167,17 @@ function TrackedStocks() {
   
         <div className="stock-container">
           <div className="stock-display">
-            <h3 className= "selected-stock"> Selected Stock: {selectedTicker}</h3>
-              {loading && <p>Loading stock data for {selectedTicker}...</p>}
+            
+            
+            
+              {loading && <div className = "poppup">
+                  <h3>Welcome to Gator Trader!</h3>
+                  Please select a stock from the sidebar to get started. Once a stock is selected, feel free to zoom in and drag the graph to view the stock trends you are interested in.
+                </div>}
               {!loading && !stockData && <p>No data available for {selectedTicker}.</p>}
               {!loading && stockData && (
               <div className="chart-wrapper">
+                <h3 className= "selected-stock"> Selected Stock: {selectedTicker}</h3>
                 <AreaChart ticker={selectedTicker} data={stockData} ratio={3} type="svg"  />
                 
                 { /*Stock Descriptions */}
