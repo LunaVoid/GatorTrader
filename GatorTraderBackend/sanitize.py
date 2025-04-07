@@ -1,5 +1,7 @@
 import json
 import re
+import jwt
+import datetime
 from creds import get_db_connection
 from psycopg2 import OperationalError
 from exceptions import DatabaseConnectionError,  AppError
@@ -26,7 +28,6 @@ def validateEmail(email):  # Validates the email
     if any(bad in email.lower() for bad in BAD_WORDS):
         return False
     return True
-
 
 # USE WITH, IT USES TRANSACTIONS
 def isDuplicate(email):

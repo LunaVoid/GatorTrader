@@ -10,8 +10,6 @@ from exceptions import jwtExpired,  AppError
 from flask import request, jsonify
 from dotenv import load_dotenv
 load_dotenv()
-from flask import url_for
-from flask_mail import Mail, Message
 
 # CHANGE THIS FOR PROD
 os.environ['TOPSECRET'] = 'ultrasecuresecretjwtsecretysecret'
@@ -67,10 +65,6 @@ def verifyJWT(token):
     except jwt.InvalidTokenError:
             raise jwt.InvalidTokenError
         
-def send_verification_email(email, token):
-    verification_url = url_for('verify_email', token=token, _external = True)
-    msg = Message("Verify Your Email",
-                  sender)
 
 def isPasswordHashValid(username,password):
     print(username)

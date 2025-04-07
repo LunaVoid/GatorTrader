@@ -12,6 +12,8 @@ from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
 from operations import setProfileImage, getProfileImage
+from sendEmail import (generate_email_verification_token, storeEmailToken, send_verification_email, register_verification_route)
+
 import base64
 import os
 import imghdr
@@ -46,6 +48,12 @@ CORS(app, add_default_headers={
 #def basic_authentication():
 #    if request.method.lower() == 'options':
 #        return Response()
+
+app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER', 'smtp.gmail.com')
+app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', 587))
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 
 @app.route("/api/signup", methods=["POST", 'OPTIONS'])
 def signupFunction():
@@ -90,8 +98,12 @@ def signupFunction():
         signUp(username, password, data["profile_pic"],
                 email)
 
-        response_data = {"message": "Signup successful"}
+        token = generate_email_verification_token(email)
+        storeEmailToken(email, token)
+        send_verification_email(email, token, mail)
 
+
+        response_data = {"message": "Signup successful. A verification email has been sent."}
         # Return a response with status code 200
         return jsonify(response_data), 200
 
