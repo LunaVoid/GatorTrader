@@ -2,7 +2,7 @@
 import './App.css';
 import './Login.css';
 import './components/Navbar.jsx';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Intro.css'; // Optional styling
 import { useNavigate } from 'react-router-dom';
 
@@ -12,6 +12,8 @@ const Intro = () => {
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
   const navigate = useNavigate();
+  const [level, setLevel] = useState("");
+  
 
   const questions = [
     {
@@ -26,23 +28,23 @@ const Intro = () => {
     {
       id: 2,
       question: "Are you currently invested in the stock market?",
-      options: ["React", "Angular", "Vue", "Django"],
+      options: ["I am not and I have no clue where to begin", "I am somewhat familiar but am not invested", "I am invested and am confident in my level of knowledge"],
       begin: "I am not and I have no clue where to begin.",
       inter: "I am somewhat familiar but am not invested",
       adv: "I am invested and am confident in my level of knowledge",
     },
     {
       id: 3,
-      question: "What does HTML stand for?",
+      question: "Do you feel your college major/minor teaches you about finances?",
       options: [
-        "Hyper Text Markup Language",
-        "Highlevel Text Markup Language",
-        "Hyper Tool Multi Language",
-        "Hyperlink Text Machine Language",
+        "Yes, I am in the College of Business or have an economic related major/minor",
+        "Not sure, I may take a class about it but I already feel ok with my knowledge level on finance subjects.",
+        "My college major/minor will not discuss finances to a significant degree if at all",
+        
       ],
-      begin: "Hyper Text Markup Language",
-      inter: "Highlevel Text Markup Language",
-      adv: "Hyperlink Text Machine Language",
+      begin: "My college major/minor will not discuss finances to a significant degree if at all",
+      inter: "Not sure, I may take a class about it but I already feel ok with my knowledge level on finance subjects.",
+      adv: "Yes, I am in the College of Business or have an economic related major/minor",
     },
   ];
 
@@ -59,27 +61,43 @@ const Intro = () => {
       else if(answers[q.id] == q.inter) {
         newScore += 2;
       }
-      else(answers[q.id] == q.adv); {
+      else if(answers[q.id] == q.adv) {
         newScore += 3;
       }
     });
     setScore(newScore);
     setSubmitted(true);
-    navigate('/TrackedStocks');
+    
   };
+
+  const getLevel = () => {
+    let lev = "";
+    if(score <= 3){
+      lev = "beginner";
+    } else if(score <= 6){
+      lev = "intermediate";
+    } else if(score > 6){
+      lev = "advanced";
+    }
+    setLevel(lev);
+  }
+
+  useEffect(() => {
+    if (submitted) {
+      getLevel();
+    }
+  }, );
 
   const handleClose = () => {
     setShowQuiz(false);
     setAnswers({});
     setSubmitted(false);
     setScore(0);
+    navigate('/TrackedStocks');
   };
 
   return (
     <div>
-      
-
-      
         <div className="popup-overlay">
           <div className="quiz-popup">
             <h2>Financial Literacy Survey</h2>
@@ -105,7 +123,8 @@ const Intro = () => {
               <button onClick={handleSubmit}>Submit</button>
             ) : (
               <>
-                <p>Your score: {score} / {questions.length}</p>
+          
+                <p>Your level: {level} </p>
                 <button onClick={handleClose}>Close</button>
             
               </>

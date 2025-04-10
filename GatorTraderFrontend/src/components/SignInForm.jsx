@@ -23,7 +23,7 @@ function SignInForm() {
             data = await loginUser(userData)
             console.log("here in signin")
             setError("");
-            navigate("/TrackedStocks")
+            navigate("/Intro")
         }
 
         catch(error){
