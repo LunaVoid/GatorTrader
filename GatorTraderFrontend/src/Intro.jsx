@@ -7,12 +7,12 @@ import './Intro.css'; // Optional styling
 import { useNavigate } from 'react-router-dom';
 
 const Intro = () => {
-  const [showQuiz, setShowQuiz] = useState(false);
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
   const navigate = useNavigate();
   const [level, setLevel] = useState("");
+  
   
 
   const questions = [
@@ -89,17 +89,17 @@ const Intro = () => {
   }, );
 
   const handleClose = () => {
-    setShowQuiz(false);
     setAnswers({});
     setSubmitted(false);
     setScore(0);
+    localStorage.setItem("isNew", false);
     navigate('/TrackedStocks');
   };
 
   return (
     <div>
         <div className="popup-overlay">
-          <div className="quiz-popup">
+          <div className="popup">
             <h2>Financial Literacy Survey</h2>
             {questions.map((q) => (
               <div key={q.id} className="question-block">

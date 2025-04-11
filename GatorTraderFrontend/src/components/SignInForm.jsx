@@ -20,10 +20,17 @@ function SignInForm() {
         let data;
         //Store Token in context and then redirect once recieved.
         try{
-            data = await loginUser(userData)
-            console.log("here in signin")
+            data = await loginUser(userData);
+            console.log("here in signin");
             setError("");
-            navigate("/Intro")
+            const isNew = localStorage.getItem("isNew");
+            if (!isNew){
+                navigate("/Intro");
+            }
+            else{
+                navigate("/TrackedStocks");
+            }
+            
         }
 
         catch(error){
