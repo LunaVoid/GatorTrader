@@ -22,63 +22,63 @@ function TrackedStocks() {
   const stockDescriptions = {
     "NVDA": {
       founded: "1993",
-      industry: "Semiconductor and Artificial Intelligence",
-      overview: "NVIDIA designs GPUs for gaming and professional markets, as well as AI and high-performance computing.",
-      popularity: "NVIDIA's stock has experienced significant growth, becoming one of the top performers in the market."
+      industry: "Semiconductors, Artificial Intelligence, and Computing",
+      overview: "NVIDIA Corporation is a global leader in visual computing technologies. Initially known for pioneering the GPU, NVIDIA now plays a critical role in AI development, autonomous vehicles, data centers, and high-performance computing. Its cutting-edge platforms power innovations in fields ranging from gaming and creative design to scientific research.",
+      popularity: "NVIDIA's stock has surged in recent years, driven by its leadership in AI and chip technology, making it a cornerstone in tech-focused portfolios and one of the most valuable semiconductor companies in the world."
     },
     "GOOGL": {
       founded: "1998",
-      industry: "Technology and Internet Services",
-      overview: "Alphabet is the parent company of Google, offering services like search, advertising, cloud computing, and hardware products.",
-      popularity: "Alphabet's stock is among the top companies by market capitalization, reflecting its strong market presence."
+      industry: "Internet Services, Digital Advertising, Artificial Intelligence",
+      overview: "Alphabet Inc. is the parent company of Google and a conglomerate of companies developing technologies across search, cloud computing, self-driving cars (Waymo), life sciences (Verily), and more. Google remains its core business, leading the global market in digital advertising and data services.",
+      popularity: "As one of the 'Big Five' tech companies, Alphabet consistently ranks among the highest in global market capitalization, with GOOGL shares widely held by both retail and institutional investors."
     },
     "AMZN": {
       founded: "1994",
-      industry: "E-commerce, Cloud Computing, and Digital Streaming",
-      overview: "Amazon started as an online bookstore and evolved into a global e-commerce, cloud, and digital streaming giant.",
-      popularity: "Amazon's stock has shown significant growth, ranking among the largest companies by market cap."
+      industry: "E-Commerce, Cloud Computing, Artificial Intelligence, Logistics",
+      overview: "Amazon.com, Inc. began as an online bookstore and has transformed into one of the world's largest and most diverse tech companies. It dominates e-commerce, leads in cloud infrastructure through Amazon Web Services (AWS), and has a strong presence in AI, logistics, and digital entertainment.",
+      popularity: "Amazon's stock reflects its vast ecosystem and innovation-driven growth. It is a frequent inclusion in major indexes and one of the most influential tech stocks globally."
     },
     "MSFT": {
       founded: "1975",
-      industry: "Technology and Software",
-      overview: "Microsoft develops, licenses, and sells computer software, hardware, and services, including Azure cloud.",
-      popularity: "Microsoft remains one of the most valuable companies globally, with its stock maintaining a strong position in the market."
+      industry: "Software, Cloud Computing, Productivity Tools, AI",
+      overview: "Microsoft Corporation is a multinational tech giant best known for Windows, Microsoft Office, and its Azure cloud platform. It also owns LinkedIn, GitHub, and Xbox. The company is a key player in enterprise software, AI research, and cloud infrastructure.",
+      popularity: "MSFT is considered a blue-chip stock and a favorite among long-term investors, consistently ranking among the top companies by market value and dividend strength."
     },
     "TSLA": {
       founded: "2003",
-      industry: "Electric Vehicles and Clean Energy",
-      overview: "Tesla designs and manufactures electric vehicles and renewable energy products.",
-      popularity: "Tesla's stock has experienced volatility but remains among the top companies by market capitalization."
+      industry: "Electric Vehicles, Clean Energy, Automotive Technology",
+      overview: "Tesla, Inc. designs and manufactures electric vehicles (EVs), battery storage systems, and solar energy products. Led by Elon Musk, Tesla has redefined the auto industry by pushing boundaries in automation, battery tech, and sustainable transportation.",
+      popularity: "Tesla's stock has shown dramatic volatility and growth, making it a symbol of the EV revolution and a frequent topic in both retail and institutional investing circles."
     },
     "AAPL": {
       founded: "1976",
-      industry: "Technology and Consumer Electronics",
-      overview: "Apple designs and manufactures consumer electronics, software, and online services, including the iPhone and Mac.",
-      popularity: "Apple's stock is among the largest by market capitalization, reflecting its strong market presence."
+      industry: "Consumer Electronics, Software, Digital Services",
+      overview: "Apple Inc. is known globally for its innovative hardware and software products, including the iPhone, iPad, Mac, and Apple Watch, as well as services like iCloud, Apple Music, and the App Store. Its ecosystem is tightly integrated, delivering seamless user experiences.",
+      popularity: "Apple is the first company to surpass a $3 trillion market cap, and its stock is a staple in both growth and value investing strategies, representing stability, innovation, and brand loyalty."
     },
     "JPM": {
-      founded: "2000 (merger)",
-      industry: "Financial Services",
-      overview: "JPMorgan Chase is a multinational investment bank and financial services company.",
-      popularity: "JPMorgan Chase is a leading financial institution, with its stock reflecting its significant role in the banking sector."
+      founded: "2000 (merger of J.P. Morgan & Co. and Chase Manhattan Bank)",
+      industry: "Banking, Investment Services, Asset Management",
+      overview: "JPMorgan Chase & Co. is the largest bank in the U.S. by assets, offering a wide array of financial services, including investment banking, asset management, consumer and commercial banking, and wealth management.",
+      popularity: "JPM is a leader in global finance and a key component of major financial indexes. Its stock is viewed as a benchmark for the health of the banking sector."
     },
     "BAC": {
-      founded: "1998 (merger)",
-      industry: "Financial Services",
-      overview: "Bank of America offers banking and financial services, including consumer banking and investment management.",
-      popularity: "Bank of America is one of the largest financial institutions, with its stock maintaining a strong presence in the market."
+      founded: "1998 (merger of NationsBank and BankAmerica)",
+      industry: "Financial Services, Retail Banking, Investment Banking",
+      overview: "Bank of America Corporation provides banking, investing, asset management, and financial risk management services to individuals, corporations, and governments worldwide. It has a vast consumer banking footprint in the U.S.",
+      popularity: "As one of the 'Big Four' banks in the U.S., BAC is widely held in financial portfolios and tracks overall economic trends, making it a bellwether for the financial services industry."
     },
     "NFLX": {
       founded: "1997",
-      industry: "Streaming Entertainment",
-      overview: "Netflix is a streaming service offering a wide variety of content in over 190 countries.",
-      popularity: "Netflix's stock has seen significant growth, reflecting its leading position in the streaming industry."
+      industry: "Streaming Media, Entertainment Technology, Content Production",
+      overview: "Netflix, Inc. is a pioneer in streaming entertainment, offering on-demand movies, TV series, and original content across global markets. It produces critically acclaimed content through Netflix Studios and continues to expand into gaming and interactive media.",
+      popularity: "Netflix's stock surged in the streaming era, earning a place among the 'FAANG' stocks. While competition has grown, NFLX remains a dominant force in global digital entertainment."
     },
     "META": {
       founded: "2004",
-      industry: "Social Media and Technology",
-      overview: "Meta Platforms owns and operates social media platforms like Facebook, Instagram, and WhatsApp.",
-      popularity: "Meta's stock is among the top companies by market capitalization, reflecting its strong market presence."
+      industry: "Social Media, Virtual Reality, AI, Digital Advertising",
+      overview: "Meta Platforms Inc. (formerly Facebook Inc.) owns and operates Facebook, Instagram, WhatsApp, and Oculus. It focuses on connecting people through digital platforms and is investing heavily in AI and the metaverse through initiatives like Reality Labs.",
+      popularity: "Meta is a tech powerhouse in digital communication and advertising, with a stock that reflects both innovation potential and the evolving challenges of data privacy and regulation."
     }
   };
 
@@ -167,11 +167,17 @@ function TrackedStocks() {
   
         <div className="stock-container">
           <div className="stock-display">
-            <h3 className= "selected-stock"> Selected Stock: {selectedTicker}</h3>
-              {loading && <p>Loading stock data for {selectedTicker}...</p>}
+            
+            
+            
+              {loading && <div className = "poppup">
+                  <h3>Welcome to Gator Trader!</h3>
+                  Please select a stock from the sidebar to get started. Once a stock is selected, feel free to zoom in and drag the graph to view the stock trends you are interested in.
+                </div>}
               {!loading && !stockData && <p>No data available for {selectedTicker}.</p>}
               {!loading && stockData && (
               <div className="chart-wrapper">
+                <h3 className= "selected-stock"> Selected Stock: {selectedTicker}</h3>
                 <AreaChart ticker={selectedTicker} data={stockData} ratio={3} type="svg"  />
                 
                 { /*Stock Descriptions */}
