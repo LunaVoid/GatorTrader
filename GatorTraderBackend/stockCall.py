@@ -23,7 +23,7 @@ data_dir = '../GatorTraderFrontend/public/data'
 stocks = ["GOOGL", "AMZN", "MSFT", "TSLA", "AAPL", "NFLX", "NVDA", "META", "JPM", "BAC"]
 
 def saveStock(symbol):
-    url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={hiral_api_key}"
+    url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={hiral_api_key}&outputsize=full"
 
     try:
         response = requests.get(url)
