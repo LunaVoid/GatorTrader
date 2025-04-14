@@ -30,6 +30,15 @@ cur.execute('''CREATE TABLE IF NOT EXISTS users (
     mimetype VARCHAR(255)
     );'''
 )
+cur.execute('''
+    CREATE TABLE IF NOT EXISTS saved_stocks (
+        stock_id SERIAL PRIMARY KEY,
+        userid INT NOT NULL,
+        ticker VARCHAR(10) NOT NULL,
+        FOREIGN KEY (userid) REFERENCES users(userid) ON DELETE CASCADE
+    );
+''')
+
 # Insert data into the table
 file_bytes = ""
 file_path = os.path.abspath('test/pikachu.png')
@@ -46,6 +55,8 @@ cur.execute('INSERT INTO users (username, password, profile_pic, email, mimetype
              file_bytes,
              'hiralshukla@ufl.edu', 'image/webp')
             )
+cur.execute('INSERT INTO saved_stocks (userid, ticker) VALUES (%s, %s);', (1, 'AAPL'))
+cur.execute('INSERT INTO saved_stocks (userid, ticker) VALUES (%s, %s);', (1, 'MSFT'))
 # Execute SELECT query
 cur.execute("SELECT * FROM users")
 
@@ -58,6 +69,12 @@ for row in rows:
 
 cur.execute('SELECT profile_pic FROM users WHERE username = %s', ('hiral',))
 retrieved_bytes = cur.fetchone()[0]
+
+cur.execute('SELECT ticker FROM saved_stocks WHERE userid = %s;', (1,))
+saved_stocks = cur.fetchall()
+print("Saved stocks for user 1:")
+for stock in saved_stocks:
+    print(stock)
 
 conn.commit()
 

@@ -6,9 +6,10 @@ pyjwt
 flask_cors
 python-dotenv
 python-magic
-
 scikit-learn
 pandas
 matplotlib
 warnings
 apscheduler
+torch
+

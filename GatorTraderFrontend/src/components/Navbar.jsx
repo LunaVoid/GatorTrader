@@ -20,6 +20,7 @@ function Navbar() {
                     <li className="navbar_item">
                         <Link to="/MyProfile" className="navbar__links">My Profile</Link>
                     </li>
+                    
                 </ul>
             </div>
         </nav>

@@ -3,6 +3,7 @@ import { Routes, Route, Navigate} from 'react-router-dom';
 import Login from './Login.jsx';
 import About from './About';
 import Learn from './Learn';
+import Intro from './Intro';
 import MyProfile from './MyProfile';
 import TrackedStocks from './TrackedStocks';  
 import SignUp from "./SignUp.jsx";
@@ -30,6 +31,12 @@ function App() {
         <Route path="/" element={
           <PrivateRoute>
             <TrackedStocks/>
+          </PrivateRoute>
+        } /> 
+
+        <Route path="/Intro" element={
+          <PrivateRoute>
+            <Intro/>
           </PrivateRoute>
         } /> 
 
