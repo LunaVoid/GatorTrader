@@ -78,7 +78,9 @@ def dailyUpdate(symbol, api_key, file_path):
     for date, row in new_entries.items():
         uploadData.addToDatabase(symbol, date, row["1. open"], row["2. high"], row["3. low"], row["4. close"], row["5. volume"])
 
-
+def updateData():
+    for ticker in stocks: 
+            dailyUpdate(ticker, hiral_api_key, f"{data_dir}data{ticker}.json")
 
 if __name__ == "__main__":
     # if datetime.today().weekday() < 5 and not updatedToday:

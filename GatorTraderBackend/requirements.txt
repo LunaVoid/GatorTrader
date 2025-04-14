@@ -10,3 +10,5 @@ python-magic
 scikit-learn
 pandas
 matplotlib
+warnings
+apscheduler
