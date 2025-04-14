@@ -148,6 +148,11 @@ checking no return (0.01% annually NO LOSS and if there are any losses there is 
   image: retirement, },
 ];
 
+const scrollToSection = () => {
+  const element = document.getElementById('my-section');
+  element?.scrollIntoView({ behavior: 'smooth' }); // Optional smooth scrolling
+};
+
 const Learn = () => {
   const [selectedTopic, setSelectedTopic] = useState(null);
 
@@ -162,7 +167,7 @@ const Learn = () => {
           <div
             key={topic.id}
             className="circle"
-            style={{ backgroundImage: `url(${topic.image})` }} 
+            style={{ backgroundImage:  `url(${topic.image})` }} 
             onClick={() => setSelectedTopic(topic)}
           >
             <div className="circle-text">
