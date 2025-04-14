@@ -244,19 +244,23 @@ def catch_all(path):
         #return "Your endpoint is /"+path
         return send_from_directory(app.static_folder, 'index.html')
 
+@app.before_request
+def start_scheduler():
+    scheduler.start()
+
+@app.teardown_appcontext
+def stop_scheduler(exception=None):
+    scheduler.shutdown()
 
 if __name__ == "__main__":
     scheduler = BackgroundScheduler()
     scheduler.add_job(
-        dailyUpdate.updateData(),
+        dailyUpdate.updateData,
         'cron',
         day_of_week='mon-fri',
         hour=19,
         minute=0,
         timezone='US/Eastern'
     )
-
-    scheduler.start()
-    print("Scheduler started. Update weekdays 7PM.")
 
     app.run()

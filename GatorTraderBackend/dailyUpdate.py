@@ -54,7 +54,7 @@ def fetchNewData(symbol, api_key):
     return response.json().get("Time Series (Daily)", {})    
 
 def dailyUpdate(symbol, api_key, file_path):
-    json_latest = latestJson(file_path).date()
+    json_latest = latestJson(file_path)
     db_latest = latestDatabase(symbol)
     cutoff_date = max(json_latest, db_latest)
 
