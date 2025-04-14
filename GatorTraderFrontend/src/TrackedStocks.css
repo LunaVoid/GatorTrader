@@ -201,3 +201,31 @@
   bottom: 0;
   position: relative;
 }
+
+.star {
+  margin-left: 6px;
+  cursor: pointer;
+  font-size: 24px;
+  transition: color 0.2s ease;
+  -webkit-text-stroke: 1px black; /* outline */
+}
+
+.star.unfavorited {
+  color: white;
+}
+
+.star.favorited {
+  color: gold;
+}
+
+.predictor-btn{
+  width: 50vh;
+  font-family: "K2D";
+  background-color: rgb(216, 216, 216);
+  color: black;
+  border: 2px solid black; /* <-- this line defines the full border */
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 8px; /* optional: makes the corners rounded */
+  
+}

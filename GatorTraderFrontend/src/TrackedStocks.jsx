@@ -6,7 +6,6 @@ import './App.css';
 import './Login.css';
 import './TrackedStocks.css';
 import Navbar from './components/Navbar';
-import ScrollableComponent from './components/Scroll.jsx';
 import AreaChart from './components/Chart';
 import { getLocalStockData } from "./utils/dataUtil"; 
 
@@ -15,9 +14,18 @@ function TrackedStocks() {
   const [selectedTicker, setSelectedTicker] = useState(null);
   const [stockData, setStockData] = useState(null);  
   const [loading, setLoading] = useState(true); 
+  const [favoriteStocks, setFavoriteStocks] = useState([]);
+  const [showPredictor, setShowPredictor] = useState(false);
   
-
-
+  //creates a list for favoriteStocks, checks if item is already on favorite lists and adds and removes it depending if its already on there
+  const toggleFavorite = (ticker) => {
+    setFavoriteStocks(prev =>
+      prev.includes(ticker)
+        ? prev.filter(item => item !== ticker)
+        : [...prev, ticker]
+    );
+  };
+  
   const stockTickers = ["NVDA", "GOOGL", "AMZN", "MSFT", "TSLA", "AAPL", "JPM", "BAC", "NFLX", "META"];
   const stockDescriptions = {
     "NVDA": {
@@ -151,15 +159,27 @@ function TrackedStocks() {
             <div className="custom-scrollable">
               {stockTickers.map((ticker) => (
                 <button 
-                  key={ticker} 
-                  className="sidebar-row"
-                  onClick={() => handleTickerClick(ticker)}
-                >
-            <span className="ticker-name">{ticker}</span>
-            <span className={'trend-value'}>
-                {latestPrices[ticker] !== undefined ? `$${latestPrices[ticker]}` : "Loading..."}
-            </span>
-                </button>
+                key={ticker} 
+                className="sidebar-row"
+                onClick={() => handleTickerClick(ticker)}
+              >
+                <span className="ticker-name">
+                  <span 
+                    onClick={(e) => {
+                      e.stopPropagation(); // prevent selecting the stock
+                      toggleFavorite(ticker);
+                    }}
+                    className={`star ${favoriteStocks.includes(ticker) ? 'favorited' : 'unfavorited'}`}
+                    title={favoriteStocks.includes(ticker) ? 'Unfavorite' : 'Favorite'}
+                  >
+                    ★
+                  </span>
+                  {ticker}
+                </span>
+                <span className={'trend-value'}>
+                  {latestPrices[ticker] !== undefined ? `$${latestPrices[ticker]}` : "Loading..."}
+                </span>
+              </button>
             ))}
             </div>
           </div>
@@ -168,17 +188,28 @@ function TrackedStocks() {
         <div className="stock-container">
           <div className="stock-display">
             
-            
-            
               {loading && <div className = "poppup">
                   <h3>Welcome to Gator Trader!</h3>
-                  Please select a stock from the sidebar to get started. Once a stock is selected, feel free to zoom in and drag the graph to view the stock trends you are interested in.
+                  Please select a stock from the sidebar to get started. Once a stock is selected, feel free to zoom in and drag the graph to view the stock trends you are interested in. Click the stars next to the stocks you would like to keep track of more closely and navigate to the favorites tab to view those stocks only.
                 </div>}
               {!loading && !stockData && <p>No data available for {selectedTicker}.</p>}
               {!loading && stockData && (
               <div className="chart-wrapper">
                 <h3 className= "selected-stock"> Selected Stock: {selectedTicker}</h3>
-                <AreaChart ticker={selectedTicker} data={stockData} ratio={3} type="svg"  />
+                {/* Predictor Button */}
+              <button
+                className="predictor-btn"
+                onClick={() => setShowPredictor(!showPredictor)}
+              >
+              {showPredictor ? "Hide Prediction" : "Predict Future Stock Behavior with AI"}
+              </button>
+
+            {/*show AreaChart or Predictor */}
+            {showPredictor ? (
+              <AreaChart ticker={selectedTicker} data={stockData} ratio={3} type="svg" />
+            ) : (
+              <AreaChart ticker={selectedTicker} data={stockData} ratio={3} type="svg" />
+            )}
                 
                 { /*Stock Descriptions */}
                 <div className = "description-box">
