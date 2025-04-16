@@ -9,7 +9,7 @@ import uploadData
 os.environ['pguser'] = 'sammy'
 os.environ['pgpassword'] = 'password'
 hiral_api_key = '64BZRK8IBKFOWPH8'
-data_dir = '../GatorTraderFrontend/public/data/'
+data_dir = '../GatorTraderFrontend/dist/public/data/'
 stocks = ["GOOGL", "AMZN", "MSFT", "TSLA", "AAPL", "NFLX", "NVDA", "META", "JPM", "BAC"]
 updatedToday = False
 
