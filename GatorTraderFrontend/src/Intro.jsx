@@ -5,6 +5,7 @@ import './components/Navbar.jsx';
 import React, { useState, useEffect } from 'react';
 import './Intro.css'; 
 import { useNavigate } from 'react-router-dom';
+import { useUser } from './utils/userContext.jsx';
 
 const Intro = () => {
   const [answers, setAnswers] = useState({});
@@ -12,6 +13,7 @@ const Intro = () => {
   const [score, setScore] = useState(0);
   const navigate = useNavigate();
   const [level, setLevel] = useState("");
+  const { token, levelSetter } = useUser();
   
   
 
@@ -66,11 +68,12 @@ const Intro = () => {
       }
     });
     setScore(newScore);
+    
     setSubmitted(true);
     
   };
 
-  const getLevel = () => {
+  const getLevel = async() => {
     let lev = "";
     if(score <= 3){
       lev = "beginner";
@@ -80,6 +83,7 @@ const Intro = () => {
       lev = "advanced";
     }
     setLevel(lev);
+    await levelSetter(token, lev);
   }
 
   useEffect(() => {
@@ -88,7 +92,7 @@ const Intro = () => {
     }
   }, );
 
-  const handleClose = () => {
+  const handleClose = async() => {
     setAnswers({});
     setSubmitted(false);
     setScore(0);

@@ -76,7 +76,7 @@ def getLevel(userid):
                 result = cur.fetchone()
                 print(result)
                 conn.commit()
-                return (True, result) if result else (False)
+                return (True, result[0]) if result else (False)
 
     except OperationalError:
         print("Database Connection Error")

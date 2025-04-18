@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react';
-import { getPhoto, logIn, sendPhoto, signUp } from './auth';
+import { getPhoto, logIn, sendPhoto, signUp, getLevel, setLevel } from './auth';
 import { useNavigate } from "react-router-dom";
 const UserContext = createContext(null);
 
@@ -114,9 +114,48 @@ export function UserProvider({ children }) {
         }
 
     }
+
+    const levelGetter = async (token) => {
+        try {
+            console.log("Here");
+            if(token){
+                const data = await getLevel( token);
+                console.log(data)
+                const level = data;
+                return level.level;
+            }
+            else{
+                console.error("Token Error")
+            }
+              // Success, data will be returned
+        } catch (error) {
+            console.error('level getter error', error);
+            throw error;  // Propagate the error to the component
+        }
+
+    }
+
+    const levelSetter = async (token, level) => {
+        try {
+            console.log("Here");
+            if(token){
+                const data = await setLevel( token, level);
+                console.log(data)
+                return data;
+            }
+            else{
+                console.error("Token Error")
+            }
+              // Success, data will be returned
+        } catch (error) {
+            console.error('level setter error', error);
+            throw error;  // Propagate the error to the component
+        }
+
+    }
     
     return (
-        <UserContext.Provider value={{ user, token, profilePic, setProfilePic, loginUser, logoutUser, signupUser,loadUser, imageSender, imageGetter }}>
+        <UserContext.Provider value={{ user, token, profilePic, setProfilePic, loginUser, logoutUser, signupUser,loadUser, imageSender, imageGetter, levelGetter, levelSetter }}>
             {children}
         </UserContext.Provider>
     );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import './App.css';
 import './Login.css';
@@ -12,6 +12,7 @@ import learnstocks from '../public/learnstocks.jpg';
 import investing from '../public/investing.jpg';
 import budgeting from '../public/budgeting.jpg';
 import retirement from '../public/retirement.jpg';
+import { useUser } from './utils/userContext.jsx';
 
 const topics = [
   { id: "credit-debit", label: "Credit & Debit", description_begin: (
@@ -343,6 +344,22 @@ checking no return (0.01% annually NO LOSS and if there are any losses there is 
 
 const Learn = () => {
   const [selectedTopic, setSelectedTopic] = useState(null);
+  const { levelGetter, token } = useUser();
+  const [level, setLevel] = useState("beginner");
+
+  useEffect(()=>{
+    const levelStuffer = async() => {
+      const l = await levelGetter(token);
+      setLevel(l);
+
+    }
+    try {
+      levelStuffer();
+    } 
+    catch (e){
+      console.log(e);
+    }
+  })
 
   return (
     <div>
@@ -367,9 +384,9 @@ const Learn = () => {
       {selectedTopic && (
         <div className="info-box">
         <h2>{selectedTopic.label}</h2>
-        {lev === "beginner" && selectedTopic.description_begin}
-        {lev === "intermediate" && selectedTopic.description_int}
-        {lev === "advanced" && selectedTopic.description_adv}
+        {level === "beginner" && selectedTopic.description_begin}
+        {level === "intermediate" && selectedTopic.description_int}
+        {level === "advanced" && selectedTopic.description_adv}
         <span className="close-btn" onClick={() => setSelectedTopic(null)}>✖</span>
         
       </div>

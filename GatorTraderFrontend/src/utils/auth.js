@@ -99,3 +99,60 @@ export const getPhoto = async function (token) {
         throw error;
     }
 }
+
+export const getLevel = async function (token) {
+    try{
+        const response = await fetch("http://localhost:5000/api/getLevel", {
+            method: "GET",
+            headers: {
+                'Authorization':token, // JWT token can go in headers
+                // Don't set Content-Type header - FormData will set it automatically
+            },
+        });
+        if (!response.ok) {
+            // Try to parse as JSON in case it's an error message
+            try {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to get level');
+            } catch (e) {
+                throw new Error(`HTTP error! Status: ${response.status} ${e}`);
+            }
+        }
+        const returner = await response.json();
+        return returner;
+    }
+    catch (error) {
+        console.error('Level Get Error:', error);
+        throw error;
+    }
+}
+
+export const setLevel = async function (token, level) {
+    try{
+        const response = await fetch("http://localhost:5000/api/setLevel", {
+            method: "POST",
+            headers: {
+                'Authorization':token, 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json' // JWT token can go in headers
+                // Don't set Content-Type header - FormData will set it automatically
+            },
+            body: JSON.stringify({"level": level})
+        });
+        if (!response.ok) {
+            // Try to parse as JSON in case it's an error message
+            try {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to set level');
+            } catch (e) {
+                throw new Error(`HTTP error! Status: ${response.status} ${e}`);
+            }
+        }
+        const returner = await response.json();
+        return returner;
+    }
+    catch (error) {
+        console.error('Level Get Error:', error);
+        throw error;
+    }
+}
