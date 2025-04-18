@@ -17,18 +17,24 @@ function TrackedStocks() {
   const [loading, setLoading] = useState(true); 
   const [favoriteStocks, setFavoriteStocks] = useState([]);
   const [showPredictor, setShowPredictor] = useState(false);
-  const { favsGetter, token } = useUser();
+  const { favsGetter, favsSetter, token } = useUser();
   const stocks = ["NVDA", "GOOGL", "AMZN", "MSFT", "TSLA", "AAPL", "JPM", "BAC", "NFLX", "META"];
   const [shownStock, setShownStock] = useState(stocks)
   const [switched, setSwitched] = useState(false);
   
   //creates a list for favoriteStocks, checks if item is already on favorite lists and adds and removes it depending if its already on there
-  const toggleFavorite = (ticker) => {
-    setFavoriteStocks(prev =>
-      prev.includes(ticker)
-        ? prev.filter(item => item !== ticker)
-        : [...prev, ticker]
-    );
+  const toggleFavorite = async(ticker) => {
+    if(favoriteStocks.includes(ticker)){
+      const newArray = favoriteStocks.filter(stockTicker => stockTicker !== ticker);
+      setFavoriteStocks(newArray)
+      await favsSetter(token,newArray);
+    }
+    else{
+      const newArray = [...favoriteStocks, ticker];
+      setFavoriteStocks(newArray);
+      await favsSetter(token,newArray);
+    }
+    
   };
   
   

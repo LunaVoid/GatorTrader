@@ -31,6 +31,7 @@ cur.execute('''CREATE TABLE IF NOT EXISTS users (
     level VARCHAR(255) DEFAULT 'intermediate'
     );'''
 )
+cur.execute('DROP TABLE IF EXISTS saved_stocks CASCADE;')
 cur.execute('''
     CREATE TABLE IF NOT EXISTS saved_stocks (
         stock_id SERIAL PRIMARY KEY,
@@ -57,8 +58,8 @@ cur.execute('INSERT INTO users (username, password, profile_pic, email, mimetype
              file_bytes,
              'hiralshukla@ufl.edu', 'image/webp')
             )
-cur.execute('INSERT INTO saved_stocks (userid, ticker) VALUES (%s, %s);', (1, 'AAPL'))
-cur.execute('INSERT INTO saved_stocks (userid, ticker) VALUES (%s, %s);', (1, 'MSFT'))
+#cur.execute('INSERT INTO saved_stocks (userid, ticker) VALUES (%s, %s);', (1, 'AAPL'))
+#cur.execute('INSERT INTO saved_stocks (userid, ticker) VALUES (%s, %s);', (1, 'MSFT'))
 # Execute SELECT query
 cur.execute("SELECT * FROM users")
 
@@ -75,6 +76,7 @@ retrieved_bytes = cur.fetchone()[0]
 cur.execute('SELECT ticker FROM saved_stocks WHERE userid = %s;', (1,))
 saved_stocks = cur.fetchall()
 print("Saved stocks for user 1:")
+
 for stock in saved_stocks:
     print(stock)
 

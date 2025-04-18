@@ -285,12 +285,10 @@ def setFavoriteStocks(data):
         requestData = request.get_json()
         print(requestData['favStocks'])
         stocks = requestData["favStocks"]
-        if not isinstance(stocks, list) or not stocks:
+        if not isinstance(stocks, list):
             raise AppError(f"Not an Array")
         deleteFavs(data['userid'])
         count, insertedStocks = setFavs(stocks,data['userid'])
-        if count == 0:
-            raise AppError(f"Zero Stocks Added")
         return jsonify({"message": f"Yippee stocks: ${insertedStocks}"}), 200
 
     except AppError as e:

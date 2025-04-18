@@ -179,7 +179,7 @@ export function UserProvider({ children }) {
         try {
             console.log("Here");
             if(token){
-                const data = await setLevel( token, faveStocks);
+                const data = await setFavs( token, faveStocks);
                 console.log(data)
                 return data;
             }
