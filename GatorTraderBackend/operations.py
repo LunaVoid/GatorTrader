@@ -51,10 +51,10 @@ def setLevel(level, userid):
     try:
         with get_db_connection() as conn:
             with conn.cursor() as cur:
-                cur.execute('UPDATE users SET level= %s WHERE username = %s ',(level, userid))
+                cur.execute('UPDATE users SET level= %s WHERE userid = %s ',(level, userid))
 
                 # Optional: Verify the update
-                cur.execute("SELECT userid, level FROM users WHERE username = %s", (userid,))
+                cur.execute("SELECT userid, level FROM users WHERE userid = %s", (userid,))
                 result = cur.fetchone()
                 print(result)
                 conn.commit()
@@ -72,7 +72,7 @@ def getLevel(userid):
             with conn.cursor() as cur:
 
                 # Optional: Verify the update
-                cur.execute("SELECT level FROM users WHERE username = %s", (userid,))
+                cur.execute("SELECT level FROM users WHERE userid = %s", (userid,))
                 result = cur.fetchone()
                 print(result)
                 conn.commit()

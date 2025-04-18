@@ -240,10 +240,11 @@ def changeLevel(data):
         print(data['userid'])
         requestData = request.get_json()
         level = requestData["level"]
-        if level != "beginner" or level != "intermediate" or level != "advanced":
-            raise AppError(f"No level selected {str(e)}")
-        setLevel(level, data["username"])
-        return jsonify({"error": "Invalid file type"}), 200
+        print(level)
+        if level != "beginner" and level != "intermediate" and level != "advanced":
+            raise AppError(f"No level selected")
+        setLevel(level, data["userid"])
+        return jsonify({"message": "Yippee"}), 200
 
     except AppError as e:
         response_data = {"message": f"{str(e)}"}
