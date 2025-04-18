@@ -11,7 +11,7 @@ from flask_cors import CORS
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
-from operations import setProfileImage, getProfileImage, setLevel, getLevel
+from operations import setProfileImage, getProfileImage, setLevel, getLevel, setFavs, deleteFavs, getFavs
 import base64
 import os
 import imghdr
@@ -276,6 +276,55 @@ def retrieveLevel(data):
         # For any other exception
         print(e)
         raise AppError(f"Internal Server Error Contact Admin {str(e)}")
+
+@app.route("/api/setfavs", methods=["POST"])
+@checkLoggedInToken
+def setFavoriteStocks(data):
+    try:
+        print(data)
+        requestData = request.get_json()
+        print(requestData['favStocks'])
+        stocks = requestData["favStocks"]
+        if not isinstance(stocks, list) or not stocks:
+            raise AppError(f"Not an Array")
+        deleteFavs(data['userid'])
+        count, insertedStocks = setFavs(stocks,data['userid'])
+        if count == 0:
+            raise AppError(f"Zero Stocks Added")
+        return jsonify({"message": f"Yippee stocks: ${insertedStocks}"}), 200
+
+    except AppError as e:
+        response_data = {"message": f"{str(e)}"}
+        print(response_data)
+        return jsonify(response_data), 400 
+    except Exception as e:
+        # For any other exception
+        print(e)
+        raise AppError(f"Internal Server Error Contact Admin {str(e)}")
+
+@app.route("/api/getfavs", methods=["GET"])
+@checkLoggedInToken
+def getFavoriteStocks(data):
+    try:
+        userStocks = getFavs(data['userid'])
+        return jsonify({
+            "message": f"Yippee stocks: {userStocks}", 
+            "stocks": userStocks
+        }), 200
+    except AppError as e:
+        response_data = {"message": f"{str(e)}"}
+        print(response_data)
+        return jsonify(response_data), 400 
+    except Exception as e:
+        # For any other exception
+        print(e)
+        raise AppError(f"Internal Server Error Contact Admin {str(e)}")
+    
+
+
+
+
+
 
 @app.route('/', defaults={'path': ''})
 @app.route("/<string:path>")

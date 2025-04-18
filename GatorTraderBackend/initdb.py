@@ -36,7 +36,8 @@ cur.execute('''
         stock_id SERIAL PRIMARY KEY,
         userid INT NOT NULL,
         ticker VARCHAR(10) NOT NULL,
-        FOREIGN KEY (userid) REFERENCES users(userid) ON DELETE CASCADE
+        FOREIGN KEY (userid) REFERENCES users(userid) ON DELETE CASCADE,
+        CONSTRAINT unique_user_stock UNIQUE (userid, ticker)
     );
 ''')
 
