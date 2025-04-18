@@ -3,7 +3,7 @@ import './App.css';
 import './Login.css';
 import './components/Navbar.jsx';
 import React, { useState, useEffect } from 'react';
-import './Intro.css'; // Optional styling
+import './Intro.css'; 
 import { useNavigate } from 'react-router-dom';
 
 const Intro = () => {

@@ -11,7 +11,7 @@ from flask_cors import CORS
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
-from operations import setProfileImage, getProfileImage
+from operations import setProfileImage, getProfileImage, setLevel, getLevel
 import base64
 import os
 import imghdr
@@ -232,6 +232,49 @@ def getProfile(data):
         print(e)
         raise AppError(f"Internal Server Error Contact Admin {str(e)}")
 
+@app.route("/api/changeLevel", methods=["POST"])
+@checkLoggedInToken
+def changeLevel(data):
+    try:
+        print(data)
+        print(data['userid'])
+        requestData = request.get_json()
+        level = requestData["level"]
+        if level != "beginner" or level != "intermediate" or level != "advanced":
+            raise AppError(f"No level selected {str(e)}")
+        setLevel(level, data["username"])
+        return jsonify({"error": "Invalid file type"}), 200
+
+    except AppError as e:
+        response_data = {"message": f"{str(e)}"}
+        print(response_data)
+        return jsonify(response_data), 400 
+    except Exception as e:
+        # For any other exception
+        print(e)
+        raise AppError(f"Internal Server Error Contact Admin {str(e)}")
+    
+@app.route("/api/getLevel", methods=["GET"])
+@checkLoggedInToken
+def retrieveLevel(data):
+    try:
+        print(data)
+        print(data['userid'])
+        levelTuple = getLevel(data['userid'])
+        if levelTuple[0]:
+            response_data = {"level": levelTuple[1]}
+            return jsonify(response_data), 200 
+        else:
+            raise AppError(f"Your level didn't work {str(e)}")
+
+    except AppError as e:
+        response_data = {"message": f"{str(e)}"}
+        print(response_data)
+        return jsonify(response_data), 400 
+    except Exception as e:
+        # For any other exception
+        print(e)
+        raise AppError(f"Internal Server Error Contact Admin {str(e)}")
 
 @app.route('/', defaults={'path': ''})
 @app.route("/<string:path>")

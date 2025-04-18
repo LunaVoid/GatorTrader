@@ -45,3 +45,41 @@ def getProfileImage(userid):
         raise DatabaseConnectionError("Connection to Database Failed")
     except Exception as e:
         raise AppError(f"Unexpected Error: {e}")
+    
+
+def setLevel(level, userid):
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute('UPDATE users SET level= %s WHERE username = %s ',(level, userid))
+
+                # Optional: Verify the update
+                cur.execute("SELECT userid, level FROM users WHERE username = %s", (userid,))
+                result = cur.fetchone()
+                print(result)
+                conn.commit()
+                return (True) if result else (False)
+
+    except OperationalError:
+        print("Database Connection Error")
+        raise DatabaseConnectionError("Connection to Database Failed")
+    except Exception as e:
+        raise AppError(f"Unexpected Error: {e}")
+
+def getLevel(userid):
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cur:
+
+                # Optional: Verify the update
+                cur.execute("SELECT level FROM users WHERE username = %s", (userid,))
+                result = cur.fetchone()
+                print(result)
+                conn.commit()
+                return (True, result) if result else (False)
+
+    except OperationalError:
+        print("Database Connection Error")
+        raise DatabaseConnectionError("Connection to Database Failed")
+    except Exception as e:
+        raise AppError(f"Unexpected Error: {e}")

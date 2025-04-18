@@ -23,7 +23,7 @@
     padding-top: 10px; /* Optional, adds some space from the top */
     display: flex;
     flex-direction: column; /* Stack the items vertically */
-    margin-top: 5px;
+    margin-top: 20px;
     border-radius: 15px;
     font-family: "K2D";
     align-items: stretch;
@@ -92,7 +92,7 @@
   flex-direction: column; /* Stack elements vertically */
   width: 100%;
   text-align: center;
-  
+  margin-top: 15px;
   
 }
 
@@ -203,11 +203,11 @@
 }
 
 .star {
-  margin-left: 6px;
+  margin-right: 10px;
   cursor: pointer;
   font-size: 24px;
   transition: color 0.2s ease;
-  -webkit-text-stroke: 1px black; /* outline */
+  -webkit-text-stroke: 1px darkgreen; /* outline */
 }
 
 .star.unfavorited {
@@ -215,17 +215,17 @@
 }
 
 .star.favorited {
-  color: gold;
+  color: green;
 }
 
 .predictor-btn{
-  width: 50vh;
+  width: 60vh;
   font-family: "K2D";
   background-color: rgb(216, 216, 216);
   color: black;
-  border: 2px solid black; /* <-- this line defines the full border */
+  border: 2px solid darkgreen; 
   cursor: pointer;
   padding: 10px 20px;
-  border-radius: 8px; /* optional: makes the corners rounded */
+  border-radius: 8px; 
   
 }
