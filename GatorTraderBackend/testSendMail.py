@@ -1,51 +1,58 @@
 import os
 import socket
 from dotenv import load_dotenv
-from flask import Flask
-from flask_mail import Mail
-from sendEmail import generate_email_verification_token, storeEmailToken, send_verification_email, register_verification_route
+from flask import Flask, url_for
 
-socket.setdefaulttimeout(10) 
+import resend
+from sendEmail import (
+    generate_email_verification_token,
+    storeEmailToken,
+    register_verification_route,
+)
+
+socket.setdefaulttimeout(10)
 load_dotenv()
 
+resend.api_key = os.environ.get("RESEND_API_KEY")
+SENDER_ADDRESS = "Acme <onboarding@resend.dev>"
+
 app = Flask(__name__)
-app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER', 'smtp.gmail.com')
-app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', 587))
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
-
-app.config['SERVER_NAME'] = 'localhost:5000'
-app.config['APPLICATION_ROOT'] = '/'
-app.config['PREFERRED_URL_SCHEME'] = 'http'
-
-
-
-mail = Mail(app)
+app.config["SERVER_NAME"] = "localhost:5000"
+app.config["PREFERRED_URL_SCHEME"] = "http"
 register_verification_route(app)
 
-
 def test_send_mail():
-    test_email = os.environ.get('TEST_EMAIL', app.config['MAIL_USERNAME'])
-    if not test_email:
-        print("error")
-        return
+    test_email = "gatortrader2025@gmail.com"
 
     token = generate_email_verification_token(test_email)
-    print("token: ", token)
+    print("Token:", token)
 
     try:
         storeEmailToken(test_email, token)
-        print("success")
+        print("Token saved in DB")
     except Exception as e:
-        print("error", e)
+        print("DB error:", e)
+        return
 
     with app.app_context():
-        try:
-            send_verification_email(test_email, token, mail)
-            print("Success")
-        except Exception as e:
-            print("Error: ", e)
+        link = url_for("verify_email", token=token, _external=True)
+    print("Verify link:", link)
 
-if __name__ == '__main__':
+    params: resend.Emails.SendParams = {
+        "from": SENDER_ADDRESS,
+        "to": [test_email],
+        "subject": "Test: Verify your account",
+        "html": (
+            "<p>This is a test of the verification flow.</p>"
+            f"<p><a href='{link}'>Verify your email</a></p>"
+        ),
+    }
+
+    try:
+        resp = resend.Emails.send(params)
+        print("Sent! Response:", resp)
+    except Exception as e:
+        print("Send error:", e)
+
+if __name__ == "__main__":
     test_send_mail()
