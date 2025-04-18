@@ -8,6 +8,7 @@ import './TrackedStocks.css';
 import Navbar from './components/Navbar';
 import AreaChart from './components/Chart';
 import { getLocalStockData } from "./utils/dataUtil"; 
+import { useUser } from './utils/userContext.jsx';
 
 function TrackedStocks() {
   const [latestPrices, setLatestPrices] = useState({});
@@ -16,6 +17,10 @@ function TrackedStocks() {
   const [loading, setLoading] = useState(true); 
   const [favoriteStocks, setFavoriteStocks] = useState([]);
   const [showPredictor, setShowPredictor] = useState(false);
+  const { favsGetter, token } = useUser();
+  const stocks = ["NVDA", "GOOGL", "AMZN", "MSFT", "TSLA", "AAPL", "JPM", "BAC", "NFLX", "META"];
+  const [shownStock, setShownStock] = useState(stocks)
+  const [switched, setSwitched] = useState(false);
   
   //creates a list for favoriteStocks, checks if item is already on favorite lists and adds and removes it depending if its already on there
   const toggleFavorite = (ticker) => {
@@ -26,7 +31,7 @@ function TrackedStocks() {
     );
   };
   
-  const stockTickers = ["NVDA", "GOOGL", "AMZN", "MSFT", "TSLA", "AAPL", "JPM", "BAC", "NFLX", "META"];
+  
   const stockDescriptions = {
     "NVDA": {
       founded: "1993",
@@ -100,7 +105,7 @@ function TrackedStocks() {
     async function fetchLatestPrices() {
       const updatedPrices = {};
       
-      for (const ticker of stockTickers) {
+      for (const ticker of stocks) {
         try {
           const data = await getLocalStockData(ticker);
           
@@ -142,7 +147,17 @@ function TrackedStocks() {
     loadStockData();
   }, [selectedTicker]);
 
-  
+  async function clickSaved(){
+    if (switched){
+      const fetchedData = await favsGetter(token)
+      setShownStock(fetchedData)
+      setSwitched(!switched)
+    }
+    else{
+      setShownStock(stocks);
+      setSwitched(!switched)
+    }
+  }
   
     
     return (
@@ -151,13 +166,19 @@ function TrackedStocks() {
         <Navbar/>
           {/* Sidebar */}
         <div className = "centering">
+          <button
+                className="saved-btn"
+                onClick={() => clickSaved()}
+              >
+              {clickSaved() ? "Show all Stocks" : "Show saved stocks"}
+              </button>
           <div className="sidebar">
             <div className="sidebar-header">
               <h2>Stock</h2>
               <h2>Price</h2>
             </div>
             <div className="custom-scrollable">
-              {stockTickers.map((ticker) => (
+              {shownStock.map((ticker) => (
                 <button 
                 key={ticker} 
                 className="sidebar-row"

@@ -156,3 +156,62 @@ export const setLevel = async function (token, level) {
         throw error;
     }
 }
+
+
+export const setFavs = async function (token, favStocks) {
+    try{
+        const response = await fetch("http://localhost:5000/api/setfavs", {
+            method: "POST",
+            headers: {
+                'Authorization':token, 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json' // JWT token can go in headers
+                // Don't set Content-Type header - FormData will set it automatically
+            },
+            body: JSON.stringify({"favStocks": favStocks})
+        });
+        if (!response.ok) {
+            // Try to parse as JSON in case it's an error message
+            try {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to set favStocks');
+            } catch (e) {
+                throw new Error(`HTTP error! Status: ${response.status} ${e}`);
+            }
+        }
+        const returner = await response.json();
+        return returner;
+    }
+    catch (error) {
+        console.error('FavStocks Get Error:', error);
+        throw error;
+    }
+}
+
+
+export const getFavs = async function (token) {
+    try{
+        const response = await fetch("http://localhost:5000/api/getfavs", {
+            method: "GET",
+            headers: {
+                'Authorization':token, // JWT token can go in headers
+                // Don't set Content-Type header - FormData will set it automatically
+            },
+        });
+        if (!response.ok) {
+            // Try to parse as JSON in case it's an error message
+            try {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to get favStocks');
+            } catch (e) {
+                throw new Error(`HTTP error! Status: ${response.status} ${e}`);
+            }
+        }
+        const returner = await response.json();
+        return returner;
+    }
+    catch (error) {
+        console.error('FavStocks Get Error:', error);
+        throw error;
+    }
+}

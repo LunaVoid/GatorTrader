@@ -229,3 +229,16 @@
   border-radius: 8px; 
   
 }
+
+.saved-btn{
+  width: 10vh;
+  font-family: "K2D";
+  background-color: rgb(216, 216, 216);
+  color: black;
+  border: 2px solid darkgreen; 
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 8px; 
+  flex-direction: column;
+
+}

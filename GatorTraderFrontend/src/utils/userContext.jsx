@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react';
-import { getPhoto, logIn, sendPhoto, signUp, getLevel, setLevel } from './auth';
+import { getPhoto, logIn, sendPhoto, signUp, getLevel, setLevel , getFavs, setFavs } from './auth';
 import { useNavigate } from "react-router-dom";
 const UserContext = createContext(null);
 
@@ -153,9 +153,49 @@ export function UserProvider({ children }) {
         }
 
     }
+
+
+    const favsGetter = async (token) => {
+        try {
+            console.log("Here");
+            if(token){
+                const data = await getFavs(token);
+                console.log(data)
+                const favs = data;
+                return favs.favs;
+            }
+            else{
+                console.error("Token Error")
+            }
+              // Success, data will be returned
+        } catch (error) {
+            console.error('faveStocks getter error', error);
+            throw error;  // Propagate the error to the component
+        }
+
+    }
+
+    const favsSetter = async (token, faveStocks) => {
+        try {
+            console.log("Here");
+            if(token){
+                const data = await setLevel( token, faveStocks);
+                console.log(data)
+                return data;
+            }
+            else{
+                console.error("Token Error")
+            }
+              // Success, data will be returned
+        } catch (error) {
+            console.error('favStocks setter error', error);
+            throw error;  // Propagate the error to the component
+        }
+
+    }
     
     return (
-        <UserContext.Provider value={{ user, token, profilePic, setProfilePic, loginUser, logoutUser, signupUser,loadUser, imageSender, imageGetter, levelGetter, levelSetter }}>
+        <UserContext.Provider value={{ user, token, profilePic, setProfilePic, loginUser, logoutUser, signupUser,loadUser, imageSender, imageGetter, levelGetter, levelSetter , favsGetter,  favsSetter}}>
             {children}
         </UserContext.Provider>
     );
