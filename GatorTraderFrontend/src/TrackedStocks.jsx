@@ -165,7 +165,9 @@ function TrackedStocks() {
     
         <Navbar/>
           {/* Sidebar */}
+          
         <div className = "centering">
+          <div className = "sidebar-and-saved">
           <button
                 className="saved-btn"
                 onClick={() => clickSaved()}
@@ -173,6 +175,9 @@ function TrackedStocks() {
               {clickSaved() ? "Show all Stocks" : "Show saved stocks"}
               </button>
           <div className="sidebar">
+          
+
+
             <div className="sidebar-header">
               <h2>Stock</h2>
               <h2>Price</h2>
@@ -203,6 +208,7 @@ function TrackedStocks() {
               </button>
             ))}
             </div>
+          </div>
           </div>
       
   

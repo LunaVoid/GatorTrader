@@ -161,7 +161,9 @@ checking no return (0.01% annually NO LOSS and if there are any losses there is 
     <p>Younger investors have higher risk tolerance due to longer time horizons and fewer liabilities. As individuals age, investment goals shift toward capital preservation, reducing exposure to volatile assets.</p>
 
     <h3>How can we organize Financial Activities by Risk?</h3>
-    <p>Risk hierarchy: Gambling `&gt` Cryptocurrency `&gt` Individual Equities `&gt` ETFs/Mutual Funds `&gt` Corporate Bonds `&gt` Government Bonds (TIPS) `&gt` High-Yield Savings `&gt` Checking (non-interest bearing).</p>
+    <p>Risk hierarchy: Gambling &gt; Cryptocurrency &gt; Individual Equities &gt; 
+  ETFs/Mutual Funds &gt; Corporate Bonds &gt; Government Bonds (TIPS) &gt; 
+  High-Yield Savings &gt; Checking (non-interest bearing).</p>
   </>
   ),
   image: risk,  },
@@ -392,7 +394,7 @@ const Learn = () => {
         
       </div>
       )}
-    <div className = "footer-bar"></div>
+    <div className = "footer-baralso"></div>
     </div>
     
     
