@@ -1,9 +1,11 @@
 import os
+import socket
 from dotenv import load_dotenv
 from flask import Flask
 from flask_mail import Mail
 from sendEmail import generate_email_verification_token, storeEmailToken, send_verification_email, register_verification_route
 
+socket.setdefaulttimeout(10) 
 load_dotenv()
 
 app = Flask(__name__)
@@ -16,6 +18,7 @@ app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['SERVER_NAME'] = 'localhost:5000'
 app.config['APPLICATION_ROOT'] = '/'
 app.config['PREFERRED_URL_SCHEME'] = 'http'
+
 
 
 mail = Mail(app)
