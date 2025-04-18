@@ -54,6 +54,9 @@ app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', 587))
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['SERVER_NAME'] = 'localhost:5000'
+app.config['APPLICATION_ROOT'] = '/'
+app.config['PREFERRED_URL_SCHEME'] = 'http'
 
 @app.route("/api/signup", methods=["POST", 'OPTIONS'])
 def signupFunction():
