@@ -129,7 +129,7 @@ export const getLevel = async function (token) {
 
 export const setLevel = async function (token, level) {
     try{
-        const response = await fetch("http://localhost:5000/api/setLevel", {
+        const response = await fetch("http://localhost:5000/api/changeLevel", {
             method: "POST",
             headers: {
                 'Authorization':token, 

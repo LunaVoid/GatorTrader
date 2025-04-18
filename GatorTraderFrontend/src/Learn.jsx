@@ -346,6 +346,7 @@ const Learn = () => {
   const [selectedTopic, setSelectedTopic] = useState(null);
   const { levelGetter, token } = useUser();
   const [level, setLevel] = useState("beginner");
+  console.log(level)
 
   useEffect(()=>{
     const levelStuffer = async() => {
@@ -359,7 +360,7 @@ const Learn = () => {
     catch (e){
       console.log(e);
     }
-  })
+  },[])
 
   return (
     <div>
