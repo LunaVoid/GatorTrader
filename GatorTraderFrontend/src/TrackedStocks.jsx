@@ -148,7 +148,7 @@ function TrackedStocks() {
   }, [selectedTicker]);
 
   async function clickSaved(){
-    if (switched){
+    if (!switched){
       const fetchedData = await favsGetter(token)
       setShownStock(fetchedData)
       setSwitched(!switched)
@@ -172,7 +172,7 @@ function TrackedStocks() {
                 className="saved-btn"
                 onClick={() => clickSaved()}
               >
-              {clickSaved() ? "Show all Stocks" : "Show saved stocks"}
+              {switched ? "Show all Stocks" : "Show saved stocks"}
               </button>
           <div className="sidebar">
           

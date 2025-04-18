@@ -162,7 +162,7 @@ export function UserProvider({ children }) {
                 const data = await getFavs(token);
                 console.log(data)
                 const favs = data;
-                return favs.favs;
+                return favs.stocks;
             }
             else{
                 console.error("Token Error")
