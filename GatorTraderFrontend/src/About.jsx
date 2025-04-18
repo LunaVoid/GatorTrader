@@ -4,7 +4,6 @@ import './Login.css';
 import './About.css';
 import Navbar from './components/Navbar';
 
-// Import your images:
 import gatorTraderLogo from '../public/gatortradertransparent.png';
 import hiralImage from '../public/AboutUS/Hiral_Shuklas_Headshot.png';
 import paigeImage from '../public/AboutUS/paigevanoverheadshot.png';
