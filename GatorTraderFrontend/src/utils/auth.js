@@ -1,7 +1,7 @@
 export const signUp = async function (userData) {
     console.log(userData);
     try{
-        const response = await fetch("http://localhost:5000/api/signup",{
+        const response = await fetch("http://127.0.0.1:5000/api/signup",{
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ export const signUp = async function (userData) {
 export const logIn = async function (userData) {
     try{
         console.log("LOG IN FUNC")
-        const response = await fetch("http://localhost:5000/api/login",{
+        const response = await fetch("http://127.0.0.1:5000/api/login",{
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export const sendPhoto = async function (image, token) {
     try{
         const formData = new FormData();
         formData.append('image', image); 
-        const response = await fetch("http://localhost:5000/api/profileupdate", {
+        const response = await fetch("http://127.0.0.1:5000/api/profileupdate", {
             method: "POST",
             headers: {
                 'Authorization':token, // JWT token can go in headers
@@ -75,7 +75,7 @@ export const sendPhoto = async function (image, token) {
 
 export const getPhoto = async function (token) {
     try{
-        const response = await fetch("http://localhost:5000/api/getProfile", {
+        const response = await fetch("http://127.0.0.1:5000/api/getProfile", {
             method: "GET",
             headers: {
                 'Authorization':token, // JWT token can go in headers

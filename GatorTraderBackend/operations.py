@@ -45,3 +45,22 @@ def getProfileImage(userid):
         raise DatabaseConnectionError("Connection to Database Failed")
     except Exception as e:
         raise AppError(f"Unexpected Error: {e}")
+
+def setEmail(email, userid):
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute('UPDATE users SET email= %s WHERE username = %s ',(email, userid))
+
+                # Optional: Verify the update
+                cur.execute("SELECT userid, email FROM users WHERE username = %s", (userid,))
+                result = cur.fetchone()
+                print(result)
+                conn.commit()
+                return (True) if result else (False)
+
+    except OperationalError:
+        print("Database Connection Error")
+        raise DatabaseConnectionError("Connection to Database Failed")
+    except Exception as e:
+        raise AppError(f"Unexpected Error: {e}")
