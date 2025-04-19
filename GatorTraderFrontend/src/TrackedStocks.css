@@ -18,24 +18,36 @@
 
 .sidebar {
     height: 100%; /* Full height of the screen */
-    width: 300px; /* Adjust the width of the sidebar */
+    width: 65%;
     background-color: #D9D9D9; /* Grey background color */
     padding-top: 10px; /* Optional, adds some space from the top */
     display: flex;
     flex-direction: column; /* Stack the items vertically */
-    margin-top: 5px;
+    margin-top: 20px;
     border-radius: 15px;
     font-family: "K2D";
     align-items: stretch;
     padding-bottom: 40px;
-    margin-left: 50px;
+    
+  }
+
+  .sidebar-and-saved{
+    height: 100%; /* Full height of the screen */
+    width: 500px; /* Adjust the width of the sidebar */
+    align-items: center;
+    padding-top: 10px; /* Optional, adds some space from the top */
+    display: flex;
+    flex-direction: column; /* Stack the items vertically */
+    margin-top: 20px;
+    border-radius: 15px;
+    font-family: "K2D";
+    padding-bottom: 40px;
+  
   }
   
   .sidebar button {
     color: black;
     background-color: white;
-    border: none;
-    text-align: left;
     padding: 10px;
     font-size: 18px;
     font-family: "K2D"; 
@@ -92,7 +104,7 @@
   flex-direction: column; /* Stack elements vertically */
   width: 100%;
   text-align: center;
-  
+  margin-top: 15px;
   
 }
 
@@ -200,4 +212,45 @@
    /* Only affects TrackedStocks.jsx */
   bottom: 0;
   position: relative;
+}
+
+.star {
+  margin-right: 10px;
+  cursor: pointer;
+  font-size: 24px;
+  transition: color 0.2s ease;
+  -webkit-text-stroke: 1px darkgreen; /* outline */
+}
+
+.star.unfavorited {
+  color: white;
+}
+
+.star.favorited {
+  color: green;
+}
+
+.predictor-btn{
+  width: 60vh;
+  font-family: "K2D";
+  background-color: rgb(216, 216, 216);
+  color: black;
+  border: 2px solid darkgreen; 
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 8px; 
+  
+}
+
+.saved-btn{
+  width: 20vh;
+  font-family: "K2D";
+  background-color: rgb(216, 216, 216);
+  color: black;
+  border: 2px solid darkgreen;
+  cursor: pointer;
+  border-radius: 15px;
+  border: 1px solid darkgreen;
+  margin-bottom: 10px; /* Add some space between the button and sidebar */
+  
 }

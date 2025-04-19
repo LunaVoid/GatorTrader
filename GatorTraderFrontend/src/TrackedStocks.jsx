@@ -6,19 +6,38 @@ import './App.css';
 import './Login.css';
 import './TrackedStocks.css';
 import Navbar from './components/Navbar';
-import ScrollableComponent from './components/Scroll.jsx';
 import AreaChart from './components/Chart';
 import { getLocalStockData } from "./utils/dataUtil"; 
+import { useUser } from './utils/userContext.jsx';
 
 function TrackedStocks() {
   const [latestPrices, setLatestPrices] = useState({});
   const [selectedTicker, setSelectedTicker] = useState(null);
   const [stockData, setStockData] = useState(null);  
   const [loading, setLoading] = useState(true); 
+  const [favoriteStocks, setFavoriteStocks] = useState([]);
+  const [showPredictor, setShowPredictor] = useState(false);
+  const { favsGetter, favsSetter, token } = useUser();
+  const stocks = ["NVDA", "GOOGL", "AMZN", "MSFT", "TSLA", "AAPL", "JPM", "BAC", "NFLX", "META"];
+  const [shownStock, setShownStock] = useState(stocks)
+  const [switched, setSwitched] = useState(false);
   
-
-
-  const stockTickers = ["NVDA", "GOOGL", "AMZN", "MSFT", "TSLA", "AAPL", "JPM", "BAC", "NFLX", "META"];
+  //creates a list for favoriteStocks, checks if item is already on favorite lists and adds and removes it depending if its already on there
+  const toggleFavorite = async(ticker) => {
+    if(favoriteStocks.includes(ticker)){
+      const newArray = favoriteStocks.filter(stockTicker => stockTicker !== ticker);
+      setFavoriteStocks(newArray)
+      await favsSetter(token,newArray);
+    }
+    else{
+      const newArray = [...favoriteStocks, ticker];
+      setFavoriteStocks(newArray);
+      await favsSetter(token,newArray);
+    }
+    
+  };
+  
+  
   const stockDescriptions = {
     "NVDA": {
       founded: "1993",
@@ -92,7 +111,7 @@ function TrackedStocks() {
     async function fetchLatestPrices() {
       const updatedPrices = {};
       
-      for (const ticker of stockTickers) {
+      for (const ticker of stocks) {
         try {
           const data = await getLocalStockData(ticker);
           
@@ -134,7 +153,17 @@ function TrackedStocks() {
     loadStockData();
   }, [selectedTicker]);
 
-  
+  async function clickSaved(){
+    if (!switched){
+      const fetchedData = await favsGetter(token)
+      setShownStock(fetchedData)
+      setSwitched(!switched)
+    }
+    else{
+      setShownStock(stocks);
+      setSwitched(!switched)
+    }
+  }
   
     
     return (
@@ -142,43 +171,78 @@ function TrackedStocks() {
     
         <Navbar/>
           {/* Sidebar */}
+          
         <div className = "centering">
+          <div className = "sidebar-and-saved">
+          <button
+                className="saved-btn"
+                onClick={() => clickSaved()}
+              >
+              {switched ? "Show all Stocks" : "Show saved stocks"}
+              </button>
           <div className="sidebar">
+          
+
+
             <div className="sidebar-header">
               <h2>Stock</h2>
               <h2>Price</h2>
             </div>
             <div className="custom-scrollable">
-              {stockTickers.map((ticker) => (
+              {shownStock.map((ticker) => (
                 <button 
-                  key={ticker} 
-                  className="sidebar-row"
-                  onClick={() => handleTickerClick(ticker)}
-                >
-            <span className="ticker-name">{ticker}</span>
-            <span className={'trend-value'}>
-                {latestPrices[ticker] !== undefined ? `$${latestPrices[ticker]}` : "Loading..."}
-            </span>
-                </button>
+                key={ticker} 
+                className="sidebar-row"
+                onClick={() => handleTickerClick(ticker)}
+              >
+                <span className="ticker-name">
+                  <span 
+                    onClick={(e) => {
+                      e.stopPropagation(); // prevent selecting the stock
+                      toggleFavorite(ticker);
+                    }}
+                    className={`star ${favoriteStocks.includes(ticker) ? 'favorited' : 'unfavorited'}`}
+                    title={favoriteStocks.includes(ticker) ? 'Unfavorite' : 'Favorite'}
+                  >
+                    ★
+                  </span>
+                  {ticker}
+                </span>
+                <span className={'trend-value'}>
+                  {latestPrices[ticker] !== undefined ? `$${latestPrices[ticker]}` : "Loading..."}
+                </span>
+              </button>
             ))}
             </div>
+          </div>
           </div>
       
   
         <div className="stock-container">
           <div className="stock-display">
             
-            
-            
               {loading && <div className = "poppup">
                   <h3>Welcome to Gator Trader!</h3>
-                  Please select a stock from the sidebar to get started. Once a stock is selected, feel free to zoom in and drag the graph to view the stock trends you are interested in.
+                  Please select a stock from the sidebar to get started. Once a stock is selected, feel free to zoom in and drag the graph to view the stock trends you are interested in. Click the stars next to the stocks you would like to keep track of more closely and navigate to the favorites tab to view those stocks only.
                 </div>}
               {!loading && !stockData && <p>No data available for {selectedTicker}.</p>}
               {!loading && stockData && (
               <div className="chart-wrapper">
                 <h3 className= "selected-stock"> Selected Stock: {selectedTicker}</h3>
-                <AreaChart ticker={selectedTicker} data={stockData} ratio={3} type="svg"  />
+                {/* Predictor Button */}
+              <button
+                className="predictor-btn"
+                onClick={() => setShowPredictor(!showPredictor)}
+              >
+              {showPredictor ? "Hide Prediction" : "Predict Future Stock Behavior with AI"}
+              </button>
+
+            {/*show AreaChart or Predictor */}
+            {showPredictor ? (
+              <AreaChart ticker={selectedTicker} data={stockData} ratio={3} type="svg" />
+            ) : (
+              <AreaChart ticker={selectedTicker} data={stockData} ratio={3} type="svg" />
+            )}
                 
                 { /*Stock Descriptions */}
                 <div className = "description-box">
