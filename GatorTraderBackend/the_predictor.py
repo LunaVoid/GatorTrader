@@ -32,7 +32,11 @@ class PriceDataSet(Dataset): #defines a custom dataset class for stock sequences
     
     def __getitem__(self, idx):
         return self.X[idx], self.y[idx]
-
+# regularization relu see if adding layers makes it better or worse if it changes a lot 
+# build data inputs adjustment factors difference feature, interim model stock sentiment model 
+# customer service bag of words tension is all you need 2018 NLP large lang model 
+# bag of words to then chaining models 
+# validation of data trainting and testing data leaking  remove some stuff 
 class LSTMModel(nn.Module): # simple LSTM model with 2 layers, 64 hidden units, and one output
     # first layer processes the input sequence 
     # second layer takes the hidden states from teh first and refines them further
