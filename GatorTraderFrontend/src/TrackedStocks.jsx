@@ -293,6 +293,8 @@ function TrackedStocks() {
                 data={predictionData[selectedTicker]}
                 cutoffDate={cutoffDates[selectedTicker]}
                 sentiment={sentimentMap[selectedTicker]}
+                ratio ={3}
+                type = "svg"
               />
               {sentimentMap[selectedTicker] && (
                 <div className="prediction-info">
