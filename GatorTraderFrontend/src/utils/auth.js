@@ -99,3 +99,28 @@ export const getPhoto = async function (token) {
         throw error;
     }
 }
+
+export const setEmail = async function(email, token){
+    try{
+        const response = await fetch("http://localhost:5000/api/changeemail", {
+            method: "POST",
+            headers: {
+                'Authorization':token,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(email)
+        });
+
+        if (!response.ok){
+            const errorBody = await response.text()
+            throw new Error(`Email change failed with status: ${response.status}, ${errorBody}`);
+        }
+
+        return await response.json();
+    }
+    catch (error){
+        console.error('Email change error:', error);
+        throw error;
+    }
+}

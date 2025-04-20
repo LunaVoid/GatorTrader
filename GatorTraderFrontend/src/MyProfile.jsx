@@ -10,10 +10,14 @@ import loading3 from '../public/loading3.gif'
 import defaultPhoto from '../public/defaultPhoto.jpg'
 
 function MyProfile() {
-  const { user, logoutUser, profilePic, setProfilePic, imageSender,token, imageGetter} = useUser();
+  const { user, logoutUser, profilePic, setProfilePic, imageSender,token, imageGetter, emailSetter} = useUser();
   const [username, setUsername] = useState(user); // Example username
   const [profileImage, setprofileImage] = useState(profilePic)
   //Removed Password, frontend should never store it!
+
+  const [newEmail, setNewEmail] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
 
   async function chooseSendImage(e){
     const file = e.target.files[0];
@@ -86,9 +90,42 @@ function MyProfile() {
       console.log("here");
     }
   }, [profilePic]);
+
+  const handleEmailChange = async () => {
+
+    if (!newEmail || !newEmail.includes("@")) {
+      setErrorMsg("Please enter a valid email address.");
+      setShowSuccess(false);
+      setTimeout(() => setErrorMsg(null), 3000);
+      return;
+    }
+
+
+    try {
+      const result = await emailSetter(newEmail, token); // result is true or false
+  
+      if (result === true) {
+        setShowSuccess(true);
+        setErrorMsg(null);
+        setTimeout(() => setShowSuccess(false), 3000);
+      } else {
+        setErrorMsg("Could not update email. Please try again.");
+        setShowSuccess(false);
+        setTimeout(() => setErrorMsg(null), 3000);
+      }
+    } catch (err) {
+      setErrorMsg(err.message || "Unexpected error occurred.");
+      setShowSuccess(false);
+      setTimeout(() => setErrorMsg(null), 3000);
+    }
+  };
+  
   return (
     <div>
       <Navbar />
+       {/* Popups */}
+      {showSuccess && <div className="popup success">✅ Email updated successfully!</div>}
+      {errorMsg && <div className="popup error">❌ {errorMsg}</div>}
       <div className="profile-container">
         <div className="profile-box">
           <h2>Profile Information</h2>
@@ -96,11 +133,17 @@ function MyProfile() {
             <p>Supported formats: WEBP, JPG, GIF, PNG. <br></br> Maximum file size: 1MB</p>
             <img width="150px" src = {profileImage}></img>
             <p style={{ marginTop: '10px' }}><strong>Username:</strong> {user}</p>
-            
           </div>
           <p>Choose a new Profile Photo!</p>
           <input onChange={chooseSendImage} id="inputter" type="file" accept=".png, .jpg, .jpeg, .gif,.webp,image/webp, image/png, image/jpeg, image/gif"></input>
-          <input id="inputter" type="email"></input>
+          <input
+            id="inputter"
+            type="email"
+            placeholder="Enter new email"
+            value={newEmail}
+            onChange={(e) => setNewEmail(e.target.value)}
+          />
+          <button className="edit-email-btn" onClick={handleEmailChange}>Change Email</button>
           <button className="edit-profile-btn" onClick={logoutUser}>Log Out</button>
         </div>
       </div>

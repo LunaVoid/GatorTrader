@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react';
-import { getPhoto, logIn, sendPhoto, signUp } from './auth';
+import { getPhoto, logIn, sendPhoto, signUp, setEmail } from './auth';
 import { useNavigate } from "react-router-dom";
 const UserContext = createContext(null);
 
@@ -11,7 +11,7 @@ export function UserProvider({ children }) {
     const [token, setToken] = useState(null);
     const [profilePic, setProfilePic] = useState(null)
     const [exp,setEXP] = useState(null);
-    
+
     const loadUser = () =>{
         console.log("here")
         const userName = sessionStorage.getItem("gtUsername");
@@ -114,9 +114,28 @@ export function UserProvider({ children }) {
         }
 
     }
+
+    const emailSetter = async (email,token) => {
+        try {
+            if(token){
+                const data = await setEmail(email, token);
+                console.log(data)
+                return data;
+            }
+            else{
+                console.error("Token Error")
+            }
+              // Success, data will be returned
+        } catch (error) {
+            console.error('Error during email change', error);
+            throw error;  // Propagate the error to the component
+        }
+
+    }
     
+
     return (
-        <UserContext.Provider value={{ user, token, profilePic, setProfilePic, loginUser, logoutUser, signupUser,loadUser, imageSender, imageGetter }}>
+        <UserContext.Provider value={{ user, token, profilePic, setProfilePic, loginUser, logoutUser, signupUser,loadUser, imageSender, imageGetter, emailSetter}}>
             {children}
         </UserContext.Provider>
     );

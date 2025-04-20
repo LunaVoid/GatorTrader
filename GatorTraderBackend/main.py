@@ -20,10 +20,10 @@ load_dotenv()
 ####DEV REMOVE THIS IN PROD
 
 app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_path='/')
-#CORS(app, origins=['http://localhost:5173','http://127.0.0.1:5000'])
-#CORS(app)
-#CORS(app, origin = "*")
-#CORS(app, resources={r"/api/*": {"origins": "*"}})
+# CORS(app, origins=['http://localhost:5173','http://127.0.0.1:5000'])
+# CORS(app)
+# CORS(app, origin = "*")
+# CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 '''
 CORS(app, resources={
