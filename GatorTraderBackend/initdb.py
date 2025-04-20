@@ -14,7 +14,7 @@ conn = psycopg2.connect(
 
 
 cur = conn.cursor();
-cur.execute('DROP TABLE IF EXISTS users;')
+cur.execute('DROP TABLE IF EXISTS users CASCADE;')
 #optimize later to not recreate every time 
 cur.execute('''CREATE TABLE IF NOT EXISTS users (
     userid SERIAL PRIMARY KEY,
@@ -27,15 +27,18 @@ cur.execute('''CREATE TABLE IF NOT EXISTS users (
     token_expires TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    mimetype VARCHAR(255)
+    mimetype VARCHAR(255),
+    level VARCHAR(255) DEFAULT 'intermediate'
     );'''
 )
+cur.execute('DROP TABLE IF EXISTS saved_stocks CASCADE;')
 cur.execute('''
     CREATE TABLE IF NOT EXISTS saved_stocks (
         stock_id SERIAL PRIMARY KEY,
         userid INT NOT NULL,
         ticker VARCHAR(10) NOT NULL,
-        FOREIGN KEY (userid) REFERENCES users(userid) ON DELETE CASCADE
+        FOREIGN KEY (userid) REFERENCES users(userid) ON DELETE CASCADE,
+        CONSTRAINT unique_user_stock UNIQUE (userid, ticker)
     );
 ''')
 
@@ -55,8 +58,8 @@ cur.execute('INSERT INTO users (username, password, profile_pic, email, mimetype
              file_bytes,
              'hiralshukla@ufl.edu', 'image/webp')
             )
-cur.execute('INSERT INTO saved_stocks (userid, ticker) VALUES (%s, %s);', (1, 'AAPL'))
-cur.execute('INSERT INTO saved_stocks (userid, ticker) VALUES (%s, %s);', (1, 'MSFT'))
+#cur.execute('INSERT INTO saved_stocks (userid, ticker) VALUES (%s, %s);', (1, 'AAPL'))
+#cur.execute('INSERT INTO saved_stocks (userid, ticker) VALUES (%s, %s);', (1, 'MSFT'))
 # Execute SELECT query
 cur.execute("SELECT * FROM users")
 
@@ -73,6 +76,7 @@ retrieved_bytes = cur.fetchone()[0]
 cur.execute('SELECT ticker FROM saved_stocks WHERE userid = %s;', (1,))
 saved_stocks = cur.fetchall()
 print("Saved stocks for user 1:")
+
 for stock in saved_stocks:
     print(stock)
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import './App.css';
 import './Login.css';
@@ -12,10 +12,24 @@ import learnstocks from '../public/learnstocks.jpg';
 import investing from '../public/investing.jpg';
 import budgeting from '../public/budgeting.jpg';
 import retirement from '../public/retirement.jpg';
-
+import { useUser } from './utils/userContext.jsx';
 
 const topics = [
-  { id: "credit-debit", label: "Credit & Debit", description: (
+  { id: "credit-debit", label: "Credit & Debit", description_begin: (
+    <>
+      <h3>What is a Debit Card?</h3>
+      <p>A debit card lets you spend the money you already have in your bank account. It's great for taking out cash from an ATM, but risky to use daily because if someone steals it, they can access your money right away and it takes longer to get it back.</p>
+
+      <h3>What is a Credit Card?</h3>
+      <p>A credit card lets you borrow money to pay for things, but you must pay it back later. It’s better protected if stolen, and it helps you build a credit score — just remember to pay on time and avoid cards with fees!</p>
+
+      <h3>What is a Credit Score?</h3>
+      <p>Your credit score shows how good you are at paying back money. It helps lenders decide if they can trust you. Scores go from 300 to 850. The higher, the better!</p>
+
+      <h3>Why is Building Credit Important?</h3>
+      <p>Good credit makes it easier to get approved for loans, rent, or buy a home, and can save you money through lower interest rates.</p>
+    </>
+  ), description_int: (
     <>
       <h3>What is a Debit Card?</h3>
       <p>A debit card is a payment card that allows you to access funds directly from your checking account to make purchases or withdraw cash. While this is important to have for emergencies when you need cash from an ATM, you should not use your debit card for daily transactions, as if your debit card information is stolen, the money from your checking account can be directly and immediately accessed and the protection from the bank is not robust, usually with slower reimbursement times as well.</p>
@@ -29,10 +43,38 @@ const topics = [
       <h3>Why is Building Credit Important?</h3>
       <p>A higher credit score means you're more likely to be approved for things like: student loans, apartment rentals, mortgages on homes, car loans, and insurance for auto, home, etc. It can also mean lower interest rates on those loans.</p>
     </>
+  ), description_adv: (
+    <>
+    <h3>What is a Debit Card?</h3>
+    <p>A debit card provides direct access to your checking account funds. It is essential for ATM withdrawals but carries a higher fraud risk for daily transactions due to weaker consumer protections and slower reimbursement times compared to credit cards.</p>
+
+    <h3>What is a Credit Card?</h3>
+    <p>A credit card allows borrowing up to a credit limit. Timely full payments avoid interest, and responsible usage helps build credit. Credit cards also offer stronger fraud protection and faster chargeback resolution than debit cards. Prefer cards with no annual fee.</p>
+
+    <h3>What is a Credit Score?</h3>
+    <p>A credit score (300–850) reflects your creditworthiness and is based on payment history, credit utilization, length of credit history, credit mix, and recent inquiries. Maintaining an early, long-standing credit account boosts your score significantly.</p>
+
+    <h3>Why is Building Credit Important?</h3>
+    <p>A strong credit score enhances your ability to secure loans, rent housing, and obtain favorable insurance rates, while minimizing borrowing costs through reduced interest rates.</p>
+  </>
   ),
     image: creditDebit,
    },
-  { id: "checkings-savings", label: "Checkings & Savings", description:(
+  { id: "checkings-savings", label: "Checkings & Savings", description_begin: (
+    <>
+    <h3>What is a Checking Account?</h3>
+    <p>A checking account is a bank account for everyday spending. You can use it to pay bills, get your paycheck, and take out money when needed.</p>
+    <h3>What is a Savings Account?</h3>
+    <p>A savings account helps you save money and earn some interest. It’s better for money you don’t plan to spend right away.</p>
+
+    <h3>Why are Checking Accounts Used?</h3>
+    <p>Once you’re 18, having a checking account is key to managing your money, like paying bills and getting paid. Keep enough for spending and move extra to savings.</p>
+
+    <h3>Why are Savings Accounts Used?</h3>
+    <p>They earn more interest than checking accounts. Good for saving money safely, even though better returns come from investing.</p>
+    </>
+    
+  ), description_int:(
     <>
       <h3>What is a Checking Account?</h3>
       <p>A checking account is a type of bank account that allows for easy access to your money for daily transactions (also known as 'highly liquid'). It is designed for frequent use, for things like deposits, withdrawals, and writing checks.</p>
@@ -46,11 +88,40 @@ const topics = [
       <h3>Why are Savings Accounts Used?</h3>
       <p>Savings accounts are important for accumulating interest over time, helping money keep up with inflation. In 2025, the best savings accounts offer around 3-4% interest, much higher than checking accounts (~0.01%). However, investing is necessary to truly keep up with inflation.</p>
     </>
+  ), description_adv: (
+    <>
+    <h3>What is a Checking Account?</h3>
+    <p>Checking accounts are highly liquid financial instruments designed for daily financial transactions such as deposits, withdrawals, electronic payments, and check writing.</p>
+
+    <h3>What is a Savings Account?</h3>
+    <p>Savings accounts are interest-bearing deposit accounts intended for capital preservation and gradual growth, typically with withdrawal limits to encourage saving behavior.</p>
+
+    <h3>Why are Checking Accounts Used?</h3>
+    <p>Essential for financial independence and managing daily cash flow. Checking accounts serve as the central hub for income receipt, expense management, and bill payment.</p>
+
+    <h3>Why are Savings Accounts Used?</h3>
+    <p>Savings accounts serve as an accessible yet secure place to store emergency funds and accrue modest interest—currently 3-4% APY at leading institutions—though they underperform compared to long-term investment strategies.</p>
+  </>
   ),
   image: checking,
     
    },
-  { id: "risk-management", label: "Risk Management", description: (
+  { id: "risk-management", label: "Risk Management", description_begin: (
+    <>
+    <h3>What is Risk Tolerance?</h3>
+    <p>Risk tolerance is how much risk you're okay with when investing. Some people can handle big ups and downs, others prefer safer bets.</p>
+
+    <h3>What is a Risk Profile?</h3>
+    <p>Your risk profile is a mix of your comfort with risk, your goals, how much money you can afford to lose, and how long you can invest.</p>
+
+    <h3>How does it change with age?</h3>
+    <p>Young people usually take more risks because they have time to recover. Older people often go safer to protect savings for retirement.</p>
+
+    <h3>How can we organize Financial Activities by Risk?</h3>
+    <p>High to low risk: gambling, crypto, individual stocks, ETFs, corporate bonds, government bonds, savings accounts, checking accounts.</p>
+  </>
+
+  ),description_int: (
     <>
       <h3>What is Risk Tolerance? </h3>
       <p>Risk tolerance is the degree of variability in investment that returns that an individual is willing to withstand in their investment portfolio. It reflects the investor's comfort level with the potential losses or gains, those with high risk tolerance and low risk tolerance invest accordingly.</p>
@@ -77,11 +148,43 @@ savings (3-4% annually NO LOSS and if there are any losses there is fed gov prot
 checking no return (0.01% annually NO LOSS and if there are any losses there is fed gov protections) 
 (LEAST RISK/SAFEST)
 </p>
-</>
-    
+</> 
+  ), description_adv: (
+    <>
+    <h3>What is Risk Tolerance?</h3>
+    <p>Risk tolerance reflects an investor’s psychological comfort with volatility and potential losses in pursuit of returns, influencing portfolio composition and investment strategy.</p>
+
+    <h3>What is a Risk Profile?</h3>
+    <p>A risk profile evaluates both risk tolerance and risk capacity, encompassing personal finance goals, time horizon, liabilities, and emotional response to market movements.</p>
+
+    <h3>How does it change with age?</h3>
+    <p>Younger investors have higher risk tolerance due to longer time horizons and fewer liabilities. As individuals age, investment goals shift toward capital preservation, reducing exposure to volatile assets.</p>
+
+    <h3>How can we organize Financial Activities by Risk?</h3>
+    <p>Risk hierarchy: Gambling &gt; Cryptocurrency &gt; Individual Equities &gt; 
+  ETFs/Mutual Funds &gt; Corporate Bonds &gt; Government Bonds (TIPS) &gt; 
+  High-Yield Savings &gt; Checking (non-interest bearing).</p>
+  </>
   ),
   image: risk,  },
-  { id: "stock-market", label: "Stock Market", description:(
+  { id: "stock-market", label: "Stock Market", description_begin: (
+    <>
+    <h3>What is the Stock Market?</h3>
+    <p>The stock market is where people buy and sell parts of companies (called stocks). Big markets include the NYSE and Nasdaq.</p>
+    
+    <h3>How is Overall Stock Market Performance Measured?</h3>
+    <p>By looking at groups of companies, like the S&P 500, which shows how the biggest 500 companies are doing overall.</p>
+
+    <h3>What is a Stock?</h3>
+    <p>A stock is a piece of a company. If you own a stock, you own part of that company and can earn money if it does well.</p>
+
+    <h3>How are Stocks Bought and Sold?</h3>
+    <p>You can buy or sell stocks online using platforms like Robinhood or E*Trade. Each stock has a symbol like "AAPL" for Apple.</p>
+
+    <h3>What does it Mean to Diversify?</h3>
+    <p>Diversifying means spreading your money around different investments so one loss doesn’t hurt your whole portfolio.</p>
+  </>
+  ), description_int:(
     <>
       <h3>What is the Stock Market?</h3>
       <p>The stock market is a collection of markets and exchanges where buying, selling, and issuance of shares of publicly (not privately) held companies occur. "Going public" is a big deal for companies. The market provides a platform for investors to trade stocks and major markets include: The New York Stock Exchange, the Nasdaq, and The London Stock Exchange.</p>
@@ -98,9 +201,41 @@ checking no return (0.01% annually NO LOSS and if there are any losses there is 
       <h3>What does it Mean to Diversify?</h3>
       <p>Diversifying means to spread your investment across a variety of assets with different attributes, which mean the positive performance can offset the negative performance of other sectors, so overall your portfolio matches the upward trend of the market. Diversification can be in type of asset, sector/industry, geographic, company type (large, mid or small cap where large is huge market capital over 10B, mid is between 2B and 10B, and small is 300M to 2B), etc.</p>
     </>
-  ) ,
+  ) , description_adv: (
+    <>
+    <h3>What is the Stock Market?</h3>
+    <p>The stock market facilitates equity trading, capital formation, and liquidity for public companies. Key exchanges include the NYSE, Nasdaq, and LSE.</p>
+
+    <h3>How is Overall Stock Market Performance Measured?</h3>
+    <p>Indices like the S&P 500, Dow Jones Industrial Average, and Nasdaq Composite track performance of market segments and serve as economic barometers.</p>
+
+    <h3>What is a Stock?</h3>
+    <p>Equity securities represent ownership in a company, entitling shareholders to a proportional share of profits and assets. Stocks trade under unique tickers (e.g., AAPL for Apple).</p>
+
+    <h3>How are Stocks Bought and Sold?</h3>
+    <p>Executed through brokerages via market or limit orders, stocks are traded in centralized and electronic marketplaces, with access to real-time pricing and analytics.</p>
+
+    <h3>What does it Mean to Diversify?</h3>
+    <p>Diversification mitigates unsystematic risk by allocating investments across asset classes, sectors, geographies, and market caps to stabilize returns.</p>
+  </>
+    
+  ),
   image: learnstocks, },
-  { id: "investing-trading", label: "Investing and Trading", description:(
+  { id: "investing-trading", label: "Investing and Trading", description_begin: (
+    <>
+    <h3>What is Investing?</h3>
+    <p>Investing means buying part of a company (or other assets) and holding it to grow your money over time.</p>
+    
+    <h3>What is Trading?</h3>
+    <p>Trading means buying and selling quickly to try to make money fast based on short-term price changes.</p>
+
+    <h3>Why do People Invest?</h3>
+    <p>To grow their money over time, beat inflation, and help reach future goals like buying a house or retiring.</p>
+
+    <h3>When Should You Start Investing?</h3>
+    <p>The sooner the better! Starting early helps you benefit from compound growth, even with small amounts.</p>
+    </>
+  ),description_int:(
   <>
   <h3>What is Investing?</h3>
   <p>Investing is essentially like owning a small portion of the company. By investing you're providing the company with some capital it can use to expand its operations, develop new products, or enter new markets. In return, you have the potential to earn a return on your investment through capital appreciation (aka the increase in a stock's value over time).  Think of it like "believers" in the company, you must be "vested" to be "invested."</p>
@@ -114,9 +249,35 @@ checking no return (0.01% annually NO LOSS and if there are any losses there is 
   <h3>When Should You Start Investing?</h3>
   <p>You can start investing now! It is crucial to take the advantage of the power of compounding, which is the fact that investments grow exponentially over time. The earlier you start, the more time your money has to grow, and the easier it will be to grow from there! Stocks don't even need to be bought in whole amounts, and you have the option to automatically invest small amounts monthly! </p>
   </>
+  ), description_adv: (
+    <>
+    <h3>What is Investing?</h3>
+    <p>Investing involves allocating capital into assets like equities or bonds with the intent of long-term wealth accumulation via appreciation or income generation.</p>
+
+    <h3>What is Trading?</h3>
+    <p>Trading exploits short-term market inefficiencies for profit using strategies like day trading, swing trading, and derivatives, often requiring technical analysis and risk management.</p>
+
+    <h3>Why do People Invest?</h3>
+    <p>To achieve financial independence, hedge against inflation, generate passive income, and fulfill long-term goals through capital appreciation and compound interest.</p>
+
+    <h3>When Should You Start Investing?</h3>
+    <p>Investing early maximizes compounding effects. Time in the market generally outperforms attempts at market timing, especially with automatic reinvestment and fractional share access.</p>
+    </>
   ),
   image: investing,},
-  { id: "budgeting", label: "Budgeting", description:(
+  { id: "budgeting", label: "Budgeting", description_begin: (
+    <>
+    <h3>What is Budgeting?</h3>
+    <p>Budgeting means making a plan for how to use your money wisely. It includes keeping track of how much money you make and how much you spend on things like food, rent, fun, and savings.</p>
+
+    <h3>Why is Budgeting Important?</h3>
+    <p>Budgeting helps you not spend more than you earn. It shows you where your money goes so you can make better choices. It also helps you save up for big things like vacations or emergencies, and avoid getting into debt.</p>
+
+    <h3>How Can You Start Budgeting?</h3>
+    <p>You can start by writing down your income and your expenses on paper or in a spreadsheet. You can also use apps like Mint, YNAB, or your bank's app to track spending. Try to spend less than you earn, and save a little every month!</p>
+    </>
+  ),
+  description_int:(
 <>
 <h3>What is Budgeting?</h3>
 <p>Budgeting is the process of creating a plan to manage your income, expenses, and savings on the daily basis. It involves tracking income and earnings, tracking expenditures or spending, identifying spending categories, identifying how much is spent per month or week in each category, and setting financial goals of saving. </p>
@@ -127,10 +288,32 @@ checking no return (0.01% annually NO LOSS and if there are any losses there is 
 <h3>How do People Budget?</h3>
 <p>You can use something as simple as Microsoft Excel spreadsheets, Google sheets, etc. or you can use the many apps available to sort through your financial data yourself. All bank account, debit card, and credit card information is downloadable to analyze from their respective websites. When analyzing, find where improvements can be made and devise a plan of action!</p>
 </>
+  ), description_adv:(
+    <>
+    <h3>What is Advanced Budgeting?</h3>
+    <p>Advanced budgeting involves not just tracking income and expenses but forecasting, analyzing trends, and optimizing cash flow. It includes sinking funds, zero-based budgeting, and adjusting monthly plans based on variable income or goals.</p>
+
+    <h3>Why Level Up Your Budget?</h3>
+    <p>Mastering advanced budgeting techniques helps you become intentional with every dollar. It maximizes savings potential, eliminates waste, and prepares you for major financial moves—like investing, business ownership, or early retirement.</p>
+
+    <h3>How to Get Advanced?</h3>
+    <p>Start using detailed categories, automate savings, and set up multiple sinking funds for upcoming large expenses. Use tools like YNAB (You Need a Budget), Tiller, or advanced Excel models. Track your net worth monthly and review quarterly goals for progress.</p>
+    </>
   ),
   image: budgeting,
  },
-  { id: "retirement", label: "Retirement", description:(
+  { id: "retirement", label: "Retirement", description_begin: (
+    <>
+    <h3>What is Retirement?</h3>
+    <p>Retirement means the time in your life when you stop working full-time, usually in your 60s or 70s. But to do that, you need money saved up so you can live comfortably without a job.</p>
+
+    <h3>Why Save for Retirement?</h3>
+    <p>If you start saving early, your money has time to grow. Even saving a little bit each month can add up over many years! Waiting too long means you’ll have to save a lot more later.</p>
+
+    <h3>Easy Ways to Start Saving</h3>
+    <p>Open a Roth IRA when you're 18 or start putting money in a 401(k) if your job offers one—especially if they match what you put in. Don’t forget: the money you put in has to be invested to grow, not just sit in cash.</p>
+    </>
+  ), description_int:(
   <>
     <h3>What are Life's Major Expenses?</h3>
     <p>In order the biggest expenses of your life are likely to be the following: college, car, house, and retirement. These are the largest expenses that lead to loans of some type for everyone, down payments and mortgages.</p>
@@ -144,22 +327,47 @@ checking no return (0.01% annually NO LOSS and if there are any losses there is 
     <h3>What is a 401K?</h3>
     <p>A 401K is an employer-sponsored retirement savings plan that allows employees to contribute a portion of their salary to a tax-advantaged retirement account. Contributions are pre-tax again, and employers match your contribution to a certain percent, and you should withdraw later to get larger amounts. </p>
     </>
-  ),
+  ), description_adv: (
+  <>
+    <h3>Planning for Financial Independence</h3>
+    <p>Advanced retirement planning is about achieving financial independence—reaching a point where investments cover your living expenses. This may happen before the traditional retirement age if you plan early and aggressively.</p>
+
+    <h3>Strategic Tools for Long-Term Growth</h3>
+    <p>Use accounts like Roth IRAs, Traditional IRAs, 401(k), HSA, and brokerage accounts in combination. Understand contribution limits, tax implications, and employer match strategies. Diversify investments across stocks, bonds, ETFs, and real estate.</p>
+
+    <h3>Optimizing Your Path</h3>
+    <p>Use compound interest calculators, FIRE (Financial Independence, Retire Early) projections, and tax-efficient withdrawal strategies. Consider maxing out tax-advantaged accounts early in your career and adjusting allocations as you age.</p>
+  </>),
   image: retirement, },
 ];
 
-const scrollToSection = () => {
-  const element = document.getElementById('my-section');
-  element?.scrollIntoView({ behavior: 'smooth' }); // Optional smooth scrolling
-};
+
+
 
 const Learn = () => {
   const [selectedTopic, setSelectedTopic] = useState(null);
+  const { levelGetter, token } = useUser();
+  const [level, setLevel] = useState("beginner");
+  console.log(level)
+
+  useEffect(()=>{
+    const levelStuffer = async() => {
+      const l = await levelGetter(token);
+      setLevel(l);
+
+    }
+    try {
+      levelStuffer();
+    } 
+    catch (e){
+      console.log(e);
+    }
+  },[])
 
   return (
     <div>
       <Navbar/>
-    
+  
     <div className="learn-container" >
       <h2 className="title"> Select a circle to start learning:</h2>
       <div className="circle-container">
@@ -179,12 +387,14 @@ const Learn = () => {
       {selectedTopic && (
         <div className="info-box">
         <h2>{selectedTopic.label}</h2>
-        <p>{selectedTopic.description}</p>
+        {level === "beginner" && selectedTopic.description_begin}
+        {level === "intermediate" && selectedTopic.description_int}
+        {level === "advanced" && selectedTopic.description_adv}
         <span className="close-btn" onClick={() => setSelectedTopic(null)}>✖</span>
         
       </div>
       )}
-    <div className = "footer-bar"></div>
+    <div className = "footer-baralso"></div>
     </div>
     
     
