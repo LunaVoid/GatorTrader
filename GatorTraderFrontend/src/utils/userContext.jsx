@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react';
-import { getPhoto, logIn, sendPhoto, signUp, setEmail } from './auth';
+import { getPhoto, logIn, sendPhoto, signUp, getLevel, setLevel , getFavs, setFavs, setEmail } from './auth';
 import { useNavigate } from "react-router-dom";
 const UserContext = createContext(null);
 
@@ -115,6 +115,7 @@ export function UserProvider({ children }) {
 
     }
 
+
     const emailSetter = async (email,token) => {
         try {
             if(token){
@@ -127,15 +128,94 @@ export function UserProvider({ children }) {
             }
               // Success, data will be returned
         } catch (error) {
-            console.error('Error during email change', error);
-            throw error;  // Propagate the error to the component
+          console.error('Error during email change', error);
+          throw error;  // Propagate the error to the component
         }
 
     }
     
 
+    const levelGetter = async (token) => {
+        try {
+            console.log("Here");
+            if(token){
+                const data = await getLevel( token);
+                console.log(data)
+                const level = data;
+                return level.level;
+            }
+            else{
+                console.error("Token Error")
+            }
+              // Success, data will be returned
+        } catch (error) {
+            console.error('level getter error', error);
+            throw error;  // Propagate the error to the component
+        }
+
+    }
+
+    const levelSetter = async (token, level) => {
+        try {
+            console.log("Here");
+            if(token){
+                const data = await setLevel( token, level);
+                console.log(data)
+                return data;
+            }
+            else{
+                console.error("Token Error")
+            }
+              // Success, data will be returned
+        } catch (error) {
+            console.error('level setter error', error);
+            throw error;  // Propagate the error to the component
+        }
+
+    }
+
+
+    const favsGetter = async (token) => {
+        try {
+            console.log("Here");
+            if(token){
+                const data = await getFavs(token);
+                console.log(data)
+                const favs = data;
+                return favs.stocks;
+            }
+            else{
+                console.error("Token Error")
+            }
+              // Success, data will be returned
+        } catch (error) {
+            console.error('faveStocks getter error', error);
+            throw error;  // Propagate the error to the component
+        }
+
+    }
+
+    const favsSetter = async (token, faveStocks) => {
+        try {
+            console.log("Here");
+            if(token){
+                const data = await setFavs( token, faveStocks);
+                console.log(data)
+                return data;
+            }
+            else{
+              console.error("Token error")
+            }
+               // Success, data will be returned
+        } catch (error) {
+            console.error('favStocks setter error', error);
+            throw error;  // Propagate the error to the component
+        }
+
+    }
+    
     return (
-        <UserContext.Provider value={{ user, token, profilePic, setProfilePic, loginUser, logoutUser, signupUser,loadUser, imageSender, imageGetter, emailSetter}}>
+        <UserContext.Provider value={{ user, token, profilePic, setProfilePic, loginUser, logoutUser, signupUser,loadUser, imageSender, imageGetter, levelGetter, levelSetter , favsGetter,  favsSetter, emailSetter}}>
             {children}
         </UserContext.Provider>
     );

@@ -11,10 +11,15 @@ from flask_cors import CORS
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
-from operations import setProfileImage, getProfileImage, setEmail
+from operations import setProfileImage, getProfileImage, setLevel, getLevel, setFavs, deleteFavs, getFavs, setEmail
+
 import base64
 import os
 import imghdr
+
+from apscheduler.schedulers.background import BackgroundScheduler
+import dailyUpdate
+
 
 load_dotenv()
 ####DEV REMOVE THIS IN PROD
@@ -262,6 +267,97 @@ def changeEmail(data):
         # For any other exception
         raise AppError(f"Internal Server Error Contact Admin {str(e)}")
 
+@app.route("/api/changeLevel", methods=["POST"])
+@checkLoggedInToken
+def changeLevel(data):
+    try:
+        print(data)
+        print(data['userid'])
+        requestData = request.get_json()
+        level = requestData["level"]
+        print(level)
+        if level != "beginner" and level != "intermediate" and level != "advanced":
+            raise AppError(f"No level selected")
+        setLevel(level, data["userid"])
+        return jsonify({"message": "Yippee"}), 200
+
+    except AppError as e:
+        response_data = {"message": f"{str(e)}"}
+        print(response_data)
+        return jsonify(response_data), 400 
+    except Exception as e:
+        # For any other exception
+        print(e)
+        raise AppError(f"Internal Server Error Contact Admin {str(e)}")
+    
+@app.route("/api/getLevel", methods=["GET"])
+@checkLoggedInToken
+def retrieveLevel(data):
+    try:
+        print(data)
+        print(data['userid'])
+        levelTuple = getLevel(data['userid'])
+        if levelTuple[0]:
+            response_data = {"level": levelTuple[1]}
+            return jsonify(response_data), 200 
+        else:
+            raise AppError(f"Your level didn't work {str(e)}")
+
+    except AppError as e:
+        response_data = {"message": f"{str(e)}"}
+        print(response_data)
+        return jsonify(response_data), 400 
+    except Exception as e:
+        # For any other exception
+        print(e)
+        raise AppError(f"Internal Server Error Contact Admin {str(e)}")
+
+@app.route("/api/setfavs", methods=["POST"])
+@checkLoggedInToken
+def setFavoriteStocks(data):
+    try:
+        print(data)
+        requestData = request.get_json()
+        print(requestData['favStocks'])
+        stocks = requestData["favStocks"]
+        if not isinstance(stocks, list):
+            raise AppError(f"Not an Array")
+        deleteFavs(data['userid'])
+        count, insertedStocks = setFavs(stocks,data['userid'])
+        return jsonify({"message": f"Yippee stocks: ${insertedStocks}"}), 200
+
+    except AppError as e:
+        response_data = {"message": f"{str(e)}"}
+        print(response_data)
+        return jsonify(response_data), 400 
+    except Exception as e:
+        # For any other exception
+        print(e)
+        raise AppError(f"Internal Server Error Contact Admin {str(e)}")
+
+@app.route("/api/getfavs", methods=["GET"])
+@checkLoggedInToken
+def getFavoriteStocks(data):
+    try:
+        userStocks = getFavs(data['userid'])
+        return jsonify({
+            "message": f"Yippee stocks: {userStocks}", 
+            "stocks": userStocks
+        }), 200
+    except AppError as e:
+        response_data = {"message": f"{str(e)}"}
+        print(response_data)
+        return jsonify(response_data), 400 
+    except Exception as e:
+        # For any other exception
+        print(e)
+        raise AppError(f"Internal Server Error Contact Admin {str(e)}")
+    
+
+
+
+
+
 
 
 @app.route('/', defaults={'path': ''})
@@ -271,6 +367,16 @@ def catch_all(path):
         #return "Your endpoint is /"+path
         return send_from_directory(app.static_folder, 'index.html')
 
+scheduler = BackgroundScheduler()
+scheduler.add_job(
+    dailyUpdate.updateData,
+    'cron',
+    day_of_week='mon-fri',
+    hour=19,
+    minute=5,
+    timezone='US/Eastern'
+)
+scheduler.start()
 
 if __name__ == "__main__":
     app.run()

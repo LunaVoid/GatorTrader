@@ -1,0 +1,13 @@
+{
+    "symbol": "NFLX",
+    "data": [
+        {
+            "effective_date": "2015-07-15",
+            "split_factor": "7.0000"
+        },
+        {
+            "effective_date": "2004-02-12",
+            "split_factor": "2.0000"
+        }
+    ]
+}

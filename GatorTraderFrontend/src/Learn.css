@@ -77,7 +77,7 @@ body {
     max-height: calc(100vh - 140px); /* Prevents it from getting too tall */
     background: white;
     padding: 20px;
-    margin-bottom: -10px;
+    margin-bottom: 40px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     overflow-y: auto; /* Adds scroll if content is too large */
@@ -85,6 +85,7 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     text-align: center;
+    
   }
   
   @media (max-width: 600px) {
@@ -125,3 +126,12 @@ body {
     color: black;
 }
 
+.footer-baralso{
+  width: 100%;
+  height: 30px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(90deg, #1F6336 0%, #9ECFAE 100%);
+  z-index: 1000;
+}
