@@ -1,0 +1,13 @@
+{
+    "symbol": "MSFT",
+    "data": [
+        {
+            "effective_date": "2003-02-18",
+            "split_factor": "2.0000"
+        },
+        {
+            "effective_date": "1999-03-29",
+            "split_factor": "2.0000"
+        }
+    ]
+}

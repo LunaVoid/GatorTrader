@@ -1,7 +1,7 @@
 import os
 import uploadData
 import json
-data_dir = "./GatorTraderFrontend/public/data"
+data_dir = "../GatorTraderFrontend/public/data"
 
 def loopData():
     

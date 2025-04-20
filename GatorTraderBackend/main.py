@@ -16,6 +16,10 @@ import base64
 import os
 import imghdr
 
+from apscheduler.schedulers.background import BackgroundScheduler
+import dailyUpdate
+
+
 load_dotenv()
 ####DEV REMOVE THIS IN PROD
 
@@ -331,6 +335,16 @@ def catch_all(path):
         #return "Your endpoint is /"+path
         return send_from_directory(app.static_folder, 'index.html')
 
+scheduler = BackgroundScheduler()
+scheduler.add_job(
+    dailyUpdate.updateData,
+    'cron',
+    day_of_week='mon-fri',
+    hour=19,
+    minute=5,
+    timezone='US/Eastern'
+)
+scheduler.start()
 
 if __name__ == "__main__":
     app.run()

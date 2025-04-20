@@ -1,0 +1,9 @@
+{
+    "symbol": "JPM",
+    "data": [
+        {
+            "effective_date": "2000-06-12",
+            "split_factor": "1.5000"
+        }
+    ]
+}

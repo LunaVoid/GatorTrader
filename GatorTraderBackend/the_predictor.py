@@ -7,9 +7,9 @@ import torch # deep learning framework to build and train neural networks like L
 from torch.utils.data import Dataset, DataLoader # organize data for training to create a data set and load in batches
 import torch.nn as nn # the neural network module of pytorch to build the module architecture (LSTM) and the loss function (MSELoss)
 import matplotlib # graph and plot
-warnings.filterwarnings("ignore", category=UserWarning, module='pandas.io.sql')
-# !!! fix this for prod should be using pandas.read_sql() with SQLAlchemy 
-import warnings # hide pandas warning about psycopg2 
+# warnings.filterwarnings("ignore", category=UserWarning, module='pandas.io.sql')
+# # !!! fix this for prod should be using pandas.read_sql() with SQLAlchemy 
+# import warnings # hide pandas warning about psycopg2 
 
 
 torch.manual_seed(42) # these set seeds for pytorch and numpy to ensure reproducibility across the team

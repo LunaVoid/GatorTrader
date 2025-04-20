@@ -27,8 +27,10 @@ export function transformStockData(jsonData) {
 
     const timeSeries = jsonData["Time Series (Daily)"];
 
-    return Object.keys(timeSeries).map((date) => ({
+    return Object.keys(timeSeries)
+    .sort((a, b)=> new Date(a) - new Date(b))
+    .map((date) => ({
         date: parseDate(date), 
         close: parseFloat(timeSeries[date]["4. close"]),
-    })).reverse(); 
+    }))
 }
