@@ -7,7 +7,8 @@ import './Login.css';
 import './TrackedStocks.css';
 import Navbar from './components/Navbar';
 import AreaChart from './components/Chart';
-import { getLocalStockData } from "./utils/dataUtil"; 
+import PredictionChart from './components/PredictionChart.jsx';
+import { getLocalStockData, transformStockData } from "./utils/dataUtil"; 
 import { useUser } from './utils/userContext.jsx';
 
 function TrackedStocks() {
@@ -21,6 +22,11 @@ function TrackedStocks() {
   const stocks = ["NVDA", "GOOGL", "AMZN", "MSFT", "TSLA", "AAPL", "JPM", "BAC", "NFLX", "META"];
   const [shownStock, setShownStock] = useState(stocks)
   const [switched, setSwitched] = useState(false);
+
+  const [predictionData, setPredictionData] = useState({});
+  const [cutoffDates, setCutoffDates] = useState({});
+  const [sentimentMap, setSentimentMap] = useState({})
+  const [nextPriceMap, setNextPriceMap] = useState({});
   
   //creates a list for favoriteStocks, checks if item is already on favorite lists and adds and removes it depending if its already on there
   const toggleFavorite = async(ticker) => {
@@ -165,6 +171,49 @@ function TrackedStocks() {
     }
   }
   
+  useEffect(() => {
+    if (!selectedTicker || !stockData) return;
+  
+    async function fetchPredictionAndSentiment() {
+      try {
+        const predRes = await fetch(`/predicted/predicted${selectedTicker}.json`);
+        const predJson = await predRes.json();
+  
+        const formattedPred = transformStockData(predJson).map(d => ({
+          date: d.date,
+          value: d.close,
+        }));
+  
+        const cutoff = stockData[stockData.length - 1]?.date;
+  
+        setPredictionData((prev) => ({ ...prev, [selectedTicker]: formattedPred }));
+        setCutoffDates((prev) => ({ ...prev, [selectedTicker]: cutoff }));
+        console.log("Loaded prediction JSON:", predJson);
+        console.log("Formatted data:", formattedPred);
+        console.log("Cutoff date:", cutoff);
+      } catch (err) {
+        console.error(`Prediction fetch failed for ${selectedTicker}`, err);
+      }
+  
+      try {
+        const sentRes = await fetch("/predicted/sentiment.json");
+        const sentJson = await sentRes.json();
+        setSentimentMap(sentJson);
+      } catch (err) {
+        console.error("Sentiment load failed", err);
+      }
+
+      try {
+        const nextRes = await fetch("/predicted/nextprices.json");
+        const nextJson = await nextRes.json();
+        setNextPriceMap(nextJson);
+      } catch (err) {
+        console.error("Next price load failed", err);
+      }
+    }
+  
+    fetchPredictionAndSentiment();
+  }, [selectedTicker, stockData]);
     
     return (
       <div>
@@ -239,7 +288,19 @@ function TrackedStocks() {
 
             {/*show AreaChart or Predictor */}
             {showPredictor ? (
-              <AreaChart ticker={selectedTicker} data={stockData} ratio={3} type="svg" />
+              <>
+              <PredictionChart
+                data={predictionData[selectedTicker]}
+                cutoffDate={cutoffDates[selectedTicker]}
+                sentiment={sentimentMap[selectedTicker]}
+              />
+              {sentimentMap[selectedTicker] && (
+                <div className="prediction-info">
+                  <p>Next Predicted Close: <strong>${nextPriceMap[selectedTicker].prediction}</strong></p>
+                  <p>Uncertainty: ± ${nextPriceMap[selectedTicker].uncertainty}</p>
+                </div>
+              )}
+              </>
             ) : (
               <AreaChart ticker={selectedTicker} data={stockData} ratio={3} type="svg" />
             )}

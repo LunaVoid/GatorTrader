@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   ChartCanvas,
   Chart,
@@ -12,49 +12,58 @@ import {
 } from "react-financial-charts";
 import { scaleTime } from "d3-scale";
 
-function LineChartWithCrosshairs() {
-  const data = [
-    { date: new Date("2023-01-01"), value: 100 },
-    { date: new Date("2023-01-02"), value: 110 },
-    { date: new Date("2023-01-03"), value: 105 }
-  ];
+function PredictionChart({ data, cutoffDate, sentiment }) {
+  if (!data || data.length === 0) {
+    return <p>No prediction data available.</p>;
+  }
 
-  const verticalLineDate = new Date("2023-01-02"); // 👈 static vertical line at this date
+  const canvasRef = useRef(null)
+
+  const xAccessor = (d) => d.date;
 
   return (
-    <ChartCanvas
-      width={800}
-      height={400}
-      data={data}
-      seriesName="LineExample"
-      xScale={scaleTime()}
-      xAccessor={(d) => d.date}
-      xExtents={[data[0].date, data[data.length - 1].date]}
-      margin={{ left: 50, right: 50, top: 10, bottom: 30 }}
-    >
-      <Chart id={0} yExtents={(d) => d.value}>
-        <XAxis />
-        <YAxis />
-        <LineSeries yAccessor={(d) => d.value} />
+    <div className="prediction-chart-wrapper">
+      <ChartCanvas
+        ref={canvasRef}
+        width={800}
+        height={400}
+        data={data}
+        seriesName="PredictionSeries"
+        xScale={scaleTime()}
+        xAccessor={xAccessor}
+        xExtents={[xAccessor(data[0]), xAccessor(data[data.length - 1])]}
+        margin={{ left: 50, right: 50, top: 10, bottom: 30 }}
+      >
+        <Chart id={0} yExtents={(d) => d.value}>
+          <XAxis axisAt="bottom" orient="bottom" ticks={6} />
+          <YAxis axisAt="left" orient="left" />
 
-        {/* Crosshair Labels */}
-        <MouseCoordinateX displayFormat={(d) => d.toLocaleDateString()} />
-        <MouseCoordinateY />
+          {/* Main line series */}
+          <LineSeries yAccessor={(d) => d.value} stroke="#0077cc" />
 
-        {/* Static Vertical Line */}
-        <StraightLine
-          stroke="red"
-          strokeDasharray="DashDot"
-          opacity={0.9}
-          xValue={verticalLineDate}
-          orient="vertical"
-        />
-      </Chart>
+          {/* Crosshair coordinates */}
+          <MouseCoordinateX displayFormat={(d) => d.toLocaleDateString()} />
+          <MouseCoordinateY />
 
-      {/* Dynamic Crosshair that follows mouse */}
-      <CrossHairCursor />
-    </ChartCanvas>
+          {/* Static vertical line at prediction boundary */}
+          <StraightLine
+            stroke="red"
+            strokeDasharray="DashDot"
+            opacity={0.9}
+            xValue={cutoffDate}
+            orient="vertical"
+          />
+        </Chart>
+
+        <CrossHairCursor />
+      </ChartCanvas>
+
+      {/* Sentiment display */}
+      <div style={{ marginTop: "10px", fontStyle: "italic", color: "#555" }}>
+        Market Sentiment: <strong>{sentiment?.label || "unavailable"}</strong> (Score: {sentiment?.score ?? "N/A"})
+      </div>
+    </div>
   );
 }
 
-export default LineChartWithCrosshairs;
+export default PredictionChart;
