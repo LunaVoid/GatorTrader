@@ -1,4 +1,4 @@
-.popup-overlay {
+.intro-popup-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -11,7 +11,7 @@
     z-index: 999;
   }
   
-  .popup {
+  .intro-popup {
     background: white;
     padding: 30px;
     border-radius: 12px;
