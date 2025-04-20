@@ -122,6 +122,8 @@ export const setEmail = async function(email, token){
     }
     catch (error){
         console.error('Email change error:', error);
+    }
+}
       
 export const getLevel = async function (token) {
     try{
