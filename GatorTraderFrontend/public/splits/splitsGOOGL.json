@@ -1,0 +1,13 @@
+{
+    "symbol": "GOOGL",
+    "data": [
+        {
+            "effective_date": "2022-07-18",
+            "split_factor": "20.0000"
+        },
+        {
+            "effective_date": "2014-04-03",
+            "split_factor": "1.0000"
+        }
+    ]
+}

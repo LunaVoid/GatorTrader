@@ -13,6 +13,8 @@ import sys
 
 # something to research: chron job
 
+# should probably put some of these in env for prod
+
 hiral_api_key = '64BZRK8IBKFOWPH8'
 josh_api_key = None
 paige_api_key = 'HL7OAW6I6F0F6PQM'
@@ -21,7 +23,7 @@ data_dir = '../GatorTraderFrontend/public/data'
 stocks = ["GOOGL", "AMZN", "MSFT", "TSLA", "AAPL", "NFLX", "NVDA", "META", "JPM", "BAC"]
 
 def saveStock(symbol):
-    url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={hiral_api_key}"
+    url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={hiral_api_key}&outputsize=full"
 
     try:
         response = requests.get(url)

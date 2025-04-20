@@ -1,0 +1,17 @@
+{
+    "symbol": "AMZN",
+    "data": [
+        {
+            "effective_date": "2022-06-06",
+            "split_factor": "20.0000"
+        },
+        {
+            "effective_date": "1999-09-02",
+            "split_factor": "2.0000"
+        },
+        {
+            "effective_date": "1999-01-05",
+            "split_factor": "3.0000"
+        }
+    ]
+}

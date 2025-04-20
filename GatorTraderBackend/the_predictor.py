@@ -7,10 +7,14 @@ import torch # deep learning framework to build and train neural networks like L
 from torch.utils.data import Dataset, DataLoader # organize data for training to create a data set and load in batches
 import torch.nn as nn # the neural network module of pytorch to build the module architecture (LSTM) and the loss function (MSELoss)
 import matplotlib # graph and plot
-warnings.filterwarnings("ignore", category=UserWarning, module='pandas.io.sql')
-# !!! fix this for prod should be using pandas.read_sql() with SQLAlchemy 
-import warnings # hide pandas warning about psycopg2 
+from datetime import timedelta
+import os 
+import json
+# warnings.filterwarnings("ignore", category=UserWarning, module='pandas.io.sql')
+# # !!! fix this for prod should be using pandas.read_sql() with SQLAlchemy 
+# import warnings # hide pandas warning about psycopg2 
 
+''' NEXT EVOLUTION USING MARKET SENTIMENT'''
 
 torch.manual_seed(42) # these set seeds for pytorch and numpy to ensure reproducibility across the team
 np.random.seed(42)
@@ -38,14 +42,36 @@ class LSTMModel(nn.Module): # simple LSTM model with 2 layers, 64 hidden units, 
     # second layer takes the hidden states from teh first and refines them further
     # hidden units are the number of hidden neurons in each layer so each time step aka day of price is processed 
     # by 64 internal memory cells and lastly, the you reduce the linear result down to a single output aka the predicted next price
-    def __init__(self, input_size=1, hidden_size=64, num_layers=2): 
-        super(LSTMModel, self).__init__() # required to initalize from pytorch base class
-        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True) # defines the LSTM layers where batch_first looks like [batch, sequence, feature]
-        self.fc = nn.Linear(hidden_size, 1) # the final output layer which takes the last hidden state of size 64 into a single number which is the predicted price
+    # def __init__(self, input_size=1, hidden_size=64, num_layers=2): 
+    #     super(LSTMModel, self).__init__() # required to initalize from pytorch base class
+    #     self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True) # defines the LSTM layers where batch_first looks like [batch, sequence, feature]
+    #     self.fc = nn.Linear(hidden_size, 1) # the final output layer which takes the last hidden state of size 64 into a single number which is the predicted price
 
-    def forward(self, x): # input is the last 20 days of prices aka x
-        lstm_out, _ = self.lstm(x) # gets ouptut from teh LSTM for every time step
-        return self.fc(lstm_out[:, -1, :]) # grab the last time step and convert that into a single predicted value using Linear layer
+    # def forward(self, x): # input is the last 20 days of prices aka x
+    #     lstm_out, _ = self.lstm(x) # gets ouptut from teh LSTM for every time step
+    #     return self.fc(lstm_out[:, -1, :]) # grab the last time step and convert that into a single predicted value using Linear layer
+
+    def __init__(self, input_size=1, hidden_size=64, num_layers=2, dropout=0.3):
+        super(LSTMModel, self).__init__()
+        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True, dropout=dropout)
+        self.dropout = nn.Dropout(dropout)
+        self.fc = nn.Linear(hidden_size, 1)
+
+    def forward(self, x):
+        lstm_out, _ = self.lstm(x)
+        out = self.dropout(lstm_out[:, -1, :])  # Only apply dropout to last time step
+        return self.fc(out)
+
+
+
+def enable_dropout(model):
+    """
+    Force dropout layers to be active during evaluation.
+    This is used for Monte Carlo Dropout to estimate uncertainty.
+    """
+    for module in model.modules():
+        if isinstance(module, nn.Dropout):
+            module.train()
 
 def makePrediction(ticker): # makePrediction is the main function, connects to database to pull data for a specific stock, trains the model, and forecasts future prices
     os.environ['pguser'] = 'sammy'
@@ -62,7 +88,8 @@ def makePrediction(ticker): # makePrediction is the main function, connects to d
     query ="""
     SELECT date, close 
     FROM stocks 
-    WHERE name = %s AND date BETWEEN '2024-10-18' AND '2025-03-14'
+    WHERE name = %s 
+      AND date BETWEEN CURRENT_DATE - INTERVAL '5 months' AND CURRENT_DATE
     ORDER BY date ASC
     """
     df = pd.read_sql(query, conn, params=(ticker,)) # this function is not optimal so change later so warning ignore can be removed !!!
@@ -100,18 +127,47 @@ def makePrediction(ticker): # makePrediction is the main function, connects to d
             optimizer.step() # updates the model weights
         print(f"Epoch {epoch+1}/{epochs}, Loss: {loss.item():.4f}")
 
-    model.eval()
-    with torch.no_grad():
-        # gets the most recent 20 day window and feeds it into the trained model aand gets the predicted price
-        last_seq = torch.tensor(df['scaled_price'].values[-window_size:], dtype=torch.float32).unsqueeze(0).unsqueeze(-1)
-        prediction = model(last_seq).item()
-        predicted_price = scaler.inverse_transform([[prediction]]) # converts scaled prediction back to read world dollar value
-        print(f"Predicted Next Closing Price: {predicted_price[0][0]}")
+    # model.eval()
+    # with torch.no_grad():
+    #     # gets the most recent 20 day window and feeds it into the trained model aand gets the predicted price
+    #     last_seq = torch.tensor(df['scaled_price'].values[-window_size:], dtype=torch.float32).unsqueeze(0).unsqueeze(-1)
+    #     prediction = model(last_seq).item()
+    #     predicted_price = scaler.inverse_transform([[prediction]]) # converts scaled prediction back to read world dollar value
+    #     print(f"Predicted Next Closing Price: {predicted_price[0][0]}")
 
-        # calls helper function that uses the last sequence to predict day 1 and uses that to predict day 2 and so on
-        # repeats that process recursively and then plots with plot helper function using matplot lib (something to change in the future to be passed to area component) !!!
-        predicted_prices = forecast_future_prices(model, df, scaler, window_size=20, days_ahead=7) 
-        plot_future_forecast(df, predicted_prices, scaler, window_size=20)
+    #     # calls helper function that uses the last sequence to predict day 1 and uses that to predict day 2 and so on
+    #     # repeats that process recursively and then plots with plot helper function using matplot lib (something to change in the future to be passed to area component) !!!
+    #     predicted_prices = forecast_future_prices(model, df, scaler, window_size=20, days_ahead=7) 
+    #     plot_future_forecast(df, predicted_prices, scaler, window_size=20)
+    # -----------------
+    # One-day prediction with uncertainty
+    # -----------------
+    model.eval()
+    enable_dropout(model)
+    with torch.no_grad():
+        last_seq = torch.tensor(df['scaled_price'].values[-window_size:], dtype=torch.float32).unsqueeze(0).unsqueeze(-1)
+
+        preds = [model(last_seq).item() for _ in range(50)]
+        pred_mean = np.mean(preds)
+        pred_std = np.std(preds)
+        predicted_price = scaler.inverse_transform([[pred_mean]])[0][0]
+        predicted_std = scaler.inverse_transform([[pred_mean + pred_std]])[0][0] - predicted_price
+
+    # -----------------
+    # 7-day forecast
+    # -----------------
+    forecast_data = forecast_future_prices(model, df, scaler, window_size=20, days_ahead=7)
+
+    # Format full series (last 5 months + forecast)
+    all_series = df[['date', 'close']].copy()
+    all_series['date'] = pd.to_datetime(all_series['date'])
+    all_series['date'] = all_series['date'].dt.strftime("%Y-%m-%d")
+    historical = {row['date']: {"4. close": f"{row['close']:.4f}"} for _, row in all_series.iterrows()}
+    forecast = {k: {"4. close": f"{v:.4f}"} for k, v in forecast_data.items()}
+
+    full_series = {**historical, **forecast}
+    return ticker, full_series, round(predicted_price, 4), round(predicted_std, 4)
+        
 
 
 # splits data into overlapping windows 20 prices predict 21, 21 prices predict 22, etc. 
@@ -131,6 +187,8 @@ def forecast_future_prices(model, df, scaler, window_size=20, days_ahead=7):
     predictions = []
 
     last_sequence = df['scaled_price'].values[-window_size:].tolist()
+    last_date = df['date'].iloc[-1]
+    forecast_dates = [last_date + timedelta(days=i + 1) for i in range(days_ahead)]
 
     with torch.no_grad():
         for _ in range(days_ahead):
@@ -139,10 +197,9 @@ def forecast_future_prices(model, df, scaler, window_size=20, days_ahead=7):
             predictions.append(next_pred)
             last_sequence.append(next_pred)
 
-
     real_preds = scaler.inverse_transform(np.array(predictions).reshape(-1, 1)).flatten()
-
-    return real_preds
+    forecast_series = {d.strftime("%Y-%m-%d"): round(p, 4) for d, p in zip(forecast_dates, real_preds)}
+    return forecast_series
 
 # grabs last 20 real prices appends 7 predicted, plots all, shows vertical line to seperate real and predicted
 def plot_future_forecast(df, predicted_prices, scaler, window_size):
@@ -163,9 +220,39 @@ def plot_future_forecast(df, predicted_prices, scaler, window_size):
     plt.tight_layout()
     plt.show()
 
+def runPredictor():
+    tickers = ["NVDA", "GOOGL", "AMZN", "MSFT", "TSLA", "AAPL", "JPM", "BAC", "NFLX", "META"]
+    next_prices_summary = {}
+
+    PREDICTION_DIR = "../GatorTraderFrontend/public/predicted"
+    os.makedirs(PREDICTION_DIR, exist_ok=True)  # make sure the folder exists
+
+    for ticker in tickers:
+        print(f"Processing {ticker}...")
+        tckr, full_data, pred, std = makePrediction(ticker)
+
+        # Save per-stock AlphaVantage-style JSON
+        output_path = os.path.join(PREDICTION_DIR, f"predicted{tckr}.json")
+        with open(output_path, 'w') as f:
+            json.dump({"Time Series (Daily)": full_data}, f, indent=4)
+
+        # Add to master summary
+        next_prices_summary[tckr] = {
+            "prediction": pred,
+            "uncertainty": std
+        }
+
+    # Save master JSON with next prices
+    summary_path = os.path.join(PREDICTION_DIR, "nextprices.json")
+    with open(summary_path, 'w') as f:
+        json.dump(next_prices_summary, f, indent=4)
+
+    print("All predictions complete.")    
+
+
 # calls to run with NVDA as the ticker
 # expect it to take time to run 
 if __name__ == "__main__":
-    makePrediction("NVDA")
+    runPredictor()
     
 
