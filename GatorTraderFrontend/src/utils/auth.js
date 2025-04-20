@@ -109,7 +109,7 @@ export const setEmail = async function(email, token){
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify(email)
+            body: JSON.stringify({email:email})
         });
 
         if (!response.ok){

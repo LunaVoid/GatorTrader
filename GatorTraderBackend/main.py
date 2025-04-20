@@ -21,10 +21,10 @@ load_dotenv()
 
 app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_path='/')
 # CORS(app, origins=['http://localhost:5173','http://127.0.0.1:5000'])
-# CORS(app)
+
 # CORS(app, origin = "*")
 # CORS(app, resources={r"/api/*": {"origins": "*"}})
-
+CORS(app)
 '''
 CORS(app, resources={
     r"/api/*": {
@@ -35,13 +35,13 @@ CORS(app, resources={
 })
 '''
 
-
+'''
 CORS(app, add_default_headers={
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization'
 })
-
+'''
 #@app.before_request
 #def basic_authentication():
 #    if request.method.lower() == 'options':
@@ -246,8 +246,8 @@ def changeEmail(data):
             setEmail(email,data["username"])
 
 
-        response_data = {"message": "Signup successful"}
-        return jsonify(response_data), 200
+        #response_data = {"message": "Email Change successful"}
+        return jsonify(True), 200
 
     except InvalidEmailError as e:
         response_data = {"message": f"{str(e)}"}
