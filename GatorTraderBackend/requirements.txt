@@ -6,3 +6,5 @@ pyjwt
 flask_cors
 python-dotenv
 python-magic
+flask_mail
+resend
