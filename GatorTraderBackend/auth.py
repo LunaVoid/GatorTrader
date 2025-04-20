@@ -117,6 +117,8 @@ def checkLoggedInToken(f):
     @wraps(f) #We wrap this function around our other one basically
     def protectedRoute(*args, **kwargs):
         token = None
+        if request.method == 'OPTIONS':
+            return jsonify({'status': 'ok'}), 200  # or just return '', 200
         if 'Authorization' in request.headers:
             token = request.headers['Authorization']
             print("Authorization Token Provided: ",token)

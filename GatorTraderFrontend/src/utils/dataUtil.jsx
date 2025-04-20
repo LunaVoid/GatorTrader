@@ -4,7 +4,7 @@ const parseDate = timeParse("%Y-%m-%d");
 
 export async function getLocalStockData(ticker) {
     try {
-        const filePath = `../../public/data/data${ticker}.json`; 
+        const filePath = `/data/data${ticker}.json`; 
         const response = await fetch(filePath);
 
         if (!response.ok) {

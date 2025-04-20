@@ -11,7 +11,8 @@ from flask_cors import CORS
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
-from operations import setProfileImage, getProfileImage, setLevel, getLevel, setFavs, deleteFavs, getFavs
+from operations import setProfileImage, getProfileImage, setLevel, getLevel, setFavs, deleteFavs, getFavs, setEmail
+
 import base64
 import os
 import imghdr
@@ -24,11 +25,11 @@ load_dotenv()
 ####DEV REMOVE THIS IN PROD
 
 app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_path='/')
-#CORS(app, origins=['http://localhost:5173','http://127.0.0.1:5000'])
-#CORS(app)
-#CORS(app, origin = "*")
-#CORS(app, resources={r"/api/*": {"origins": "*"}})
+# CORS(app, origins=['http://localhost:5173','http://127.0.0.1:5000'])
 
+# CORS(app, origin = "*")
+# CORS(app, resources={r"/api/*": {"origins": "*"}})
+CORS(app)
 '''
 CORS(app, resources={
     r"/api/*": {
@@ -39,13 +40,13 @@ CORS(app, resources={
 })
 '''
 
-
+'''
 CORS(app, add_default_headers={
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization'
 })
-
+'''
 #@app.before_request
 #def basic_authentication():
 #    if request.method.lower() == 'options':
@@ -114,7 +115,6 @@ def signupFunction():
     except AppError as e:
         response_data = {"message": f"{str(e)}"}
         return jsonify(response_data), 400
-
 
 @app.route("/api/login", methods=["POST", 'OPTIONS'])
 def loginFunction():
@@ -206,12 +206,6 @@ def updateImage(data):
         print(e)
         raise AppError(f"Internal Server Error Contact Admin {str(e)}")
 
-@app.route("/api/test", methods=["GET"])
-@checkLoggedInToken
-def test(data):
-    print(data)
-    return data['username'],200
-
 @app.route("/api/getProfile", methods=["GET"])
 @checkLoggedInToken
 def getProfile(data):
@@ -234,6 +228,43 @@ def getProfile(data):
     except Exception as e:
         # For any other exception
         print(e)
+        raise AppError(f"Internal Server Error Contact Admin {str(e)}")
+
+#change email
+@app.route("/api/changeemail", methods=['POST', 'OPTIONS'])
+@checkLoggedInToken
+def changeEmail(data):
+    try:
+        print(data)
+        requestData = request.get_json()
+        email = requestData["email"]
+        if isDuplicate(email):
+            print("duplicate Email")
+            response_data = {"message": "Cannot use this email, account exists"}
+            raise DuplicateError("Email Already in Use")
+        if email is None or not validateEmail(email):
+            print("invalid")
+            response_data = {"message": "Invalid Email"}
+            raise InvalidEmailError("Email is a invalid")
+        else:
+            print("Changing Email")
+            setEmail(email,data["username"])
+
+
+        #response_data = {"message": "Email Change successful"}
+        return jsonify(True), 200
+
+    except InvalidEmailError as e:
+        response_data = {"message": f"{str(e)}"}
+        return jsonify(response_data), 400
+    except DuplicateError as e:
+        response_data = {"message": f"{str(e)}"}
+        return jsonify(response_data), 400
+    except AppError as e:
+        response_data = {"message": f"{str(e)}"}
+        return jsonify(response_data), 400 
+    except Exception as e:
+        # For any other exception
         raise AppError(f"Internal Server Error Contact Admin {str(e)}")
 
 @app.route("/api/changeLevel", methods=["POST"])
@@ -322,6 +353,7 @@ def getFavoriteStocks(data):
         print(e)
         raise AppError(f"Internal Server Error Contact Admin {str(e)}")
     
+
 
 
 

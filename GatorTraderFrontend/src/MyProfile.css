@@ -4,6 +4,7 @@
     align-items: center;
     height: 50vh;
     margin-top: 30px;
+    margin-bottom:80px;
 }
 
 .profile-box {
@@ -14,7 +15,8 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    font-family: "K2D"
+    font-family: "K2D";
+    
 }
 
 .profile-box h2 {
@@ -42,7 +44,24 @@
     
 }
 
+.edit-email-btn {
+    border: none;
+    background-color: #1F6336;
+    color: white; /* Green color to match theme */
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 5px 0;
+    margin-top: 5px;
+    
+}
+
 .edit-profile-btn:hover {
+    background-color: #174729; /* Darker green for hover effect */
+    outline: none;
+}
+
+.edit-email-btn:hover {
     background-color: #174729; /* Darker green for hover effect */
     outline: none;
 }
@@ -75,3 +94,31 @@
     margin-bottom: 12px;
     text-align: justify;
 }
+
+.popup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    color: white;
+    z-index: 9999;
+    font-size: 16px;
+    animation: fadeInOut 3s ease-in-out forwards;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .popup.success {
+    background-color: #4CAF50;
+  }
+  
+  .popup.error {
+    background-color: #f44336;
+  }
+  
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-20px); }
+    10% { opacity: 1; transform: translateY(0); }
+    90% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-20px); }
+  }

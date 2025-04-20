@@ -102,8 +102,8 @@ const Intro = () => {
 
   return (
     <div>
-        <div className="popup-overlay">
-          <div className="popup">
+        <div className="intro-popup-overlay">
+          <div className="intro-popup">
             <h2>Financial Literacy Survey</h2>
             {questions.map((q) => (
               <div key={q.id} className="question-block">
