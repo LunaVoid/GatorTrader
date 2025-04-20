@@ -1,0 +1,42 @@
+{
+    "NVDA": {
+      "label": "somewhat-bullish",
+      "score": 0.1650
+    },
+    "GOOGL": {
+      "label": "unavailable",
+      "score": null
+    },
+    "AMZN": {
+      "label": "neutral",
+      "score": 0.1067
+    },
+    "MSFT": {
+      "label": "neutral",
+      "score": 0.0908
+    },
+    "TSLA": {
+      "label": "neutral",
+      "score": 0.0538
+    },
+    "AAPL": {
+      "label": "neutral",
+      "score": 0.0757
+    },
+    "JPM": {
+      "label": "unavailable",
+      "score": null
+    },
+    "BAC": {
+      "label": "neutral",
+      "score": 0.0958
+    },
+    "NFLX": {
+      "label": "somewhat-bullish",
+      "score": 0.1598
+    },
+    "META": {
+      "label": "neutral",
+      "score": 0.0451
+    }
+  }
