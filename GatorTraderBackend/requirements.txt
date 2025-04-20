@@ -11,4 +11,5 @@ pandas
 matplotlib
 apscheduler
 torch
+requests
 
