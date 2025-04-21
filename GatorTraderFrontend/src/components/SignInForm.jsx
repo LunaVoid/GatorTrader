@@ -19,7 +19,12 @@ function SignInForm() {
         try {
             await loginUser(userData);
             setError("");
-            navigate("/TrackedStocks");
+            const isNew = localStorage.getItem("isNew");
+            if(!isNew){
+                navigate("/Intro")
+            } else {
+                navigate("/TrackedStocks")
+            }
         } catch (error) {
             setError(error.message || "An unexpected error occurred.");
         }
