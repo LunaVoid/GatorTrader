@@ -173,14 +173,22 @@ button:hover {
     text-align: center;
 }
   
-.forgot-password, /*margin top changes space betweeen forgot password and sign up here*/
-.signup {
+.forgot-password {
     display: block;
     text-decoration: none;
     color: #000000;
     font-size: 14px;
     margin-top: 3px;
+    margin-bottom: 3px;
+}
 
+.signup{
+    display: block;
+    text-decoration: none;
+    color: #000000;
+    font-size: 14px;
+    margin-top: 3px;
+    margin-bottom: 10px;
 }
   
 .forgot-password:hover,
@@ -197,3 +205,44 @@ button:hover {
     background: linear-gradient(90deg, #1F6336 0%, #9ECFAE 100%); /* Gradient colors */
     z-index: 1;
 }
+
+.forgot-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .forgot-popup {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+  }
+
+  .forgot-popup input[type="email"] {
+    background: white;
+    color: black;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin: 1rem 0;
+    max-width: 300px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    text-align: left;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* soft base shadow */
+  }
+  
+  .forgot-popup input[type="email"]:focus {
+    border-color: #22c55e; /* green-500 */
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3); /* subtle green glow */
+  }

@@ -12,4 +12,4 @@ matplotlib
 apscheduler
 torch
 requests
-
+flask_mail

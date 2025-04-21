@@ -20,12 +20,27 @@ import imghdr
 from apscheduler.schedulers.background import BackgroundScheduler
 import dailyUpdate
 
+from flask_mail import Mail
+from sendEmail import send_verification_email, send_reset_email
+from flask import request
+from operations import get_db_connection
+import jwt
 
 load_dotenv()
 ####DEV REMOVE THIS IN PROD
 
 app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_path='/')
 # CORS(app, origins=['http://localhost:5173','http://127.0.0.1:5000'])
+
+app.config.update(
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=587,
+    MAIL_USE_TLS=True,
+    MAIL_USERNAME=os.getenv('MAIL_USERNAME'),
+    MAIL_PASSWORD=os.getenv('MAIL_PASSWORD')
+)
+mail = Mail(app)
+
 
 # CORS(app, origin = "*")
 # CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -94,7 +109,7 @@ def signupFunction():
 
         signUp(username, password, data["profile_pic"],
                 email)
-
+        send_verification_email(mail, email)
         response_data = {"message": "Signup successful"}
 
         # Return a response with status code 200
@@ -354,10 +369,91 @@ def getFavoriteStocks(data):
         raise AppError(f"Internal Server Error Contact Admin {str(e)}")
     
 
+@app.route("/api/verify", methods=["GET"])
+def verify_email():
+    token = request.args.get("token")
+    try:
+        print("Received token:", token)
+        decoded = jwt.decode(token, os.environ['TOPSECRET'], algorithms=["HS256"])
+        email = decoded['email']
+        print("Decoded email:", email)
+
+        from creds import get_db_connection
+        with get_db_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("UPDATE users SET email_verified = TRUE WHERE email = %s", (email,))
+                conn.commit()
+
+        return jsonify({"message": "Email verified successfully!"}), 200
+
+    except jwt.ExpiredSignatureError:
+        print("Token expired")
+        return jsonify({"error": "Token expired"}), 400
+    except jwt.InvalidTokenError:
+        print("Invalid token")
+        return jsonify({"error": "Invalid token"}), 400
+    except Exception as e:
+        print("Unexpected error:", e)  # ← this line helps you debug
+        return jsonify({"error": f"Internal server error: {str(e)}"}), 500
+    
+
+@app.route("/api/forgot-password", methods=["POST"])
+def forgot_password():
+    data = request.get_json()
+    email = data.get("email")
+
+    if not email or not validateEmail(email):
+        return jsonify({"message": "Invalid email"}), 400
+
+    if not isDuplicate(email):  # means user doesn't exist
+        return jsonify({"message": "Email not found"}), 404
+
+    try:
+        print("Sending reset email to:", email)
+        send_reset_email(mail, email)
+        return jsonify({"message": "Reset email sent!"}), 200
+    except Exception as e:
+        print("Error sending reset email:", e)  # <-- this will show the real issue
+        return jsonify({"message": "Failed to send reset email"}), 500
 
 
 
 
+@app.route("/api/reset-password", methods=["POST"])
+def reset_password():
+    data = request.get_json()
+    token = data.get("token")
+    new_password = data.get("new_password")
+
+    if not token or not new_password or not validatePassword(new_password):
+        return jsonify({"message": "Invalid input"}), 400
+
+    try:
+        decoded = jwt.decode(token, os.environ['TOPSECRET'], algorithms=["HS256"])
+        email = decoded['email']
+
+        # Hash and update new password
+        hashed_pw = passwordHashedSalted(new_password)
+
+        with get_db_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("UPDATE users SET password = %s WHERE email = %s", (hashed_pw, email))
+                conn.commit()
+
+        return jsonify({"message": "Password reset successful!"}), 200
+
+    except jwt.ExpiredSignatureError:
+        return jsonify({"error": "Token expired"}), 400
+    except jwt.InvalidTokenError:
+        return jsonify({"error": "Invalid token"}), 400
+    except Exception as e:
+        print("Reset error:", e)
+        return jsonify({"message": "Something went wrong"}), 500
+
+@app.route("/api/test-reset-token")
+def test_reset_token():
+    from sendEmail import generate_email_token
+    return generate_email_token("hiralshukla@ufl.edu")
 
 
 @app.route('/', defaults={'path': ''})

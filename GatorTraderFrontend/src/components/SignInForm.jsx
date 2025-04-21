@@ -1,52 +1,59 @@
-import { useState } from "react";
-import { Link } from "react-router-dom"
-import { UserProvider } from "../utils/userContext";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../utils/userContext";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 function SignInForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const { user, loginUser, logoutUser, loadUser } = useUser();
-    const [error, setError] = useState('');
+    const [error, setError] = useState("");
+    const [showResetPopup, setShowResetPopup] = useState(false);
+    const [resetEmail, setResetEmail] = useState("");
+    const [resetMessage, setResetMessage] = useState("");
+
+    const { user, loginUser, loadUser } = useUser();
     const navigate = useNavigate();
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Username:", username);
-        console.log("Password:", password);
-        let userData = {"username":username, "password":password}
-        let data;
-        //Store Token in context and then redirect once recieved.
-        try{
-            data = await loginUser(userData);
-            console.log("here in signin");
+        let userData = { username, password };
+        try {
+            await loginUser(userData);
             setError("");
             const isNew = localStorage.getItem("isNew");
-            if (!isNew){
-                navigate("/Intro");
+            if(!isNew){
+                navigate("/Intro")
+            } else {
+                navigate("/TrackedStocks")
             }
-            else{
-                navigate("/TrackedStocks");
-            }
-            
+        } catch (error) {
+            setError(error.message || "An unexpected error occurred.");
         }
+    };
 
-        catch(error){
-            setError(error.message || 'An unexpected error occurred.');  // Set the error message
-            console.log('Error during signup:', error.message);
+    const handleResetSubmit = async () => {
+        try {
+            const response = await fetch("http://localhost:5000/api/forgot-password", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email: resetEmail })
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message);
+            setResetMessage("Reset link sent! Check your email.");
+        } catch (err) {
+            setResetMessage(err.message || "Something went wrong.");
         }
     };
 
     useEffect(() => {
-        console.log("Current user context:", user);
-    }, [user]);
+        loadUser();
+    }, []);
 
     useEffect(() => {
-        console.log("running on reload")
-        loadUser()
-    }, []);
+        console.log("Current user context:", user);
+    }, [user]);
 
     return (
         <div className="sign-in-form">
@@ -56,7 +63,7 @@ function SignInForm() {
                 <div className="form-group">
                     <label htmlFor="username">Username</label>
                     <input
-                        type=""
+                        type="text"
                         id="username"
                         placeholder="Username"
                         value={username}
@@ -77,11 +84,34 @@ function SignInForm() {
                     />
                 </div>
                 <div className="form-links">
-                <a href="/forgot-password" className="forgot-password">Forgot Password?</a>
-                <Link to="/SignUp" className="signup">Sign Up Here</Link>
+                    <p className="forgot-password" onClick={() => setShowResetPopup(true)}>Forgot Password?</p>
+                    <Link to="/SignUp" className="signup">Sign Up Here</Link>
                 </div>
                 <button type="submit">Sign In</button>
             </form>
+
+            {showResetPopup && (
+                <div className="forgot-popup-overlay">
+                    <div className="forgot-popup">
+                        <h3>Reset Your Password</h3>
+                        <input
+                            type="email"
+                            value={resetEmail}
+                            onChange={(e) => setResetEmail(e.target.value)}
+                            placeholder="Enter your email"
+                        />
+                        <button onClick={handleResetSubmit}>Send Reset Link</button>
+                        <p>{resetMessage}</p>
+                        <button onClick={() => {
+                            setShowResetPopup(false);
+                            setResetMessage("");
+                            setResetEmail("");
+                        }}>
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
