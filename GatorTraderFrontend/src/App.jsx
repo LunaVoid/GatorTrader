@@ -7,6 +7,7 @@ import Intro from './Intro';
 import MyProfile from './MyProfile';
 import TrackedStocks from './TrackedStocks';  
 import ResetPasswordForm from './ResetPasswordForm.jsx';
+import VerifyPage from './VerifyPage.jsx';
 import SignUp from "./SignUp.jsx";
 import { UserProvider } from './utils/userContext';
 import PrivateRoute from './utils/PrivateRoutes.jsx';
@@ -21,6 +22,7 @@ function App() {
         <Route path="/SignUp" element={<SignUp/>}/>
         <Route path="/Login" element={<Login/>} />
         <Route path="/reset-password" element={<ResetPasswordForm />} />
+        <Route path="/verify" element={<VerifyPage />} />
         {/* This catch-all route should be last, test route 404 -Josh */}
         <Route path="*" element={
           <div>

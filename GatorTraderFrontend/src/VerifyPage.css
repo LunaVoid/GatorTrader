@@ -1,0 +1,22 @@
+.verify-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f8fafc;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #0f172a;
+    text-align: center;
+    padding: 2rem;
+}
+
+.verify-container h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.verify-container p {
+    font-size: 1rem;
+    color: #64748b;
+}
