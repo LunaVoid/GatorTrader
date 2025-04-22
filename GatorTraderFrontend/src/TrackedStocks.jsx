@@ -27,6 +27,14 @@ function TrackedStocks() {
   const [cutoffDates, setCutoffDates] = useState({});
   const [sentimentMap, setSentimentMap] = useState({})
   const [nextPriceMap, setNextPriceMap] = useState({});
+
+  useEffect(() => {
+    async function fetchFavorites() {
+      const favs = await favsGetter(token);
+      setFavoriteStocks(favs);
+    }
+    fetchFavorites();
+  }, [favsGetter, token]);
   
   //creates a list for favoriteStocks, checks if item is already on favorite lists and adds and removes it depending if its already on there
   const toggleFavorite = async(ticker) => {
