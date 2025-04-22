@@ -456,6 +456,17 @@ def test_reset_token():
     return generate_email_token("hiralshukla@ufl.edu")
 
 
+
+# Route to serve any files in the static folder
+@app.route('/<path:filename>')
+def serve_static(filename):
+    return send_from_directory(app.static_folder, filename)
+
+# Explicit route for favicon (if placed in static folder)
+@app.route('/realFavicon.png')
+def serve_favicon():
+    return send_from_directory(app.static_folder, 'realFavicon.png')
+
 @app.route('/', defaults={'path': ''})
 @app.route("/<string:path>")
 @app.route('/<path:path>')
