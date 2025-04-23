@@ -13,7 +13,7 @@ def generate_email_token(email):
 
 def send_verification_email(mail, user_email):
     token = generate_email_token(user_email)
-    link = f"http://localhost:5173/verify?token={token}"
+    link = f"https://gatortrader.lunael.org/verify?token={token}"
 
     msg = Message(
         subject="Verify Your Email",
@@ -25,7 +25,7 @@ def send_verification_email(mail, user_email):
 
 def send_reset_email(mail, user_email):
     token = generate_email_token(user_email)
-    link = f"http://localhost:5173/reset-password?token={token}"
+    link = f"https://gatortrader.lunael.org/reset-password?token={token}"
 
     msg = Message(
         subject="Reset Your GatorTrader Password",
