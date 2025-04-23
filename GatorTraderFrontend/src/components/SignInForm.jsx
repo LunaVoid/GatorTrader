@@ -32,7 +32,7 @@ function SignInForm() {
 
     const handleResetSubmit = async () => {
         try {
-            const response = await fetch("http://localhost:5000/api/forgot-password", {
+            const response = await fetch("https://gatortrader.lunael.org/api/forgot-password", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

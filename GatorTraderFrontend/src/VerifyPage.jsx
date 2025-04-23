@@ -10,7 +10,7 @@ function VerifyPage() {
         const token = params.get("token");
 
         if (token) {
-            fetch(`http://localhost:5000/api/verify?token=${token}`)
+            fetch(`https://gatortrader.lunael.org/api/verify?token=${token}`)
                 .then(res => res.json())
                 .then(data => {
                     console.log(data.message);
