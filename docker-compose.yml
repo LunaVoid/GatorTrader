@@ -25,8 +25,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: GatorTraderBackend
-    ports:
-      - "5000:5000"  # Adjust if your Flask app uses a different port
+    #Coolify handles the ports
     environment:
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
