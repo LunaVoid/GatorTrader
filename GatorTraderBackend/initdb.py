@@ -2,16 +2,21 @@ import os
 import psycopg2
 from auth import passwordHashedSalted
 import base64
-os.environ['pguser'] = 'sammy'
-os.environ['pgpassword'] = 'password'
 
+# Standardize database connection parameters
+db_host = os.environ.get('DB_HOST', 'postgres')
+db_port = os.environ.get('DB_PORT', '5432')  
+db_name = os.environ.get('DB_NAME', 'gatortrader')
+db_user = os.environ.get('DB_USER', 'sammy')  # Use standard var names
+db_password = os.environ.get('DB_PASSWORD', 'password')
 
 conn = psycopg2.connect(
-        host="localhost",
-        database="gatortrader",
-        user= os.environ['pguser'],
-        password=os.environ['pgpassword'])
-
+    host="postgres",  # Directly use the service name
+    port=5432,
+    database="gatortrader",
+    user="sammy",
+    password="password"
+)
 
 cur = conn.cursor();
 cur.execute('DROP TABLE IF EXISTS users CASCADE;')

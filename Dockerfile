@@ -30,3 +30,4 @@ RUN pip install -r requirements.txt
 
 # Command to run
 CMD ["sh", "-c", "python initdb.py && python main.py"]
+#CMD ["python", "db_test.py"]
