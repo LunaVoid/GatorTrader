@@ -2,17 +2,41 @@
 the main folder because it makes it easier to serve the react app'''
 
 from flask import Flask, request, jsonify, send_from_directory, Response, url_for
-from sanitize import (validateEmail, validatePassword,
-                          validateUsername, isDuplicate, isDuplicateUsername, allowed_file)
-from auth import passwordHashedSalted, signUp, generateJWT,isPasswordHashValid, checkLoggedInToken
-from exceptions import (DatabaseConnectionError, DuplicateError, ValidationError, AppError
-                        , InvalidEmailError, DuplicateUsernameError, InvalidPassword, BadUsernameError)
+from sanitize import (
+    validateEmail,
+    validatePassword,
+    validateUsername,
+    isDuplicate,
+    isDuplicateUsername,
+    allowed_file
+)
+from auth import (
+    passwordHashedSalted,
+    signUp,
+    generateJWT,
+    isPasswordHashValid,
+    checkLoggedInToken
+)
+from exceptions import (
+    DatabaseConnectionError,
+    DuplicateError,
+    ValidationError,
+    AppError,
+    InvalidEmailError,
+    DuplicateUsernameError,
+    InvalidPassword,
+    BadUsernameError
+)
 from flask_cors import CORS
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
 from operations import setProfileImage, getProfileImage
-from sendEmail import (generate_email_verification_token, storeEmailToken, register_verification_route)
+from sendEmail import (
+    generate_email_verification_token,
+    storeEmailToken,
+    register_verification_route
+)
 import resend
 import base64
 import os
@@ -29,66 +53,39 @@ SENDER_ADDRESS = os.environ.get(
 )
 
 app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_path='/')
-#CORS(app, origins=['http://localhost:5173','http://127.0.0.1:5000'])
-#CORS(app)
-#CORS(app, origin = "*")
-#CORS(app, resources={r"/api/*": {"origins": "*"}})
-
-'''
-CORS(app, resources={
-    r"/api/*": {
-        "origins": ["http://localhost:5173", "http://localhost:5000", "http://127.0.0.1:5000"],
-        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"]
-    }
-})
-'''
-
-CORS(app, add_default_headers={
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-})
-
-#@app.before_request
-#def basic_authentication():
-#    if request.method.lower() == 'options':
-#        return Response()
+CORS(app)
 
 register_verification_route(app)
 
-@app.route("/api/signup", methods=["POST", 'OPTIONS'])
+@app.route("/api/signup", methods=["POST", "OPTIONS"])
 def signupFunction():
     if request.method == 'OPTIONS':
         return '', 204
     data = request.get_json()
     print("Received data:", data["username"], data["password"],
-        data["profile_pic"], data["email"], data["email"] )
-
+          data["profile_pic"], data["email"], data["email"])
     email = str(data["email"])
     username = str(data["username"])
     password = str(data["password"])
 
     try:
-        if email is None or not validateEmail(email):
-            raise InvalidEmailError("Email is a invalid")
-
-        if password is None or not validatePassword(password):
+        if not validateEmail(email):
+            raise InvalidEmailError("Email is invalid")
+        if not validatePassword(password):
             raise InvalidPassword("Password Invalid, minimum of 6 characters")
-
         if isDuplicate(email):
             raise DuplicateError("Email Already in Use")
-
-        if username is None or not validateUsername(username) or isDuplicateUsername(username):
+        if not validateUsername(username) or isDuplicateUsername(username):
             raise DuplicateUsernameError("Username not valid")
 
-        password = passwordHashedSalted(password)
+        hashed = passwordHashedSalted(password)
+        signUp(username, hashed, data["profile_pic"], email)
 
-        signUp(username, password, data["profile_pic"], email)
-
+        # issue token + store
         token = generate_email_verification_token(email)
         storeEmailToken(email, token)
 
+        # send verification link
         verification_url = url_for("verify_email", token=token, _external=True)
         params: resend.Emails.SendParams = {
             "from": SENDER_ADDRESS,
@@ -102,9 +99,7 @@ def signupFunction():
         }
         resend.Emails.send(params)
 
-        return jsonify({
-            "message": "Signup successful. A verification email has been sent."
-        }), 200
+        return jsonify({"message": "Signup successful. A verification email has been sent."}), 200
 
     except InvalidEmailError as e:
         return jsonify({"message": str(e)}), 400
@@ -117,93 +112,85 @@ def signupFunction():
     except AppError as e:
         return jsonify({"message": str(e)}), 500
     except Exception as e:
-        raise AppError(f"Internal Server Error: {e}")
+        # fallback catch-all
+        return jsonify({"message": f"Internal Server Error: {e}"}), 500
 
-@app.route("/api/login", methods=["POST", 'OPTIONS'])
+@app.route("/api/login", methods=["POST", "OPTIONS"])
 def loginFunction():
     if request.method == 'OPTIONS':
         return '', 204
+    data = request.get_json()
+    username = data.get("username", "")
+    password = data.get("password", "")
+
     try:
-        data = request.get_json()
-        response_data = {"message": "test"}
-        print("Received data:", data["username"], data["password"])
-        username = data["username"]
-        password = data['password']
-        if username is None or not validateUsername(username) or not isDuplicateUsername(username):
-            raise DuplicateUsernameError("Username not valid or is not an account")
+        if not validateUsername(username) or not isDuplicateUsername(username):
+            raise BadUsernameError("Username not valid or is not an account")
+        if not validatePassword(password):
+            raise InvalidPassword("Invalid Password")
 
-        if password is None or not validatePassword(password):
+        ok, info = isPasswordHashValid(username, password)
+        if not ok:
             raise InvalidPassword("Password Invalid")
+        userid, profilePic, uname = info
+        expire_ts = int((datetime.utcnow() + timedelta(hours=24))
+                        .replace(tzinfo=timezone.utc).timestamp())
+        token = generateJWT(userid, uname)
+        return jsonify({
+            "message": "Login successful",
+            "token": token,
+            "username": uname,
+            "exp": expire_ts
+        }), 200
 
-        result = isPasswordHashValid(username,password)
-        resulter = result[0]
-        if not resulter:
-            raise InvalidPassword("Password Invalid")
-        userid, profilePic, uname = result[1]
-        now = datetime.utcnow()
-        expireDate = int((now + timedelta(hours=24)).replace(tzinfo=timezone.utc).timestamp())
-        token = generateJWT(userid,uname)
-        response_data = {"message": "Alr bro here is your token", "token": token, "username": uname, "exp": expireDate}
-        return jsonify(response_data), 200
-
-    except BadUsernameError as e:
+    except (BadUsernameError, InvalidPassword) as e:
         return jsonify({"message": str(e)}), 400
-    except InvalidPassword as e:
-        return jsonify({"message": f" Bad Password:{str(e)}"}), 400
     except AppError as e:
-        return jsonify({"message": str(e)}), 400
+        return jsonify({"message": str(e)}), 500
     except Exception as e:
-        raise AppError(f"Internal Server Error Contact Admin {str(e)}")
+        return jsonify({"message": f"Internal Server Error: {e}"}), 500
 
 @app.route("/api/profileupdate", methods=["POST"])
 @checkLoggedInToken
 def updateImage(data):
     try:
-        if 'image' not in request.files:
+        file = request.files.get('image')
+        if not file or file.filename == '':
             return jsonify({"error": "No image file provided"}), 400
-        file = request.files['image']
-        if file.filename == '':
-            return jsonify({"error": "No selected file"}), 400
-        if file and allowed_file(file.filename):
-            success,photoBytes = setProfileImage(file,data['userid'])
-            if success:
-                return jsonify({"message": "File uploaded successfully"}), 200
-            else:
-                raise AppError("Upload Failed")
-        return jsonify({"error": "Invalid file type"}), 400
+        if not allowed_file(file.filename):
+            return jsonify({"error": "Invalid file type"}), 400
+
+        success, _ = setProfileImage(file, data['userid'])
+        if not success:
+            raise AppError("Upload Failed")
+        return jsonify({"message": "File uploaded successfully"}), 200
 
     except DatabaseConnectionError as e:
-        return jsonify({"message": f" Database Error:{str(e)}"}), 500
+        return jsonify({"message": f"Database Error: {e}"}), 500
     except AppError as e:
         return jsonify({"message": str(e)}), 400
     except Exception as e:
-        raise AppError(f"Internal Server Error Contact Admin {str(e)}")
-
-@app.route("/api/test", methods=["GET"])
-@checkLoggedInToken
-def test(data):
-    return data['username'],200
+        return jsonify({"message": f"Internal Server Error: {e}"}), 500
 
 @app.route("/api/getProfile", methods=["GET"])
 @checkLoggedInToken
 def getProfile(data):
     try:
-        successful, image, mimetype = getProfileImage(data['userid'])
-        if successful:
-            return bytes(image), 200, {'Content-Type': mimetype}
-        return {"error": "Profile image not found"}, 404
+        success, image, mimetype = getProfileImage(data['userid'])
+        if not success:
+            return jsonify({"error": "Profile image not found"}), 404
+        return (bytes(image), 200, {'Content-Type': mimetype})
     except DatabaseConnectionError as e:
-        return jsonify({"message": f" Database Error:{str(e)}"}), 500
+        return jsonify({"message": f"Database Error: {e}"}), 500
     except AppError as e:
         return jsonify({"message": str(e)}), 400
     except Exception as e:
-        raise AppError(f"Internal Server Error Contact Admin {str(e)}")
+        return jsonify({"message": f"Internal Server Error: {e}"}), 500
 
 @app.route('/', defaults={'path': ''})
-@app.route("/<string:path>")
-@app.route('/<path:path>')
+@app.route("/<path:path>")
 def catch_all(path):
     return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

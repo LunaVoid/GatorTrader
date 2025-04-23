@@ -1,0 +1,42 @@
+{
+    "NVDA": {
+        "prediction": 106.8156,
+        "uncertainty": 2.3163
+    },
+    "GOOGL": {
+        "prediction": 153.6361,
+        "uncertainty": 0.9118
+    },
+    "AMZN": {
+        "prediction": 185.9035,
+        "uncertainty": 1.2129
+    },
+    "MSFT": {
+        "prediction": 381.1425,
+        "uncertainty": 3.2337
+    },
+    "TSLA": {
+        "prediction": 251.3506,
+        "uncertainty": 5.0067
+    },
+    "AAPL": {
+        "prediction": 204.1875,
+        "uncertainty": 2.5689
+    },
+    "JPM": {
+        "prediction": 235.7553,
+        "uncertainty": 2.7425
+    },
+    "BAC": {
+        "prediction": 37.4757,
+        "uncertainty": 0.4321
+    },
+    "NFLX": {
+        "prediction": 939.9065,
+        "uncertainty": 13.0813
+    },
+    "META": {
+        "prediction": 550.1796,
+        "uncertainty": 5.1988
+    }
+}
