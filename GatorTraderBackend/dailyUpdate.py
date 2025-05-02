@@ -83,6 +83,8 @@ def updateData():
     for ticker in stocks: 
             dailyUpdate(ticker, hiral_api_key, f"{data_dir}data{ticker}.json")
 
+    print("Scheduled job ran at", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
 if __name__ == "__main__":
     # if datetime.today().weekday() < 5 and not updatedToday:
         for ticker in stocks: 

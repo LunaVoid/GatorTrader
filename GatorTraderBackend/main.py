@@ -25,32 +25,13 @@ from sendEmail import send_verification_email, send_reset_email
 from flask import request
 from operations import get_db_connection
 import jwt
+import threading
+import time
 
 load_dotenv()
 ####DEV REMOVE THIS IN PROD
 
-def dummy_job():
-    print("Dummy job ran!")
-
-scheduler = BackgroundScheduler()
-scheduler.add_job(
-    dummy_job,
-    'interval',
-    seconds=30,  # every 30 seconds
-    timezone='US/Eastern'
-)
-print("Scheduler started successfully.")
-
-scheduler.start()
-if not scheduler.running:
-    scheduler.start()
-    print("Scheduler is Running!")
-
-
-
-
 app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_path='/')
-
 
 app.config.update(
     MAIL_SERVER='smtp.gmail.com',
@@ -64,6 +45,30 @@ mail = Mail(app)
 
 CORS(app, origins="*", allow_headers=["Content-Type", "Authorization"], 
     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
+
+scheduler = BackgroundScheduler()
+
+def start_scheduler():
+    try:
+        scheduler.add_job(
+            dailyUpdate.updateData,
+            'cron',
+            day_of_week='mon-fri',
+            hour=17,
+            minute=52,
+            timezone='US/Eastern'
+        )
+        
+        scheduler.start()
+        print("Scheduler started successfully.")
+    except Exception as e:
+        print("[Scheduler] Failed to start:", e)
+
+def delayed_scheduler_start():
+    time.sleep(1)  # wait 1 second to let Flask boot
+    start_scheduler()
+
+threading.Thread(target=delayed_scheduler_start, daemon=True).start()
 
 @app.after_request
 def after_request(response):
@@ -471,11 +476,6 @@ def serve_static(filename):
 @app.route('/realFavicon.png')
 def serve_favicon():
     return send_from_directory(app.static_folder, 'realFavicon.png')
-
-@app.route('/update')
-def Update():
-    dailyUpdate.updateData()
-    return jsonify({"message": "Running"}),200
 
 @app.route('/', defaults={'path': ''})
 @app.route("/<string:path>")
