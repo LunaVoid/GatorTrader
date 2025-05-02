@@ -452,6 +452,11 @@ def serve_static(filename):
 def serve_favicon():
     return send_from_directory(app.static_folder, 'realFavicon.png')
 
+@app.route('/update')
+def Update():
+    dailyUpdate.updateData()
+    return jsonify({"message": "Running"}),200
+
 @app.route('/', defaults={'path': ''})
 @app.route("/<string:path>")
 @app.route('/<path:path>')
@@ -459,20 +464,23 @@ def catch_all(path):
         #return "Your endpoint is /"+path
         return send_from_directory(app.static_folder, 'index.html')
 
-scheduler = BackgroundScheduler()
-scheduler.add_job(
-    dailyUpdate.updateData,
-    'cron',
-    day_of_week='mon-fri',
-    hour=18,
-    minute=5,
-    timezone='US/Eastern'
-)
-scheduler.start()
 
-if scheduler.running:
-    print("Scheduler is Running!")
-    scheduler.start()
 
 if __name__ == "__main__":
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(
+        dailyUpdate.updateData,
+        'cron',
+        day_of_week='mon-fri',
+        hour=18,
+        minute=26,
+        timezone='US/Eastern'
+    )
+    scheduler.start()
+
+    if scheduler.running:
+        print("Scheduler is Running!")
+        scheduler.start()
+    
     app.run(host='0.0.0.0', port=80)
+    #app.run(host='localhost', port=3000)

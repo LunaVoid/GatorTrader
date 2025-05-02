@@ -4,7 +4,8 @@ FROM node:18 AS frontend-build
 # Copy frontend files
 COPY GatorTraderFrontend /app/GatorTraderFrontend
 WORKDIR /app/GatorTraderFrontend
-
+ENV FLASK_ENV=production
+ENV PYTHONUNBUFFERED=1
 RUN rm -rf node_modules
 # Install dependencies and build
 RUN npm install
@@ -29,5 +30,4 @@ WORKDIR /app/GatorTraderBackend
 RUN pip install -r requirements.txt
 
 # Command to run
-CMD ["sh", "-c", "python initdb.py && python main.py"]
-#CMD ["python", "db_test.py"]
+CMD ["sh", "-c", "python initdb.py && gunicorn -w 4 -b 0.0.0.0:5000 main:app"]

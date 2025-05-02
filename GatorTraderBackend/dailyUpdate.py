@@ -79,6 +79,7 @@ def dailyUpdate(symbol, api_key, file_path):
         uploadData.addToDatabase(symbol, date, row["1. open"], row["2. high"], row["3. low"], row["4. close"], row["5. volume"])
 
 def updateData():
+    print("Running Update Data")
     for ticker in stocks: 
             dailyUpdate(ticker, hiral_api_key, f"{data_dir}data{ticker}.json")
 
