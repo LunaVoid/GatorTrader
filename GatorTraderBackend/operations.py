@@ -11,7 +11,7 @@ def setProfileImage(profile_pic, userid):
         mimetype = profile_pic.content_type
         #final = f"data:{mimetype};base64,{base64Code}"
         #print(final)
-        print(file_bytes)
+        #print(file_bytes)
         with get_db_connection() as conn:
             with conn.cursor() as cur:
                 cur.execute('UPDATE users SET profile_pic= %s, mimetype = %s WHERE userid = %s ',(file_bytes,mimetype,userid))

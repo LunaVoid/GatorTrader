@@ -464,11 +464,15 @@ scheduler.add_job(
     dailyUpdate.updateData,
     'cron',
     day_of_week='mon-fri',
-    hour=19,
-    minute=5,
+    hour=17,
+    minute=52,
     timezone='US/Eastern'
 )
 scheduler.start()
+
+if scheduler.running:
+    print("Scheduler is Running!")
+    scheduler.start()
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80)
