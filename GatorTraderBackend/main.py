@@ -464,8 +464,8 @@ scheduler.add_job(
     dailyUpdate.updateData,
     'cron',
     day_of_week='mon-fri',
-    hour=17,
-    minute=55,
+    hour=18,
+    minute=5,
     timezone='US/Eastern'
 )
 scheduler.start()
