@@ -465,7 +465,7 @@ scheduler.add_job(
     'cron',
     day_of_week='mon-fri',
     hour=17,
-    minute=52,
+    minute=55,
     timezone='US/Eastern'
 )
 scheduler.start()
