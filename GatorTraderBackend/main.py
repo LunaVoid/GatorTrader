@@ -28,20 +28,26 @@ import jwt
 
 load_dotenv()
 ####DEV REMOVE THIS IN PROD
+
+def dummy_job():
+    print("Dummy job ran!")
+
 scheduler = BackgroundScheduler()
-print("set to 34!!!")
 scheduler.add_job(
-    dailyUpdate.updateData,
-    'cron',
-    day_of_week='mon-fri',
-    hour=14,
-    minute=52,
+    dummy_job,
+    'interval',
+    seconds=30,  # every 30 seconds
     timezone='US/Eastern'
 )
+print("Scheduler started successfully.")
+
 scheduler.start()
 if not scheduler.running:
     scheduler.start()
     print("Scheduler is Running!")
+
+
+
 
 app = Flask(__name__, static_folder='../GatorTraderFrontend/dist', static_url_path='/')
 
