@@ -79,8 +79,8 @@ def signupFunction():
     data = request.get_json()
     # TODO! Add Environment Variable STUFF
     # Print the data for debugging (you can log or store it as needed)
-    print("Received data:", data["username"], data["password"],
-        data["profile_pic"], data["email"], data["email"])
+    #print("Received data:", data["username"], data["password"],
+        #data["profile_pic"], data["email"], data["email"])
     # First we validate the username, password and email
 
     email = str(data["email"])
@@ -143,7 +143,7 @@ def loginFunction():
     try:
         data = request.get_json()
         response_data = {"message": "test"}
-        print("Received data:", data["username"], data["password"])
+        #print("Received data:", data["username"], data["password"])
         username = data["username"]
         password = data['password']
         if (username is None or not validateUsername(username) or not isDuplicateUsername(username)):
@@ -206,7 +206,7 @@ def updateImage(data):
             success,photoBytes = setProfileImage(file,data['userid'])
             if(success):
                 print("success time")
-                print(photoBytes)
+                #print(photoBytes)
                 return jsonify({"message": "File uploaded successfully"}), 200
             else:
                 raise AppError("Upload Failed")

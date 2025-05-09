@@ -25,6 +25,8 @@ services:
       dockerfile: Dockerfile
     container_name: GatorTraderBackend
     #Coolify handles the ports
+    expose:
+    - "80" 
     environment:
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
