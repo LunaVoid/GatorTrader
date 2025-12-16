@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: sammy
       POSTGRES_PASSWORD: password
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./db-scripts/init.sql:/docker-entrypoint-initdb.d/init.sql  # Updated path to init.sql
