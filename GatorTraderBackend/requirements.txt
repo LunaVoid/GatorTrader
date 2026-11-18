@@ -1,6 +1,6 @@
 flask
 bcrypt
-psycopg2
+psycopg2-binary
 pytest
 pyjwt
 flask_cors
